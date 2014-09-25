@@ -1,0 +1,3 @@
+[submodule "UnityTestTools"]
+	path = UnityTestTools
+	url = https://bitbucket.org/malud/unitytesttools.git
