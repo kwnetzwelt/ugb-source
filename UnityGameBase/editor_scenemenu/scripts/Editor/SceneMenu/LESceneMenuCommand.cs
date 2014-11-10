@@ -58,7 +58,11 @@ namespace UGB.SceneMenu
 			EditorUtility.SetDirty(instance);
 			
 			prefab = null;
+#if UNITY_5_0
+			EditorUtility.UnloadUnusedAssetsImmediate();
+#else
 			EditorUtility.UnloadUnusedAssets();
+#endif
 			
 			
 			
