@@ -9,21 +9,22 @@ public class LocalizableText : GameComponent
 	public string m_locaKey;
 	LString m_translation;
 	TextMesh m_textMesh;
+	GUIText m_guiText;
 	// Use this for initialization
 	void Start ()
 	{
 		
 		m_translation = m_locaKey;
 		m_textMesh = this.GetComponent<TextMesh>();
-		
+		m_guiText = this.GetComponent<GUIText>();
 		if(m_textMesh != null)
 		{
 			m_textMesh.text = m_translation;
 		}
 		
-		if(guiText != null)
+		if(m_guiText != null)
 		{
-			guiText.text = m_translation;
+			m_guiText.text = m_translation;
 		}
 	}
 	

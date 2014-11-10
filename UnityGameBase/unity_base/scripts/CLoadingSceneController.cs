@@ -47,10 +47,11 @@ public class CLoadingSceneController : MonoBehaviour, ILoadingScreenController
 	public void OnAnimateInBegin (Action pDoneCbk)
 	{
 		mLoadingScene.mCamera.enabled = true;
-		mLoadingScene.animation.Play( mLoadingScene.mInAnimation.name );
+		var animation = mLoadingScene.GetComponent<Animation>();
+		animation.Play( mLoadingScene.mInAnimation.name );
 		StartCoroutine(WaitForEndOfAnimation(mLoadingScene.mInAnimation.name, () => {
 		
-			mLoadingScene.animation.Play( mLoadingScene.mLoopAnimation.name );
+			animation.Play( mLoadingScene.mLoopAnimation.name );
 			if(pDoneCbk != null)
 				pDoneCbk();
 
@@ -59,8 +60,9 @@ public class CLoadingSceneController : MonoBehaviour, ILoadingScreenController
 
 	public void OnAnimateOutBegin (Action pDoneCbk)
 	{
-		mLoadingScene.animation.Stop( mLoadingScene.mLoopAnimation.name );
-		mLoadingScene.animation.Play(mLoadingScene.mOutAnimation.name);
+		var animation = mLoadingScene.GetComponent<Animation>();
+		animation.Stop( mLoadingScene.mLoopAnimation.name );
+		animation.Play(mLoadingScene.mOutAnimation.name);
 		StartCoroutine(WaitForEndOfAnimation(mLoadingScene.mOutAnimation.name, () => {
 
 			mLoadingScene.mCamera.enabled = false;
@@ -93,7 +95,7 @@ public class CLoadingSceneController : MonoBehaviour, ILoadingScreenController
 	IEnumerator WaitForEndOfAnimation(string pAnimation, System.Action pDoneCbk)
 	{
 
-		while(mLoadingScene.animation.IsPlaying(pAnimation))
+		while(mLoadingScene.GetComponent<Animation>().IsPlaying(pAnimation))
 		{
 			//Debug.Log("Waiting for Animation: " + pAnimation);
 			yield return 0;
