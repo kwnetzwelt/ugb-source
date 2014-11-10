@@ -8,8 +8,21 @@ public class CLogCatcher : MonoBehaviour
 {
 	void Awake()
 	{
+#if UNITY_5_0
+		Application.logMessageReceived += OnLogCallback;
+#else
 		Application.RegisterLogCallback( OnLogCallback );
+#endif
 	}
+
+
+	void OnDestroy()
+	{
+#if UNITY_5_0
+		Application.logMessageReceived -= OnLogCallback;
+#endif
+	}
+
 
 	void OnLogCallback (string condition, string stackTrace, LogType type)
 	{
