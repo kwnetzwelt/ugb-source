@@ -54,11 +54,13 @@ namespace UGB.Utils
 
 		public static void ExecuteThreaded(System.Action pAction)
 		{
-	#if UNITY_METRO && !UNITY_EDITOR
+#if UNITY_METRO && !UNITY_EDITOR
+#pragma warning disable 4014
 			ThreadPool.RunAsync( (source) => { pAction(); });
-	#else
+#pragma warning restore
+#else
 			ThreadPool.QueueUserWorkItem( new WaitCallback((state) => {pAction();}) );
-	#endif
+#endif
 		}
 
 		#endregion

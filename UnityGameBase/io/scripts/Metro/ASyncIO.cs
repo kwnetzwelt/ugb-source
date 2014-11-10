@@ -50,6 +50,11 @@ namespace IOBridge
             ReadFileAsync();
         }
 
+		internal void Delete()
+		{
+			DeleteFileAsync();
+		}
+
         internal void Exists()
         {
             ExistsAsync();

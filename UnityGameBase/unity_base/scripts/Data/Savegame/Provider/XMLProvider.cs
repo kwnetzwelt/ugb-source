@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
+using IOBridge;
 
 namespace UGB.Savegame
 {
+#if !UNITY_METRO
 	public class XMLProvider : IIOProvider
 	{
 		static string mPath = UnityEngine.Application.persistentDataPath + "/saveGames/";
@@ -179,5 +181,6 @@ namespace UGB.Savegame
 			return result;
 		}
 	}
+#endif
 }
 

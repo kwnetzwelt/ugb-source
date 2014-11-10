@@ -7,6 +7,7 @@ using System.Reflection;
 
 #if UNITY_METRO && !UNITY_EDITOR	
 using Windows.Storage;
+using System.Linq;
 #endif
 namespace UGB.Utils
 {
@@ -153,16 +154,66 @@ namespace UGB.Utils
 
 		public static List<System.Type> GetTypesWithAttribute<T>()
 		{
+			var searchType = typeof(T);
+
+#if UNITY_METRO && !UNITY_EDITOR
+			var currentAssembly = searchType.GetTypeInfo().Assembly;
+
+			var outList = new List<Type>();
+			
+			var types = currentAssembly.DefinedTypes; 
+			foreach(var t in types)
+			{
+				if(t.GetCustomAttribute(searchType) != null)
+				{
+					outList.Add(t.AsType());
+				}
+			}
+			return outList;
+#else
 			var list = new List<System.Type>();
+
 			foreach( var assembly in System.AppDomain.CurrentDomain.GetAssemblies())
 			{
 				foreach(System.Type type in assembly.GetTypes()) {
-					if (type.GetCustomAttributes(typeof(T), true).Length > 0) {
+					if (type.GetCustomAttributes(searchType, true).Length > 0) {
 						list.Add(type);
 					}
 				}
 			}
 			return list;
+#endif
+		}
+
+		public static List<System.Type> GetTypesAssignableFrom<T>()
+		{
+			var list = new List<System.Type>();
+			var searchType = typeof(T);
+
+#if UNITY_METRO && !UNITY_EDITOR
+			var currentAssembly = searchType.GetTypeInfo().Assembly;
+			
+			var outList = new List<Type>();
+			
+			var types = currentAssembly.DefinedTypes;
+			foreach (var t in types)
+			{
+				if (t.ImplementedInterfaces.Contains(searchType))
+					outList.Add(t.AsType());
+			}
+			return outList;
+#else
+
+			foreach( var assembly in System.AppDomain.CurrentDomain.GetAssemblies())
+			{
+				foreach(System.Type type in assembly.GetTypes()) {
+					if (searchType.IsAssignableFrom(type) && type != searchType) {
+						list.Add(type);
+					}
+				}
+			}
+			return list;
+#endif
 		}
 
 		#endregion

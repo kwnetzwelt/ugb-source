@@ -16,7 +16,8 @@ namespace UGB.Savegame
 			var streamWriter = new StreamWriter(memoryStream, new System.Text.UTF8Encoding(false));
 			
 			serializer.Serialize(streamWriter, obj);
-			return System.Text.Encoding.Default.GetString( memoryStream.ToArray() );
+			var array = memoryStream.ToArray();
+			return System.Text.Encoding.UTF8.GetString( array,0, array.Length );
 		}
 		
 		public static T StringToType<T>(string s) where T : class
