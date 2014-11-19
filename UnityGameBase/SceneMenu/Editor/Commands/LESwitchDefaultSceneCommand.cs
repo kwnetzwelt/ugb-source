@@ -1,26 +1,28 @@
-﻿using System;
-using UnityEditor;
+using System;
 using UnityEngine;
+using UnityEditor;
+
 namespace UGB.SceneMenu.Commands
 {
-	public class LEPlayDefaultSceneCommand : LESceneMenuCommand
+
+	public class LESwitchDefaultSceneCommand : LESceneMenuCommand
 	{
 	    const string kDefaultScenePathKey = "DefaultScenePath";
+	    static string path = null;
 
-	    public LEPlayDefaultSceneCommand()
+	    public LESwitchDefaultSceneCommand()
 	    {
-	        mName = "Play Default Scene";
+	        mName = "Switch To Default Scene";
 	    }
+
 	    public override void Execute()
 	    {
-	        PlayDefaultScene();
+	        OpenDefaultScene();
 	    }
 
-	    [MenuItem("UGB/Go To/Play Default Scene &P",false,0)]
-	    static void PlayDefaultScene()
+	    [MenuItem("UGB/Go To/Open Default Scene &D", false, 1)]
+	    static void OpenDefaultScene()
 	    {
-	        string path = null;
-
 	        if (!EditorPrefs.HasKey(kDefaultScenePathKey))
 	        {
 	            path = EditorUtility.OpenFilePanel("Path To Default Scene", Application.dataPath + "/scenes", "unity");
@@ -41,9 +43,15 @@ namespace UGB.SceneMenu.Commands
 	            path = EditorPrefs.GetString(kDefaultScenePathKey);
 	        }
 
-	        EditorApplication.SaveScene();
+	        EditorApplication.SaveCurrentSceneIfUserWantsTo();
 	        EditorApplication.OpenScene(path);
-	        EditorApplication.isPlaying = true;
+	    }
+
+	    [MenuItem("UGB/Go To/Reset/Default Scene Path", false, 15)]
+	    static void DeleteDefaultScenePath()
+	    {
+	        EditorPrefs.DeleteKey(kDefaultScenePathKey);
+	        path = null;
 	    }
 	}
 }
