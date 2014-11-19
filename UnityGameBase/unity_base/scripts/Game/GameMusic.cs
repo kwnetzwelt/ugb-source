@@ -52,10 +52,10 @@ public class GameMusic : MultiChannelController
 	
 	public void OnAnyOptionChangedEvent()
 	{
-		if(mEnabled != GOptions.isMusicOn)
+		if(mEnabled != GOptions.IsMusicOn)
 		{
-			mEnabled = GOptions.isMusicOn;
-			mute = !GOptions.isMusicOn;
+			mEnabled = GOptions.IsMusicOn;
+			mute = !GOptions.IsMusicOn;
 		}
 	}
 	

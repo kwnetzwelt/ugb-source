@@ -17,7 +17,20 @@ namespace UGB
 		const string TouchFeedbackOption = "OptTouchFeedback";
 		
 		private bool optionsDialogVisible = false;
+
 		
+		
+		bool musicOption;
+		bool moundOption;
+		int qualityLevel;
+		int language;
+		bool showTouchFeedback;
+
+		public delegate void OnOptionChange();
+		public event OnOptionChange OnAnyOptionChanged;
+		public event OnOptionChange OnOptionDialogToggled;
+
+
 		public bool IsOptionsDialogVisible
 		{
 			get
@@ -35,52 +48,18 @@ namespace UGB
 				
 			}
 		}
-		
-		void Start()
-		{
-			UpdateValues();
-		}
-		protected virtual void UpdateValues()
-		{
-			mSoundOption = System.Convert.ToBoolean( PlayerPrefs.GetInt(SoundOption,1) );
-			mMusicOption = System.Convert.ToBoolean( PlayerPrefs.GetInt(MusicOption,1) );
-			mQualityLevel = PlayerPrefs.GetInt(QualityOption,0);
 
-			mLanguage = PlayerPrefs.GetInt(LanguageOption,SLanguages.first);
-
-			mShowTouchFeedback = System.Convert.ToBoolean( PlayerPrefs.GetInt(TouchFeedbackOption,1));
-			GLoca.SetLanguage(mLanguage);
-			QualitySettings.SetQualityLevel(mQualityLevel);
-			
-			if(OnAnyOptionChanged != null)
-				OnAnyOptionChanged();
-		}
-		
-		
-		bool mMusicOption;
-		bool mSoundOption;
-		int mQualityLevel;
-		int mLanguage;
-		bool mShowTouchFeedback;
-		
-		
-		public delegate void OnOptionChange();
-		public event OnOptionChange OnAnyOptionChanged;
-		public event OnOptionChange OnOptionDialogToggled;
-		
-		
-		
-		public int nextQuality
+		public int NextQuality
 		{
 			get {
 				return (GetQuality() + 1) % QualitySettings.names.Length;
 			}
 		}
-		public void SetQuality(int pInt)
+		public void SetQuality(int value)
 		{
-			if(mQualityLevel != pInt)
+			if(qualityLevel != value)
 			{
-				PlayerPrefs.SetInt(QualityOption,pInt);
+				PlayerPrefs.SetInt(QualityOption,value);
 				PlayerPrefs.Save();
 				UpdateValues();
 			}
@@ -89,10 +68,10 @@ namespace UGB
 		
 		public int GetQuality()
 		{
-			return mQualityLevel;
+			return qualityLevel;
 		}
 		
-		public SLanguages nextLanguage
+		public SLanguages NextLanguage
 		{
 			
 			get {
@@ -110,10 +89,10 @@ namespace UGB
 			}
 		}
 		
-		public SLanguages language
+		public SLanguages CurrentLanguage
 		{
 			get {
-				 return mLanguage;
+				return language;
 			}
 			set {
 				PlayerPrefs.SetInt(LanguageOption,(int)value);
@@ -122,9 +101,9 @@ namespace UGB
 			}
 		}
 		
-		public bool isSoundOn
+		public bool IsSoundOn
 		{
-			get { return mSoundOption;}
+			get { return moundOption;}
 			set {
 				
 				PlayerPrefs.SetInt(SoundOption,(value)? 1 : 0);
@@ -134,9 +113,9 @@ namespace UGB
 		}
 		
 		
-		public bool isMusicOn
+		public bool IsMusicOn
 		{
-			get { return mMusicOption;}
+			get { return musicOption;}
 			set {
 				PlayerPrefs.SetInt(MusicOption,(value)? 1 : 0);
 				PlayerPrefs.Save();
@@ -144,15 +123,42 @@ namespace UGB
 			}
 		}
 		
-		public bool showTouchFeedBack
+		public bool ShowTouchFeedBack
 		{
-			get { return mShowTouchFeedback;}
+			get { return showTouchFeedback;}
 			set {
 				PlayerPrefs.SetInt(TouchFeedbackOption,(value)? 1: 0);
 				PlayerPrefs.Save();
 				UpdateValues();
 			}
 		}
+
+		void Start()
+		{
+			UpdateValues();
+		}
+		protected virtual void UpdateValues()
+		{
+			moundOption = System.Convert.ToBoolean( PlayerPrefs.GetInt(SoundOption,1) );
+			musicOption = System.Convert.ToBoolean( PlayerPrefs.GetInt(MusicOption,1) );
+			qualityLevel = PlayerPrefs.GetInt(QualityOption,0);
+
+			language = PlayerPrefs.GetInt(LanguageOption,SLanguages.first);
+
+			showTouchFeedback = System.Convert.ToBoolean( PlayerPrefs.GetInt(TouchFeedbackOption,1));
+			GLoca.SetLanguage(language);
+			QualitySettings.SetQualityLevel(qualityLevel);
+			
+			if(OnAnyOptionChanged != null)
+				OnAnyOptionChanged();
+		}
+
+		
+		
+
+		
+		
+
 		
 	}
 
