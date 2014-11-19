@@ -57,7 +57,7 @@ namespace UGB
 			SLanguages defLanguageShort = GetSystemLanguageShort();
 			
 			// checking for language setting in playerprefs
-			defLanguageShort = PlayerPrefs.GetInt(GameOptions.kOptLanguage,defLanguageShort);
+			defLanguageShort = PlayerPrefs.GetInt(GameOptions.LanguageOption,defLanguageShort);
 
 			// enumerating all langauges to find a match with the language set in the system
 			foreach(int lang in SLanguages.Enumerate())

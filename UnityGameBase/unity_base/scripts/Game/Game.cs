@@ -230,8 +230,8 @@ namespace UGB
 		{
 			if(UnityEngine.Input.GetKeyDown(KeyCode.Escape))
 			{
-				if(gameOptions.isOptionsDialogVisible)
-					gameOptions.isOptionsDialogVisible = false;
+				if(gameOptions.IsOptionsDialogVisible)
+					gameOptions.IsOptionsDialogVisible = false;
 				
 			}
 			if(firstFrame)

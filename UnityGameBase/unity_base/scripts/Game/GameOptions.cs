@@ -10,25 +10,25 @@ namespace UGB
 	/// </summary>
 	public class GameOptions : GameComponent
 	{
-		const string kOptSound = "OptSound";
-		const string kOptMusic = "OptMusic";
-		const string kOptQuality = "OptQuality";
-		public const string kOptLanguage = "OptLanguage";
-		const string kOptTouchFeedback = "OptTouchFeedback";
+		const string SoundOption = "OptSound";
+		const string MusicOption = "OptMusic";
+		const string QualityOption = "OptQuality";
+		public const string LanguageOption = "OptLanguage";
+		const string TouchFeedbackOption = "OptTouchFeedback";
 		
-		private bool mOptionsDialogVisible = false;
+		private bool optionsDialogVisible = false;
 		
-		public bool isOptionsDialogVisible
+		public bool IsOptionsDialogVisible
 		{
 			get
 			{
-				return mOptionsDialogVisible;
+				return optionsDialogVisible;
 			}
 			set
 			{
-				if(value != mOptionsDialogVisible)
+				if(value != optionsDialogVisible)
 				{
-					mOptionsDialogVisible = value;
+					optionsDialogVisible = value;
 					if(OnOptionDialogToggled != null)
 						OnOptionDialogToggled();
 				}
@@ -42,13 +42,13 @@ namespace UGB
 		}
 		protected virtual void UpdateValues()
 		{
-			mSoundOption = System.Convert.ToBoolean( PlayerPrefs.GetInt(kOptSound,1) );
-			mMusicOption = System.Convert.ToBoolean( PlayerPrefs.GetInt(kOptMusic,1) );
-			mQualityLevel = PlayerPrefs.GetInt(kOptQuality,0);
+			mSoundOption = System.Convert.ToBoolean( PlayerPrefs.GetInt(SoundOption,1) );
+			mMusicOption = System.Convert.ToBoolean( PlayerPrefs.GetInt(MusicOption,1) );
+			mQualityLevel = PlayerPrefs.GetInt(QualityOption,0);
 
-			mLanguage = PlayerPrefs.GetInt(kOptLanguage,SLanguages.first);
+			mLanguage = PlayerPrefs.GetInt(LanguageOption,SLanguages.first);
 
-			mShowTouchFeedback = System.Convert.ToBoolean( PlayerPrefs.GetInt(kOptTouchFeedback,1));
+			mShowTouchFeedback = System.Convert.ToBoolean( PlayerPrefs.GetInt(TouchFeedbackOption,1));
 			GLoca.SetLanguage(mLanguage);
 			QualitySettings.SetQualityLevel(mQualityLevel);
 			
@@ -80,7 +80,7 @@ namespace UGB
 		{
 			if(mQualityLevel != pInt)
 			{
-				PlayerPrefs.SetInt(kOptQuality,pInt);
+				PlayerPrefs.SetInt(QualityOption,pInt);
 				PlayerPrefs.Save();
 				UpdateValues();
 			}
@@ -116,7 +116,7 @@ namespace UGB
 				 return mLanguage;
 			}
 			set {
-				PlayerPrefs.SetInt(kOptLanguage,(int)value);
+				PlayerPrefs.SetInt(LanguageOption,(int)value);
 				PlayerPrefs.Save();
 				UpdateValues();
 			}
@@ -127,7 +127,7 @@ namespace UGB
 			get { return mSoundOption;}
 			set {
 				
-				PlayerPrefs.SetInt(kOptSound,(value)? 1 : 0);
+				PlayerPrefs.SetInt(SoundOption,(value)? 1 : 0);
 				PlayerPrefs.Save();
 				UpdateValues();
 			}
@@ -138,7 +138,7 @@ namespace UGB
 		{
 			get { return mMusicOption;}
 			set {
-				PlayerPrefs.SetInt(kOptMusic,(value)? 1 : 0);
+				PlayerPrefs.SetInt(MusicOption,(value)? 1 : 0);
 				PlayerPrefs.Save();
 				UpdateValues();
 			}
@@ -148,7 +148,7 @@ namespace UGB
 		{
 			get { return mShowTouchFeedback;}
 			set {
-				PlayerPrefs.SetInt(kOptTouchFeedback,(value)? 1: 0);
+				PlayerPrefs.SetInt(TouchFeedbackOption,(value)? 1: 0);
 				PlayerPrefs.Save();
 				UpdateValues();
 			}
