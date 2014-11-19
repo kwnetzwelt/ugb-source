@@ -36,18 +36,7 @@ namespace UGB.Utils
 			
 			return pTarget.AddComponent<T>();
 		}
-		
-		public static EGenericPlatform platform
-		{
-			get {
-				
-	#if UNITY_ANDROID || UNITY_IPHONE || UNITY_METRO || UNITY_WEBPLAYER
-				return EGenericPlatform.Mobile;
-	#elif UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
-				return EGenericPlatform.Desktop;
-	#endif
-			}
-		}
+
 		
 		public static bool CheckFileExists(string pPath)
 		{			
