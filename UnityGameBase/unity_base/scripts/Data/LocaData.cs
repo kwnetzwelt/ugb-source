@@ -39,7 +39,7 @@ namespace UGB.Data
 		public static LocaData Load()
 		{
 			if(Application.isPlaying)
-				return Load(Game.instance.gameLoca.currentLanguage.ToString());
+				return Load(Game.Instance.gameLoca.currentLanguage.ToString());
 			
 			return null;
 		}

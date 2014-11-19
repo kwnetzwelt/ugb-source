@@ -91,18 +91,16 @@ namespace UGB
 	public class Game : MonoBehaviour
 	{
 		
-		public bool mTesting;
+		public bool testing;
 		
 
 
 
-		private static Game mInstance;
-		public static Game instance
+
+		public static Game Instance
 		{
-			get
-			{
-				return mInstance;
-			}
+			get;
+			private set;
 		}
 		
 		// Game Components
@@ -174,7 +172,7 @@ namespace UGB
 		void Initialize ()
 		{
 			initialized = true;
-			mInstance = this;
+			Instance = this;
 			DontDestroyOnLoad(this);
 
 			ThreadingBridge.Initialize();
@@ -201,7 +199,7 @@ namespace UGB
 		
 		void OnEnable()
 		{
-			if((mTesting && !Application.isEditor) || (Application.isEditor && mTesting && mInstance != null))
+			if((testing && !Application.isEditor) || (Application.isEditor && testing && Instance != null))
 			{
 				
 					
@@ -209,12 +207,12 @@ namespace UGB
 				Debug.Log("Destroyed Test Game Instance");
 				return;
 			}
-			if(mInstance != null)
+			if(Instance != null)
 			{
 				GameObject.Destroy(this);
 				return;
 			}
-			mInstance = this;
+			Instance = this;
 			if(!initialized)
 				Initialize();
 		}

@@ -10,15 +10,15 @@ namespace UGB
 	/// </summary>
 	public class GameComponent : MonoBehaviour
 	{
-		protected GameOptions GOptions{get { return Game.instance.gameOptions;}}
-		protected GameLogicImplementationBase GLogic{get { return Game.instance.CurrentGameLogic;}}
-		protected GameStateManager GState{get { return Game.instance.gameState;}}
-		protected GamePlayer GPlayer{get { return Game.instance.gamePlayer;}}
-		protected GameMusic GMusic{get { return Game.instance.gameMusic;}}
-		protected GameLocalization GLoca{get { return Game.instance.gameLoca;}}
-		protected GamePause GPause{get { return Game.instance.gamePause;}}
-		protected GameInput GInput{get { return Game.instance.gameInput;}}
-		protected GameData GData{ get {return Game.instance.gameData;} }
+		protected GameOptions GOptions{get { return Game.Instance.gameOptions;}}
+		protected GameLogicImplementationBase GLogic{get { return Game.Instance.CurrentGameLogic;}}
+		protected GameStateManager GState{get { return Game.Instance.gameState;}}
+		protected GamePlayer GPlayer{get { return Game.Instance.gamePlayer;}}
+		protected GameMusic GMusic{get { return Game.Instance.gameMusic;}}
+		protected GameLocalization GLoca{get { return Game.Instance.gameLoca;}}
+		protected GamePause GPause{get { return Game.Instance.gamePause;}}
+		protected GameInput GInput{get { return Game.Instance.gameInput;}}
+		protected GameData GData{ get {return Game.Instance.gameData;} }
 
 		
 		/// <summary>

@@ -54,7 +54,7 @@ namespace UGB
 		}
 		SGameState GetCurrentGameState()
 		{
-			SGameState newState = Game.instance.CurrentGameLogic.GetCurrentGameState();
+			SGameState newState = Game.Instance.CurrentGameLogic.GetCurrentGameState();
 			return newState;
 			
 		}	

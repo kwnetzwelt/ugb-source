@@ -64,7 +64,7 @@ namespace UGBSetup
 			if( view == null )
 				return;
 
-			if(!view.mTesting)
+			if(!view.testing)
 				GUI.color = new Color(0.5f,1,0,.2f);
 			else
 				GUI.color = new Color(1,1,0,.2f);

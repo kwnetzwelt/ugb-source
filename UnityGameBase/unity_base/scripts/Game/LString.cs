@@ -27,12 +27,12 @@ namespace UGB
 		public LString(string pKey)
 		{
 			mKey = pKey;
-			if(Game.instance == null)
+			if(Game.Instance == null)
 			{
 				mTranslation = pKey;
 				return;
 			}
-			mTranslation = Game.instance.gameLoca.GetText(mKey);
+			mTranslation = Game.Instance.gameLoca.GetText(mKey);
 			
 		}
 		
