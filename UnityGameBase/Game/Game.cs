@@ -155,7 +155,7 @@ namespace UGB
 				if(typeof(GameLogicImplementationBase).IsAssignableFrom(logicType))
 				{
 					var t = System.Activator.CreateInstance(logicType);	
-					gameLogicImplementation = t as GameLogicImplementationBase;
+					CurrentGameLogic = t as GameLogicImplementationBase;
 				}else
 				{
 					Debug.LogError("Your Game Logic Implementation is not of type " + typeof(GameLogicImplementationBase).ToString());
