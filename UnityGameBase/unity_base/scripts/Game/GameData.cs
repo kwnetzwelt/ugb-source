@@ -1,16 +1,18 @@
 using UnityEngine;
 using System.Collections;
-
-/// <summary>
-/// Game data class. Contains references to data (loaded in the Start Method), that will be needed for the game. 
-/// </summary>
-public class GameData : GameComponent
+namespace UGB
 {
-	
-	void Start()
+	/// <summary>
+	/// Game data class. Contains references to data (loaded in the Start Method), that will be needed for the game. 
+	/// </summary>
+	public class GameData : GameComponent
 	{
-		// load game data here
+		
+		void Start()
+		{
+			// load game data here
+		}
+		
 	}
-	
-}
 
+}

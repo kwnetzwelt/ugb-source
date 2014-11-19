@@ -1,16 +1,18 @@
 using UnityEngine;
 using System.Collections;
 
-/// <summary>
-/// Reacts on the "OnApplicationPause" Message from Unity and sets the IsPaused static member. 
-/// </summary>
-public class GamePause : GameComponent
+namespace UGB
 {
-	
-	void OnApplicationPause(bool pPause)
+	/// <summary>
+	/// Reacts on the "OnApplicationPause" Message from Unity and sets the IsPaused static member. 
+	/// </summary>
+	public class GamePause : GameComponent
 	{
-		isPaused = pPause;
+		
+		void OnApplicationPause(bool pPause)
+		{
+			IsPaused = pPause;
+		}
+		
 	}
-	
 }
-

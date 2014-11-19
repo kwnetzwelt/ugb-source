@@ -1,6 +1,7 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using UGB;
 
 namespace UGBSetup
 {

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEditor;
+using UGB.Data;
 
 namespace UGB.Localization
 {
