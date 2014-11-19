@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace IOBridge
+namespace UGB.IO
 {
     public class WrappedIO
     {

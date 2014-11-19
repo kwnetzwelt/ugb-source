@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IOBridge
+namespace UGB.IO
 {
     
     public enum BridgeConfiguration

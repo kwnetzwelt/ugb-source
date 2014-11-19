@@ -103,7 +103,7 @@ namespace UGB.Savegame
 
 		IEnumerator WriteSavegameAsync(string pTarget, string pData, Action OnComplete)
 		{
-			var progress = IOBridge.Storage.Save(pTarget, pData);
+			var progress = UGB.IO.Storage.Save(pTarget, pData);
 			while(!progress.IsDone)
 				yield return 0;
 
@@ -114,7 +114,7 @@ namespace UGB.Savegame
 		IEnumerator WriteMetadataAsync<T>(string pTarget, Action<T> OnComplete) where T : ISavegame
 		{
 			string content = XmlObjectSerializer.ObjectToString(mMetadataList);
-			var progress = IOBridge.Storage.Save(pTarget, content);
+			var progress = UGB.IO.Storage.Save(pTarget, content);
 			while(!progress.IsDone)
 				yield return 0;
 			
@@ -124,7 +124,7 @@ namespace UGB.Savegame
 
 		IEnumerator ReadSavegameAsync(string pSource, int ID, Action<SavegameData> OnComplete)
 		{
-			var progress = IOBridge.Storage.Load(pSource);
+			var progress = UGB.IO.Storage.Load(pSource);
 			
 			while(!progress.IsDone)
 				yield return true;
@@ -141,7 +141,7 @@ namespace UGB.Savegame
 
 		IEnumerator ReadMetadataAsync<T>(string pSource, Action<List<Metadata>> OnComplete) where T : ISavegame
 		{
-			var progress = IOBridge.Storage.Load(pSource);
+			var progress = UGB.IO.Storage.Load(pSource);
 			
 			while(!progress.IsDone)
 				yield return true;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
-using IOBridge;
+using UGB.IO;
 
 namespace UGB.Savegame
 {
