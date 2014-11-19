@@ -11,15 +11,15 @@ namespace UGB
 		}
 		
 		
-		protected GameOptions GOptions{get { return Game.instance.mGameOptions;}}
-		protected GameLogicImplementationBase GLogic{get { return Game.instance.gameLogicImplementation;}}
-		protected GameStateManager GState{get { return Game.instance.mGameState;}}
-		protected GamePlayer GPlayer{get { return Game.instance.mGamePlayer;}}
-		protected GameMusic GMusic{get { return Game.instance.mGameMusic;}}
-		protected GameLocalization GLoca{get { return Game.instance.mGameLoca;}}
-		protected GamePause GPause{get { return Game.instance.mGamePause;}}
-		protected GameInput GInput{get { return Game.instance.mGameInput;}}
-		protected GameData GData{ get {return Game.instance.mGameData;} }
+		protected GameOptions GOptions{get { return Game.instance.gameOptions;}}
+		protected GameLogicImplementationBase GLogic{get { return Game.instance.CurrentGameLogic;}}
+		protected GameStateManager GState{get { return Game.instance.gameState;}}
+		protected GamePlayer GPlayer{get { return Game.instance.gamePlayer;}}
+		protected GameMusic GMusic{get { return Game.instance.gameMusic;}}
+		protected GameLocalization GLoca{get { return Game.instance.gameLoca;}}
+		protected GamePause GPause{get { return Game.instance.gamePause;}}
+		protected GameInput GInput{get { return Game.instance.gameInput;}}
+		protected GameData GData{ get {return Game.instance.gameData;} }
 		
 		
 		/// <summary>

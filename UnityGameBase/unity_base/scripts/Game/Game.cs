@@ -106,28 +106,28 @@ namespace UGB
 		}
 		
 		// Game Components
-		public GameOptions mGameOptions;
-		public GameStateManager mGameState;
-		public GamePlayer mGamePlayer;
-		public GameMusic mGameMusic;
-		public GameLocalization mGameLoca;
-		public GamePause mGamePause;
-		public GameInput mGameInput;
-		public SceneTransition mSceneTransition;
-		public GameData mGameData;
+		public GameOptions gameOptions;
+		public GameStateManager gameState;
+		public GamePlayer gamePlayer;
+		public GameMusic gameMusic;
+		public GameLocalization gameLoca;
+		public GamePause gamePause;
+		public GameInput gameInput;
+		public SceneTransition sceneTransition;
+		public GameData gameData;
 		
-		public int mVersion;
+		public int version;
 		
-		public GameLogicImplementationBase gameLogicImplementation
+		public GameLogicImplementationBase CurrentGameLogic
 		{
 			get;
 			private set;
 		}
 		
-		bool mFirstFrame = false;
-		bool mInitialized = false;
+		bool firstFrame = false;
+		bool initialized = false;
 
-		System.Type GetLogicType()
+		System.Type GetGameLogicType()
 		{
 			var implementations = UGBHelpers.GetTypesWithAttribute<GameLogicImplementationAttribute>();
 			if(implementations.Count > 0)
@@ -140,16 +140,16 @@ namespace UGB
 
 		void InitLogicImplementation()
 		{
-			if(gameLogicImplementation != null)
+			if(CurrentGameLogic != null)
 			{
 				Debug.Log("Game logic already set. Not creating a new instance. ");
 				return;
 			}
-			System.Type logicType = GetLogicType();
+			System.Type logicType = GetGameLogicType();
 			if(logicType == null)
 			{
-				if(gameLogicImplementation == null)
-					gameLogicImplementation = new DontUse.LogicDummy();
+				if(CurrentGameLogic == null)
+					CurrentGameLogic = new DontUse.LogicDummy();
 				Debug.LogError("No Logic found. Add the GameLogicImplementation Attribute to a class derived from GameLogicImplementationBase. ");
 			}else
 			{
@@ -164,7 +164,7 @@ namespace UGB
 				}
 	#else
 				var t = System.Activator.CreateInstance(logicType);	
-				gameLogicImplementation = t as GameLogicImplementationBase;
+				CurrentGameLogic = t as GameLogicImplementationBase;
 	#endif
 			}
 
@@ -173,27 +173,27 @@ namespace UGB
 		
 		void Initialize ()
 		{
-			mInitialized = true;
+			initialized = true;
 			mInstance = this;
 			DontDestroyOnLoad(this);
 
 			ThreadingBridge.Initialize();
 
 			InitLogicImplementation();
-			gameLogicImplementation.Start();
+			CurrentGameLogic.Start();
 			
-			mGameOptions = UGBHelpers.CreateComponentIfNotExists<GameOptions>(this);
-			mGameState = UGBHelpers.CreateComponentIfNotExists<GameStateManager>(this);
-			mGamePlayer = UGBHelpers.CreateComponentIfNotExists<GamePlayer>(this);
-			mGameMusic = UGBHelpers.CreateComponentIfNotExists<GameMusic>(this);
-			mGameLoca = UGBHelpers.CreateComponentIfNotExists<GameLocalization>(this);
-			mGameLoca.Initialize();
-			mGamePause = UGBHelpers.CreateComponentIfNotExists<GamePause>(this);
-			mGameInput = UGBHelpers.CreateComponentIfNotExists<GameInput>(this);
-			mSceneTransition = UGBHelpers.CreateComponentIfNotExists<SceneTransition>(this);
-			mGameData = UGBHelpers.CreateComponentIfNotExists<GameData>(this);
+			gameOptions = UGBHelpers.CreateComponentIfNotExists<GameOptions>(this);
+			gameState = UGBHelpers.CreateComponentIfNotExists<GameStateManager>(this);
+			gamePlayer = UGBHelpers.CreateComponentIfNotExists<GamePlayer>(this);
+			gameMusic = UGBHelpers.CreateComponentIfNotExists<GameMusic>(this);
+			gameLoca = UGBHelpers.CreateComponentIfNotExists<GameLocalization>(this);
+			gameLoca.Initialize();
+			gamePause = UGBHelpers.CreateComponentIfNotExists<GamePause>(this);
+			gameInput = UGBHelpers.CreateComponentIfNotExists<GameInput>(this);
+			sceneTransition = UGBHelpers.CreateComponentIfNotExists<SceneTransition>(this);
+			gameData = UGBHelpers.CreateComponentIfNotExists<GameData>(this);
 			
-			mFirstFrame = true;
+			firstFrame = true;
 			
 		}
 		
@@ -215,7 +215,7 @@ namespace UGB
 				return;
 			}
 			mInstance = this;
-			if(!mInitialized)
+			if(!initialized)
 				Initialize();
 		}
 		
@@ -232,15 +232,15 @@ namespace UGB
 		{
 			if(UnityEngine.Input.GetKeyDown(KeyCode.Escape))
 			{
-				if(mGameOptions.isOptionsDialogVisible)
-					mGameOptions.isOptionsDialogVisible = false;
+				if(gameOptions.isOptionsDialogVisible)
+					gameOptions.isOptionsDialogVisible = false;
 				
 			}
-			if(mFirstFrame)
+			if(firstFrame)
 			{
-				mFirstFrame = false;
+				firstFrame = false;
 				
-				gameLogicImplementation.GameSetupReady();
+				CurrentGameLogic.GameSetupReady();
 			}
 		}
 		
@@ -251,7 +251,7 @@ namespace UGB
 		/// </summary>
 		public void Restart ()
 		{
-			if(!gameLogicImplementation.OnBeforeRestart())
+			if(!CurrentGameLogic.OnBeforeRestart())
 				return;
 			
 			UnityEngine.Object[] allGameObjects = FindObjectsOfType(typeof(GameObject)); 
@@ -268,7 +268,7 @@ namespace UGB
 		/// <param name="pValue">If set to <c>true</c> p value.</param>
 		public void PauseGame (bool pValue)
 		{
-			if(!gameLogicImplementation.OnBeforePause())
+			if(!CurrentGameLogic.OnBeforePause())
 				return;
 			UnityEngine.Object[] objects = FindObjectsOfType (typeof(GameObject));
 			
@@ -289,7 +289,7 @@ namespace UGB
 
 		public void SetLogic(GameLogicImplementationBase pLogic)
 		{
-			gameLogicImplementation = pLogic;
+			CurrentGameLogic = pLogic;
 		}
 	}
 

@@ -32,7 +32,7 @@ namespace UGB
 				mTranslation = pKey;
 				return;
 			}
-			mTranslation = Game.instance.mGameLoca.GetText(mKey);
+			mTranslation = Game.instance.gameLoca.GetText(mKey);
 			
 		}
 		
