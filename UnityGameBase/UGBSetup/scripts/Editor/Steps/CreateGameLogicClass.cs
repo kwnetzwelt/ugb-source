@@ -59,6 +59,8 @@ namespace UGBSetup
 		}
 
 		const string kClassContent = @"using UnityEngine;
+using UGB;
+
 [GameLogicImplementation()]
 public class GameLogic : GameLogicImplementationBase
 {

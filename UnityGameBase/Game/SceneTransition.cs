@@ -64,7 +64,7 @@ namespace UGB
 		/// A custom controller for loading screen behaviour. 
 		/// If you leave this member to null, the SceneTransition::mFadeTexture is used. 
 		/// </summary>
-		public ILoadingScreenController mLoadingScreenController;
+		public Animation.ILoadingScreenController mLoadingScreenController;
 
 		bool mAnimateInDone = false;
 		bool mAnimateOutDone = false;
