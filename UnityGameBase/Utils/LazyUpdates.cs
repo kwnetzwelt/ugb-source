@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-namespace UGB
+namespace UGB.Utils
 {
 	/// <summary>
 	/// A helper class, that provides bools which are toggled in a certain frequency. 
