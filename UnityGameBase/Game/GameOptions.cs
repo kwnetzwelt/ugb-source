@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using UGB.Globalization;
 
 namespace UGB
 {
@@ -71,12 +72,12 @@ namespace UGB
 			return qualityLevel;
 		}
 		
-		public SLanguages NextLanguage
+		public Languages NextLanguage
 		{
 			
 			get {
 				int i = 0;
-				foreach(int lang in SLanguages.Enumerate())
+				foreach(int lang in Languages.Enumerate())
 				{
 					if(lang == GLoca.currentLanguage)
 					{
@@ -84,12 +85,12 @@ namespace UGB
 					}
 				}
 				
-				i = (i + 1) % SLanguages.count;
-				return (SLanguages)i;
+				i = (i + 1) % Languages.count;
+				return (Languages)i;
 			}
 		}
 		
-		public SLanguages CurrentLanguage
+		public Languages CurrentLanguage
 		{
 			get {
 				return language;
@@ -143,7 +144,7 @@ namespace UGB
 			musicOption = System.Convert.ToBoolean( PlayerPrefs.GetInt(MusicOption,1) );
 			qualityLevel = PlayerPrefs.GetInt(QualityOption,0);
 
-			language = PlayerPrefs.GetInt(LanguageOption,SLanguages.first);
+			language = PlayerPrefs.GetInt(LanguageOption,Languages.First);
 
 			showTouchFeedback = System.Convert.ToBoolean( PlayerPrefs.GetInt(TouchFeedbackOption,1));
 			GLoca.SetLanguage(language);

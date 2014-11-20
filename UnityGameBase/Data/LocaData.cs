@@ -4,14 +4,16 @@ using UnityEngine;
 using System.IO;
 using System;
 using System.Text;
-
-/// <summary>
-/// Loca data. Contains loading code for localization files. Allows access to translated values. 
-/// </summary>
 using UGB.Utils;
+using UGB.Globalization;
+
+
 namespace UGB.Data
 {
-
+	
+	/// <summary>
+	/// Loca data. Contains loading code for localization files. Allows access to translated values. 
+	/// </summary>
 	public class LocaData
 	{
 		
@@ -22,7 +24,7 @@ namespace UGB.Data
 		
 		XmlLocaData mXmlData;
 		
-		public string GetText(SLanguages pLang,string pKey)
+		public string GetText(Languages pLang,string pKey)
 		{
 			if(mXmlData.mData.ContainsKey(pKey))
 				return mXmlData.mData[pKey];

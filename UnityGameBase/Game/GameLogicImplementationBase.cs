@@ -32,7 +32,7 @@ namespace UGB
 		/// Calling \link GameLogicImplementationBase::GState GState \endlink or \link GameLogicImplementationBase::GLoca GLoca \endlink will therefore result in a NullReferenceException. 
 		/// If you need access to another component for your setup use \link GameLogicImplementationBase::GameSetupReady GameSetupReady \endlink.
 		/// 
-		/// \see SLanguages
+		/// \see Languages
 		/// \see SGameEventType
 		/// \see SPlayerState
 		/// \see SGameState

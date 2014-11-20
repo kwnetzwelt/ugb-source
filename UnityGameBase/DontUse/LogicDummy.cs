@@ -28,8 +28,8 @@ namespace UGB.DontUse
 			// default language will be used if no suitable system language was detected and 
 			// no language setting was found in playerprefs
 			
-			// SLanguages.Add(1,"de");
-			// SLanguages.Add(2,"en");
+			// Languages.Add(1,"de");
+			// Languages.Add(2,"en");
 		}
 
 		public override void GameSetupReady ()
