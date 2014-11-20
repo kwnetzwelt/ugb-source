@@ -18,8 +18,8 @@ namespace UGB.Globalization
 	{
 		LocaData mData;
 		
-		public SLanguages mCurrentLanguage = SLanguages.invalid;
-		public SLanguages currentLanguage
+		public Languages mCurrentLanguage = Languages.Invalid;
+		public Languages currentLanguage
 		{
 			get {return mCurrentLanguage; }
 		}
@@ -54,22 +54,22 @@ namespace UGB.Globalization
 		public static string GetCurrentLanguageShort()
 		{
 			// getting system default language
-			SLanguages defLanguageShort = GetSystemLanguageShort();
+			Languages defLanguageShort = GetSystemLanguageShort();
 			
 			// checking for language setting in playerprefs
 			defLanguageShort = PlayerPrefs.GetInt(GameOptions.LanguageOption,defLanguageShort);
 
 			// enumerating all langauges to find a match with the language set in the system
-			foreach(int lang in SLanguages.Enumerate())
+			foreach(int lang in Languages.Enumerate())
 			{
-				if((SLanguages)lang == defLanguageShort)
+				if((Languages)lang == defLanguageShort)
 				{
 					return defLanguageShort;
 				}
 			}
 			
 			// if none found return first language
-			return SLanguages.first;
+			return Languages.First;
 		}
 		
 		/// <summary>
