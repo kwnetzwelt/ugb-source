@@ -42,17 +42,19 @@ And finally in the "Asset Serialization" section you should switch the mode to "
 
 \section step2 Step 2: Adding the library to your project
 
-To get the library, you will have to checkout the latest version from the subversion server. Please ask a colleque where to find it. The lib uses tags to track the "released" versions. 
-Simply choose the tag which represents the highest version number. 
+To get the library, you will have to checkout the latest version at https://bitbucket.org/kaiwegner/ugb-source.git as a submodule to your Unity Project. 
 
-In the lib you will find a unity project, which represents the library and a folder containing this documentation. 
-
-Copy all files and folders beneath "Assets" to your newly created project. 
+It is usually added as a submodule in Assets/packages/UGB. 
 
 Once the library is installed within your project and unity recompiled the source code, you should see a "UGB"-Menu Item appear. 
-Beneath it you will find several settings options and tools. It also displays the version of the base lib in your project. 
+Beneath it you will find several settings options and tools. It also displays the version of the Unity Game Base in your project. 
+
 
 \section step3 Step 3: Create your default scene
+
+You can automatically setup your game to use the Unity Game Base by running our included Setup Wizard. 
+To do so, simply import the contents of Assets/packages/UnityGameBase in your project and choose "UGB => Setup => Wizard".
+It will display a window and run all steps needed to setup your project and get you started. 
 
 The game library relies heavily on the Game singleton class. The usual project startup layout is as follows. 
 You have a default scene, which resides in scenes/default.unity. It only contains one GameObject which is called something like "_Game" or "_Root". 
@@ -73,10 +75,10 @@ Create a folder named "scripts". You will put all your CS-files in this folder.
 Add a class to the Folder. It will be your main game logic class. It is usually called "GameLogic". 
 It needs to derive from GameLogicImplementationBase and implement the abstract members of this class. 
 
-To actually use the implementation add the GameLogicImplementationAttribute to the class. 
+To actually use the implementation add the UGB.GameLogicImplementationAttribute to the class. 
 
-\see GameLogicImplementationBase
-\see GameStateManager
+\see UGB.GameLogicImplementationBase
+\see UGB.GameStateManager
 
  */
 
