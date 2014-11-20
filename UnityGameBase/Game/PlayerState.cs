@@ -9,7 +9,7 @@ namespace UGB.Player
 			Add(0, "invalid");
 		}
 		
-		public static PlayerState invalid
+		public static PlayerState Invalid
 		{
 			get { return new PlayerState(0); }
 		}
