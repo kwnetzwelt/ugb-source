@@ -9,10 +9,10 @@ namespace UGB.Player
 	/// </summary>
 	public class GamePlayer : GameComponent
 	{
-		public delegate void OnPlayerStateChangedDelegate(SPlayerState _old, SPlayerState _new);
-		public event OnPlayerStateChangedDelegate OnPlayerStateChanged;
+		public delegate void PlayerStateChanged(PlayerState oldState,PlayerState newState);
+		public event PlayerStateChanged OnPlayerStateChanged;
 		
-		public SPlayerState playerState
+		public PlayerState playerState
 		{
 			get;
 			private set;
@@ -34,13 +34,13 @@ namespace UGB.Player
 		
 		
 		
-		public void SetPlayerState(SPlayerState pNewState)
+		public void SetPlayerState(PlayerState pNewState)
 		{
 			if(pNewState == playerState)
 				return;
 			Debug.Log("PlayerState: " + playerState + " > " + pNewState);
 		
-			SPlayerState old = playerState;
+			PlayerState old = playerState;
 			playerState = pNewState;
 			if(OnPlayerStateChanged != null)
 				OnPlayerStateChanged(old,pNewState);
