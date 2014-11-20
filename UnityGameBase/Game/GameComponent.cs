@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UGB.Input;
+using UGB.Audio;
+using UGB.Player;
 
 namespace UGB
 {

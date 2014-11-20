@@ -1,6 +1,8 @@
 using System;
 using UGB.Savegame;
 using UGB.Input;
+using UGB.Audio;
+using UGB.Player;
 
 namespace UGB
 {

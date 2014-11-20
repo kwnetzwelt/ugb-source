@@ -85,6 +85,8 @@ To actually use the implementation add the GameLogicImplementationAttribute to t
 /// </summary>
 using UGB.Utils;
 using UGB.Input;
+using UGB.Audio;
+using UGB.Player;
 
 namespace UGB
 {
