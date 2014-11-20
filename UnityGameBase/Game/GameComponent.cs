@@ -3,6 +3,7 @@ using UnityEngine;
 using UGB.Input;
 using UGB.Audio;
 using UGB.Player;
+using UGB.Globalization;
 
 namespace UGB
 {
