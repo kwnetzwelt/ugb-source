@@ -24,35 +24,42 @@ namespace UGB.Data
 		
 		XmlLocaData mXmlData;
 		
-		public string GetText(Languages pLang,string pKey)
+		public string GetText(Languages pLang, string pKey)
 		{
-			if(mXmlData.mData.ContainsKey(pKey))
-				return mXmlData.mData[pKey];
+			if (mXmlData.mData.ContainsKey(pKey))
+				return mXmlData.mData [pKey];
 			
 			return "KNF:" + pKey;
 		}
 	#if UNITY_EDITOR
-		public void AddText (string pKey, string pText)
+		public void AddText(string pKey, string pText)
 		{
-			mXmlData.mData[pKey] = pText;
+			mXmlData.mData [pKey] = pText;
 		}
 	#endif
 		
 		public static LocaData Load()
 		{
-			if(Application.isPlaying)
+			if (Application.isPlaying)
 				return Load(Game.Instance.gameLoca.currentLanguage.ToString());
 			
 			return null;
 		}
 		public static LocaData Load(string pLanguageShort)
 		{
-			
 			LocaData lData = new LocaData();
-			
+			string path = "loca/loca_" + pLanguageShort;
 			try
 			{
-				TextAsset ta = Resources.Load( "loca/loca_" + pLanguageShort ) as TextAsset;
+				FileInfo file = new FileInfo(path);
+				if (!file.Exists)
+				{
+					Debug.LogWarning("Localization: File not found: " + file.FullName);
+					return lData;
+				}
+
+				TextAsset ta = Resources.Load(path) as TextAsset;
+
 				MemoryStream ms = new MemoryStream(ta.bytes);
 				
 				XmlSerializer s = new XmlSerializer(typeof(XmlLocaData));
@@ -62,23 +69,20 @@ namespace UGB.Data
 				
 				lData.mXmlData.PostRead();
 				
-			}
-			catch(Exception e)
+			} catch (Exception e)
 			{
 				Debug.LogWarning("Error loading loca file for requested language. " + e.Message);
 				lData.mXmlData = new XmlLocaData();
 				lData.mXmlData.mLanguage = pLanguageShort;
-				
 			}
-			
-			
 			
 			return lData;
 		}
+
 	#if UNITY_EDITOR
 		public void Save()
 		{
-			if(Application.isPlaying)
+			if (Application.isPlaying)
 			{
 				Debug.LogError("Not available at runtime!");
 				return;
@@ -97,7 +101,7 @@ namespace UGB.Data
 			
 			
 			TextWriter writer = new StreamWriter(path);
-			serializer.Serialize(writer,mXmlData);
+			serializer.Serialize(writer, mXmlData);
 			
 			writer.Flush();
 			writer.Close();
