@@ -5,47 +5,59 @@ namespace UGB.Utils
 {
 	public class UIHelpers
 	{
-		public const float kActivatedAlpha = 0.3f;
-		public const float kHoverAlpha = 0.1f;
-		public const float kNormalAlpha = 0.05f;
-		
-		public static Texture2D whiteTexture
-		{
+		public static Texture2D TransparentTexture {
 			get {
-				if(mWhiteTexture == null)
+				if(transparentTexture == null)
 				{
-					mWhiteTexture = new Texture2D(4,4);
+					transparentTexture = new Texture2D(4,4);
 					for(int x = 0;x < 4;x++)
 						for(int y = 0;y < 4;y++)
-							mWhiteTexture.SetPixel(x,y,Color.white);
-					mWhiteTexture.Apply();
-					mWhiteTexture.Compress(true);
+							transparentTexture.SetPixel(x,y,new Color(0,0,0,0));
+					transparentTexture.Apply();
+					transparentTexture.Compress(true);
 				}
-				return mWhiteTexture;
+				return transparentTexture;
 			}
 		}
-		private static Texture2D mWhiteTexture;
+		private static Texture2D transparentTexture;
+		
+		public static Texture2D WhiteTexture
+		{
+			get {
+				if(whiteTexture == null)
+				{
+					whiteTexture = new Texture2D(4,4);
+					for(int x = 0;x < 4;x++)
+						for(int y = 0;y < 4;y++)
+							whiteTexture.SetPixel(x,y,Color.white);
+					whiteTexture.Apply();
+					whiteTexture.Compress(true);
+				}
+				return whiteTexture;
+			}
+		}
+		private static Texture2D whiteTexture;
 
-		public static Texture2D blackTexture
+		public static Texture2D BlackTexture
 		{
 			get {
-				if(mBlackTexture == null)
+				if(blackTexture == null)
 				{
-					mBlackTexture = new Texture2D(4,4);
+					blackTexture = new Texture2D(4,4);
 					for(int x = 0;x < 4;x++)
 						for(int y = 0;y < 4;y++)
-							mBlackTexture.SetPixel(x,y,Color.black);
-					mBlackTexture.Apply();
-					mBlackTexture.Compress(true);
+							blackTexture.SetPixel(x,y,Color.black);
+					blackTexture.Apply();
+					blackTexture.Compress(true);
 				}
-				return mBlackTexture;
+				return blackTexture;
 			}
 		}
-		private static Texture2D mBlackTexture;
+		private static Texture2D blackTexture;
 		
 		
 		
-		public static bool largeScreen
+		public static bool LargeScreen
 		{
 			get 
 			{
@@ -53,7 +65,7 @@ namespace UGB.Utils
 			}
 		}
 		
-		public static float dpi
+		public static float Dpi
 		{
 			get {
 				if(Screen.dpi != 0)
@@ -71,23 +83,23 @@ namespace UGB.Utils
 		/// <param name='pStyleName'>
 		/// _style name.
 		/// </param>
-		public static string GetScaledStyle (string pStyleName)
+		public static string GetScaledStyle (string styleName)
 		{
-			if(largeScreen)
-				return pStyleName + "Tablet";
-			return pStyleName + "Normal";
+			if(LargeScreen)
+				return styleName + "Tablet";
+			return styleName + "Normal";
 			
 		}
 		
-		public static Rect ScaleRect(Rect pRect, float pRatio)
+		public static Rect ScaleRect(Rect rect, float ratio)
 		{
-			if(pRatio == 1)
-				return pRect;
-			pRect.x *= pRatio;
-			pRect.y *= pRatio;
-			pRect.width *= pRatio;
-			pRect.height *= pRatio;
-			return pRect;
+			if(ratio == 1)
+				return rect;
+			rect.x *= ratio;
+			rect.y *= ratio;
+			rect.width *= ratio;
+			rect.height *= ratio;
+			return rect;
 		}
 	}
 
