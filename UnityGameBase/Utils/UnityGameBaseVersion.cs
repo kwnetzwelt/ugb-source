@@ -11,6 +11,6 @@ namespace UGB.Utils
 		/// <summary>
 		/// Version string
 		/// </summary>
-		public const string kVersion = "2.0.0";
+		public const string Version = "2.0.0";
 	}
 }
