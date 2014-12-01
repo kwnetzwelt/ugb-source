@@ -49,56 +49,53 @@ namespace UGB.Utils
 			return pTarget.AddComponent<T>();
 		}
 
+		/// <summary>
+		/// Returns true if the game is running on a mobile platform. 
+		/// </summary>
+		/// <value><c>true</c> if on mobile platform; otherwise, <c>false</c>.</value>
+		public static bool OnMobilePlatform 
+		{
+			get {
+				return RuntimePlatform.WP8Player == Application.platform ||
+					RuntimePlatform.Android == Application.platform ||
+					RuntimePlatform.BlackBerryPlayer == Application.platform ||
+					RuntimePlatform.IPhonePlayer == Application.platform;
+			}
+		}
 
-		public static bool CheckFileExists(string pPath)
-		{			
-	#if !UNITY_METRO || UNITY_EDITOR
-			FileInfo fi = new FileInfo(pPath);
-			return fi.Exists;
-	#else
-			return true;
-	#endif
-		}
-		
-		public static bool MakeSureFolderExists(string pPath)
-		{
-	#if !UNITY_METRO || UNITY_EDITOR		
-			DirectoryInfo di = new DirectoryInfo(pPath);
-			if(!di.Exists)
-				di.Create();
-			return true;
-	#else
-			return true;
-	#endif
-		}
-		public static bool onMobilePlatform 
-		{
-			get {return RuntimePlatform.Android == Application.platform || RuntimePlatform.IPhonePlayer == Application.platform;}
-		}
-		
+		[System.Obsolete("You should use Resources.Load<T> instead.")]
 		public static T GetResource<T>(string pPath) where T : UnityEngine.Object
 		{
-			return (T)Resources.Load(pPath , typeof(T));
+			return Resources.Load<T>(pPath);
 		}
-		
-		public static void RandomizeList( IList pList)  
+
+		/// <summary>
+		/// Randomizes the given list by iterating all entries and moving them to a random location within the list. 
+		/// </summary>
+		/// <param name="list">List.</param>
+		public static void RandomizeList( IList list)  
 		{  
 		    System.Random rng = new System.Random();  
-		    int n = pList.Count;  
+		    int n = list.Count;  
 		    while (n > 1) {  
 		        n--;  
 		        int k = rng.Next(n + 1);  
-		        var value = pList[k];  
-		        pList[k] = pList[n];  
-		        pList[n] = value;  
-		    }  
-			
+		        var value = list[k];  
+		        list[k] = list[n];  
+		        list[n] = value;  
+		    }
 		}
-		
-		public static IEnumerable<T> GetRandom<T>(List<T> pList)
+
+		/// <summary>
+		/// Returns a random item in the given list. 
+		/// </summary>
+		/// <returns>The random.</returns>
+		/// <param name="pList">P list.</param>
+		/// <typeparam name="T">The 1st type parameter.</typeparam>
+		public static IEnumerable<T> GetRandom<T>(List<T> list)
 		{
 			System.Random random = new System.Random();
-		    List<T> copy = new List<T>(pList);
+		    List<T> copy = new List<T>(list);
 		
 		    while (copy.Count > 0)
 		    {
@@ -107,14 +104,16 @@ namespace UGB.Utils
 		        copy.RemoveAt(index);
 		    }	
 		}
-		public static Transform FindInChildren(Transform pParent, string pName)
+
+		[System.Obsolete("You should use Transform.FindChild(name) instead.")]
+		public static Transform FindInChildren(Transform parent, string name)
 		{
-			
-			foreach(Transform child in pParent)
+
+			foreach(Transform child in parent)
 			{
-				if(child.name == pName)
+				if(child.name == name)
 					return child;
-				Transform childSearch = FindInChildren(child, pName);
+				Transform childSearch = FindInChildren(child, name);
 				
 				if(childSearch != null)
 					return childSearch;
@@ -122,37 +121,44 @@ namespace UGB.Utils
 			
 			return null;
 		}
-		
-		public static Vector3 ConstrainZ (Vector3 pVector, int pZ)
+		/// <summary>
+		/// Recursively encapsulates all renderers on a given transform and its children in the given bounds. 
+		/// </summary>
+		/// <param name="transform">Transform.</param>
+		/// <param name="bounds">Bounds.</param>
+		public static void Encapsulate(Transform transform, ref Bounds bounds)
 		{
-			pVector.z = pZ;
-			return pVector;
-		}
-		
-		public static void Encapsulate(Transform pTransform, ref Bounds pBounds)
-		{
-			Renderer r = pTransform.GetComponent<Renderer>();
+			Renderer r = transform.GetComponent<Renderer>();
 			if(r != null)
-				pBounds.Encapsulate( r.bounds );
+				bounds.Encapsulate( r.bounds );
 			
-			foreach(Transform t in pTransform)
+			foreach(Transform t in transform)
 			{
-				Encapsulate(t, ref pBounds);
+				Encapsulate(t, ref bounds);
 			}
 		}
-
-		public static void SetLayerRecursively(Transform pParent, int pLayer)
+		/// <summary>
+		/// Recursively moves the given transform and all its children to the given layer. 
+		/// </summary>
+		/// <param name="parent">Parent.</param>
+		/// <param name="layer">Layer.</param>
+		public static void SetLayerRecursively(Transform parent, int layer)
 		{
-			pParent.gameObject.layer = pLayer;
+			parent.gameObject.layer = layer;
 			
-			foreach(Transform t in pParent)
+			foreach(Transform t in parent)
 			{
-				SetLayerRecursively(t,pLayer);
+				SetLayerRecursively(t,layer);
 			}
 		}
 
 		#region reflection helpers
 
+		/// <summary>
+		/// Returns a list of all types in the current assembly with a given attribute type on them.
+		/// </summary>
+		/// <returns>The types with attribute.</returns>
+		/// <typeparam name="T">The 1st type parameter.</typeparam>
 		public static List<System.Type> GetTypesWithAttribute<T>()
 		{
 			var searchType = typeof(T);
@@ -186,6 +192,11 @@ namespace UGB.Utils
 #endif
 		}
 
+		/// <summary>
+		/// Returns a list of all types in the current assembly, that are assignable from a given type. You can use that to get all types implementing an interface or inheriting from a given base type. 
+		/// </summary>
+		/// <returns>The types assignable from.</returns>
+		/// <typeparam name="T">The 1st type parameter.</typeparam>
 		public static List<System.Type> GetTypesAssignableFrom<T>()
 		{
 			var list = new List<System.Type>();

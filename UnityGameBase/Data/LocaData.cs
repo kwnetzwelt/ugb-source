@@ -90,9 +90,11 @@ namespace UGB.Data
 			
 			mXmlData.PreWrite();
 			string path = "Assets/Resources/loca/"; 
-			
-			UGBHelpers.MakeSureFolderExists(path);
-			
+
+			DirectoryInfo di = new DirectoryInfo(path);
+			if(!di.Exists)
+				di.Create();
+
 			path += "loca_" + mXmlData.mLanguage + ".xml";
 			
 			Debug.Log("Writing Loca file to : " + path);
