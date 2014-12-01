@@ -13,6 +13,9 @@ namespace UGB.Utils
 {
 	public class ThreadingBridge : MonoBehaviour
 	{
+		/// <summary>
+		/// Initialize the threading bridge. This is called automatically by the UGB.Game class. 
+		/// </summary>
 		public static void Initialize ()
 		{
 
@@ -22,13 +25,13 @@ namespace UGB.Utils
 
 		}
 
-		static Queue<System.Action> mTodo = new Queue<System.Action>();
+		static Queue<System.Action> todo = new Queue<System.Action>();
 
 
 
 		void Update()
 		{
-			if(mTodo.Count > 0)
+			if(todo.Count > 0)
 			{
 				StartCoroutine( Dequeue());
 			}
@@ -37,7 +40,7 @@ namespace UGB.Utils
 
 		IEnumerator Dequeue()
 		{
-			System.Action action = mTodo.Dequeue();
+			System.Action action = todo.Dequeue();
 
 			yield return 0;
 
@@ -47,19 +50,27 @@ namespace UGB.Utils
 
 		#region public interface
 
-		public static void Dispatch(System.Action pAction)
+		/// <summary>
+		/// Enqueue some work that will be done on the main thread during the next update. 
+		/// </summary>
+		/// <param name="action">The action to be executed. </param>
+		public static void Dispatch(System.Action action)
 		{
-			mTodo.Enqueue(pAction);
+			todo.Enqueue(action);
 		}
 
-		public static void ExecuteThreaded(System.Action pAction)
+		/// <summary>
+		/// Enqueue some work to be executed in a separate thread. 
+		/// </summary>
+		/// <param name="action">The action to be executed. </param>
+		public static void ExecuteThreaded(System.Action action)
 		{
 #if UNITY_METRO && !UNITY_EDITOR
 #pragma warning disable 4014
 			ThreadPool.RunAsync( (source) => { pAction(); });
 #pragma warning restore
 #else
-			ThreadPool.QueueUserWorkItem( new WaitCallback((state) => {pAction();}) );
+			ThreadPool.QueueUserWorkItem( new WaitCallback((state) => {action();}) );
 #endif
 		}
 
