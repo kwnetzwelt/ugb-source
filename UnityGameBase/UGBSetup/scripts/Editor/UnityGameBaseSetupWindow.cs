@@ -20,7 +20,7 @@ namespace UGB
 		static void SetupWizard()
 		{
 			var window = EditorWindow.GetWindow<UnityGameBaseSetupWindow>(true, "Setup Wizard", true);
-			window.position = new Rect(window.position.x, window.position.y, 320,300);
+			window.position = new Rect(window.position.x + 50, window.position.y + 50, 320,300);
 			window.minSize = new Vector2(320,300);
 			window.maxSize = new Vector2(320,300);
 		}
