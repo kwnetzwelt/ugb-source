@@ -18,7 +18,13 @@ namespace UGB.Utils
 			System.Diagnostics.Debug.Assert(false, pText);
 			
 		}
-		
+
+		/// <summary>
+		/// Tries to get a component of the given type on the GameObject of the given MonoBehaviour. If none exists adds a component to the GameObject. 
+		/// </summary>
+		/// <returns>The component if not exists.</returns>
+		/// <param name="pTarget">P target.</param>
+		/// <typeparam name="T">The 1st type parameter.</typeparam>
 		public static T CreateComponentIfNotExists<T> (MonoBehaviour pTarget) where T : Component
 		{
 			T comp = pTarget.gameObject.GetComponent<T>();
@@ -27,7 +33,13 @@ namespace UGB.Utils
 			
 			return pTarget.gameObject.AddComponent<T>();
 		}
-		
+
+		/// <summary>
+		///  Tries to get a component of the given type on the given GameObject. If none exists adds a component to the GameObject. 
+		/// </summary>
+		/// <returns>The component if not exists.</returns>
+		/// <param name="pTarget">P target.</param>
+		/// <typeparam name="T">The 1st type parameter.</typeparam>
 		public static T CreateComponentIfNotExists<T> (GameObject pTarget) where T : Component
 		{
 			T comp = pTarget.GetComponent<T>();
@@ -37,7 +49,7 @@ namespace UGB.Utils
 			return pTarget.AddComponent<T>();
 		}
 
-		
+
 		public static bool CheckFileExists(string pPath)
 		{			
 	#if !UNITY_METRO || UNITY_EDITOR
