@@ -5,6 +5,10 @@ namespace UGB.Utils
 {
 	public class UIHelpers
 	{
+		/// <summary>
+		/// A 4x4 pixel sized texture with transparent(0,0,0,0) color. It is created once and can be used multiple times. 
+		/// </summary>
+		/// <value>The transparent texture.</value>
 		public static Texture2D TransparentTexture {
 			get {
 				if(transparentTexture == null)
@@ -20,7 +24,11 @@ namespace UGB.Utils
 			}
 		}
 		private static Texture2D transparentTexture;
-		
+
+		/// <summary>
+		/// A 4x4 pixel sized texture with white(1,1,1,1) color. It is created once and can be used multiple times. 
+		/// </summary>
+		/// <value>The white texture.</value>
 		public static Texture2D WhiteTexture
 		{
 			get {
@@ -38,6 +46,10 @@ namespace UGB.Utils
 		}
 		private static Texture2D whiteTexture;
 
+		/// <summary>
+		/// A 4x4 pixel sized texture with black (0,0,0,1) color. It is created once and can be used multiple times. 
+		/// </summary>
+		/// <value>The black texture.</value>
 		public static Texture2D BlackTexture
 		{
 			get {
@@ -56,7 +68,11 @@ namespace UGB.Utils
 		private static Texture2D blackTexture;
 		
 		
-		
+
+		/// <summary>
+		/// Returns true if the current screen is considered large. It has more than 1200 pixels width. 
+		/// </summary>
+		/// <value><c>true</c> if large screen; otherwise, <c>false</c>.</value>
 		public static bool LargeScreen
 		{
 			get 
@@ -90,7 +106,14 @@ namespace UGB.Utils
 			return styleName + "Normal";
 			
 		}
-		
+
+		/// <summary>
+		/// All four components of the rect (x,y,width and height) are multiplied by the given ratio. 
+		/// The resulting rectangle is returned. 
+		/// </summary>
+		/// <returns>The rect.</returns>
+		/// <param name="rect">Rect.</param>
+		/// <param name="ratio">Ratio.</param>
 		public static Rect ScaleRect(Rect rect, float ratio)
 		{
 			if(ratio == 1)
