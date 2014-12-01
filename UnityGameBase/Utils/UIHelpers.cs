@@ -80,12 +80,17 @@ namespace UGB.Utils
 				return Screen.width > 1200;
 			}
 		}
-		
+
+		/// <summary>
+		/// Returns the same as Screen.dpi unless it returns 0, then this returns 90 as a default value. 
+		/// </summary>
+		/// <value>The dpi.</value>
 		public static float Dpi
 		{
 			get {
-				if(Screen.dpi != 0)
-					return Screen.dpi;
+				float dpi = Screen.dpi;
+				if(dpi != 0)
+					return dpi;
 				return 90;
 			}
 		}
