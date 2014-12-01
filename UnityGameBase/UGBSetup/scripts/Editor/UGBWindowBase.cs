@@ -13,7 +13,14 @@ namespace UGB
 			{
 				if(mBigLogo == null)
 				{
-					mBigLogo = (Texture2D) AssetDatabase.LoadAssetAtPath("Assets/packages/UnityGameBase/Editor/Gizmos/ugb_logo_256.png", typeof(Texture2D));
+					var guids = AssetDatabase.FindAssets("ugb_logo_256 t:Texture2D");
+					if(guids.Length > 0)
+					{
+						mBigLogo = (Texture2D) AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guids[0]), typeof(Texture2D));
+					}else
+					{
+						mBigLogo = UGB.Utils.UIHelpers.TransparentTexture;
+					}
 				}
 				return mBigLogo;
 			}
@@ -33,8 +40,9 @@ namespace UGB
 				mTextStyle.wordWrap = true;
 				mBulletPointStyle = EditorStyles.foldout;
 
-			}catch
+			}catch (Exception e)
 			{
+				Debug.LogException(e);
 				Debug.LogError("could not get editor styles. ");
 			}
 		}
