@@ -12,7 +12,10 @@ namespace UGB.IO
 		useLocalStorage = 1,
 		useRoamingStorage
 	}
-	
+
+	/// <summary>
+	/// Multiplatform storage wrapper. Can be used to read, write or delete files and to check if they exist. 
+	/// </summary>
 	public class Storage
 	{
 		/// <summary>
