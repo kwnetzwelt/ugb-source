@@ -38,7 +38,7 @@ namespace UGB.Audio
 	#else
 			Init (3);
 	#endif
-			fadeDuration = mFadeTime;
+			FadeDuration = mFadeTime;
 		
 			mInitialized = true;
 			GOptions.OnAnyOptionChanged += OnAnyOptionChangedEvent;
@@ -57,7 +57,7 @@ namespace UGB.Audio
 			if(mEnabled != GOptions.IsMusicOn)
 			{
 				mEnabled = GOptions.IsMusicOn;
-				mute = !GOptions.IsMusicOn;
+				Mute = !GOptions.IsMusicOn;
 			}
 		}
 		

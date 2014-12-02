@@ -4,6 +4,12 @@ using System;
 
 namespace UGB.audio
 {
+	/// <summary>
+	/// A single channel of audio. This is directly linked to a single UnityEngine.AudioSource instance which is 
+	/// automatically created and destroyed with the channel. 
+	/// 
+	/// 
+	/// </summary>
 	public class Channel : IDisposable
 	{
 		MultiChannelController controller;
@@ -12,12 +18,14 @@ namespace UGB.audio
 		/// <summary>
 		/// If this channel plays a one shot, this resembles the time this channel will remain in this state. 
 		/// </summary>
-		public float oneShotTimeOut
+		public float OneShotTimeOut
 		{
 			get;
 			private set;
 		}
-		public enum eChannelState
+
+
+		public enum ChannelState
 		{
 			oneShot,
 			stopped,
@@ -26,81 +34,109 @@ namespace UGB.audio
 			fadeOut
 		}
 		
-
+		/// <summary>
+		/// Initializes a new instance of the <see cref="UGB.audio.Channel"/> class linked to the given controller.
+		/// It automatically creates an AudioSource instance and controls it. 
+		/// </summary>
+		/// <param name="multiChannelController">Multi channel controller.</param>
 		public Channel (MultiChannelController multiChannelController)
 		{
 			controller = multiChannelController;
-			volume = 1;
-			fadeDuration = 0.5f;
-			source = controller.gameObject.AddComponent<AudioSource>();
-			source.loop = false;
-			state = eChannelState.stopped;
+			Volume = 1;
+			FadeDuration = 0.5f;
+			Source = controller.gameObject.AddComponent<AudioSource>();
+			Source.loop = false;
+			State = ChannelState.stopped;
 		}
 		/// <summary>
 		/// whenever the channel state changes, this event is called. It provides the old and new state as a parameter. 
 		/// </summary>
-		public event System.Action<eChannelState,eChannelState> OnChannelStateChanged;
-		public event System.Action OnLoop;
+		public event System.Action<ChannelState,ChannelState> ChannelStateChanged;
 
-		public float fadeDuration
+		/// <summary>
+		/// occurs, when the audio is looped. 
+		/// </summary>
+		public event System.Action Loop;
+
+		/// <summary>
+		/// how long (seconds) it takes this channel to fade out or fade in. 
+		/// </summary>
+		/// <value>The duration of the fade.</value>
+		public float FadeDuration
 		{
 			get;
 			set;
 		}
 
-		public eChannelState state
+		/// <summary>
+		/// the current state of the channel. Can be used to check if the channel is currently playing or free to be used. 
+		/// </summary>
+		/// <value>The state.</value>
+		public ChannelState State
 		{
 			get;
 			private set;
 		}
 
-		public float actualVolume
+		/// <summary>
+		/// The volume, which is currently set on the AudioSource this Channel controls. 
+		/// </summary>
+		/// <value>The actual volume.</value>
+		public float ActualVolume
 		{
 			get;
 			private set;
 		}
 
-		public float volume
+		/// <summary>
+		/// The target volume that the channel currently tries to achieve. 
+		/// </summary>
+		/// <value>The volume.</value>
+		public float Volume
 		{
 			get;
 			set;
 		}
 
-		public bool isPlaying
+		/// <summary>
+		/// Returns whether the AudioSource linked to this instance is currently playing any sound. 
+		/// </summary>
+		/// <value><c>true</c> if is playing; otherwise, <c>false</c>.</value>
+		public bool IsPlaying
 		{
 			get
 			{
-				return source.isPlaying;
+				return Source.isPlaying;
 			}
 		}
 
-		public bool mute
+		public bool Mute
 		{
 			get;
 			set;
 		}
 
-		public bool loop
+		public bool Loops
 		{
 			get
 			{
-				return source.loop;
+				return Source.loop;
 			}
 
 			set
 			{
-				source.loop = value;
+				Source.loop = value;
 			}
 		
 		}
 
-		public AudioClip clip
+		public AudioClip Clip
 		{
 			get;
 			set;
 		}
 
-		public AudioSource source
+		public AudioSource Source
 		{
 			get;
 			private set;
@@ -108,31 +144,31 @@ namespace UGB.audio
 
 		public void Play()
 		{
-			SetState(eChannelState.fadeIn);
+			SetState(ChannelState.fadeIn);
 			fadeFrag = 0;
-			actualVolume = 0;
-			source.Play();
+			ActualVolume = 0;
+			Source.Play();
 		}
 
-		public void PlayOneShot (AudioClip pClip, float pVolume)
+		public void PlayOneShot (AudioClip clip, float volume)
 		{
-			SetState(eChannelState.oneShot);
-			oneShotTimeOut = pClip.length;
-			clip = pClip;
-			actualVolume = volume;
-			source.volume = actualVolume;
-			source.clip = pClip;
-			source.PlayOneShot(pClip, pVolume);
+			SetState(ChannelState.oneShot);
+			OneShotTimeOut = clip.length;
+			Clip = clip;
+			ActualVolume = Volume;
+			Source.volume = ActualVolume;
+			Source.clip = clip;
+			Source.PlayOneShot(clip, volume);
 		}
 
-		public void Stop(bool pImmediately)
+		public void Stop(bool immediately)
 		{
 
-			if(pImmediately)
-				SetState(eChannelState.stopped);
+			if(immediately)
+				SetState(ChannelState.stopped);
 			else
 			{
-				SetState(eChannelState.fadeOut);
+				SetState(ChannelState.fadeOut);
 				fadeFrag = 0;
 			}
 
@@ -142,93 +178,93 @@ namespace UGB.audio
 
 		public void Update ()
 		{
-			if(state != eChannelState.oneShot)
+			if(State != ChannelState.oneShot)
 			{
-				source.loop = loop;
-				source.clip = clip;
+				Source.loop = Loops;
+				Source.clip = Clip;
 			}
 			UpdateFromState();
-			if(state != eChannelState.oneShot)
+			if(State != ChannelState.oneShot)
 			{
-				source.volume = GetActualVolume();
+				Source.volume = GetActualVolume();
 			}
 		}
 
-		void SetState(eChannelState pNewState)
+		void SetState(ChannelState newState)
 		{
-			eChannelState oldState = state;
-			state = pNewState;
+			ChannelState oldState = State;
+			State = newState;
 
-			if(OnChannelStateChanged != null)
-				OnChannelStateChanged(oldState,pNewState);
+			if(ChannelStateChanged != null)
+				ChannelStateChanged(oldState,newState);
 		}
 
 		float GetActualVolume()
 		{
-			if(mute)
+			if(Mute)
 				return 0;
-			return actualVolume;
+			return ActualVolume;
 		}
 
-		void LerpActualVolume (float pTargetVolume, float pDuration)
+		void LerpActualVolume (float targetVolume, float duration)
 		{
-			if(pDuration == 0)
-				actualVolume = pTargetVolume;
+			if(duration == 0)
+				ActualVolume = targetVolume;
 			else
 			{
 				fadeFrag += Time.deltaTime;
-				actualVolume = Mathf.Lerp(actualVolume, pTargetVolume, fadeFrag / pDuration); 
+				ActualVolume = Mathf.Lerp(ActualVolume, targetVolume, fadeFrag / duration); 
 			}
 		}
 
 		void UpdateFromState()
 		{
-			switch(state)
+			switch(State)
 			{
-			case eChannelState.fadeIn: 
-				LerpActualVolume(volume, fadeDuration);
-				if(Mathf.Epsilon > Mathf.Abs(actualVolume-volume))
+			case ChannelState.fadeIn: 
+				LerpActualVolume(Volume, FadeDuration);
+				if(Mathf.Epsilon > Mathf.Abs(ActualVolume-Volume))
 				{
-					actualVolume = volume;
-					SetState(eChannelState.playing);
+					ActualVolume = Volume;
+					SetState(ChannelState.playing);
 
 				}
 				break;
-			case eChannelState.fadeOut:
-				LerpActualVolume(0, fadeDuration);
-				if(Mathf.Epsilon > Mathf.Abs(actualVolume))
+			case ChannelState.fadeOut:
+				LerpActualVolume(0, FadeDuration);
+				if(Mathf.Epsilon > Mathf.Abs(ActualVolume))
 				{
-					actualVolume = 0;
-					SetState(eChannelState.stopped);
+					ActualVolume = 0;
+					SetState(ChannelState.stopped);
 				}
 				break;
-			case eChannelState.playing:
-				if(!source.isPlaying)
+			case ChannelState.playing:
+				if(!Source.isPlaying)
 				{
-					if(loop)
+					if(Loops)
 					{
-						source.Play();
+						Source.Play();
 						
-						if(OnLoop != null)
-							OnLoop();
+						if(Loop != null)
+							Loop();
 					}
 					else
-						SetState(eChannelState.stopped);
+						SetState(ChannelState.stopped);
 				}
 
-				actualVolume = volume;
+				ActualVolume = Volume;
 				break;
-			case eChannelState.stopped:
-				actualVolume = 0;
-				if(source.isPlaying)
+			case ChannelState.stopped:
+				ActualVolume = 0;
+				if(Source.isPlaying)
 				{
-					source.Stop();
+					Source.Stop();
 				}
 				break;
-			case eChannelState.oneShot:
-				oneShotTimeOut -= Time.deltaTime;
-				if(oneShotTimeOut <= 0)
-					SetState(eChannelState.stopped);
+			case ChannelState.oneShot:
+				OneShotTimeOut -= Time.deltaTime;
+				if(OneShotTimeOut <= 0)
+					SetState(ChannelState.stopped);
 				break;
 			}
 		}
@@ -237,7 +273,7 @@ namespace UGB.audio
 
 		public void Dispose ()
 		{
-			GameObject.Destroy(source);
+			GameObject.Destroy(Source);
 		}
 
 		#endregion

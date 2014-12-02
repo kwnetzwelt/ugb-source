@@ -26,58 +26,60 @@ namespace UGB.audio
 	{
 		[SerializeField]
 		[HideInInspector]
-		List<Channel>mChannels = new List<Channel>();
-		bool mMute;
-		float mFadeDuration = 0.5f;
+		List<Channel>channels = new List<Channel>();
+		bool mute;
+		float fadeDuration = 0.5f;
 
-		public void Init(int pChannelCount)
+		/// <summary>
+		/// Initialize this instance with a given amount of channels to be used for audio playback. 
+		/// </summary>
+		/// <param name="channelCount">P channel count.</param>
+		public void Init(int channelCount)
 		{
-			while(mChannels.Count < pChannelCount)
+			while(channels.Count < channelCount)
 			{
 				var ch = new Channel(this);
-				mChannels.Add(ch);
+				channels.Add(ch);
 
 			}
 
-			while(mChannels.Count > pChannelCount)
+			while(channels.Count > channelCount)
 			{
-				mChannels[0].Dispose();
-				mChannels.RemoveAt(0);
+				channels[0].Dispose();
+				channels.RemoveAt(0);
 			}
 
 			UpdateFadeDuration();
 			UpdateMuteState();
 		}
 
-		public Channel currentChannel = null;
-
 		/// <summary>
 		/// Duration in seconds a clip uses to fade in. Sound Effects will not fade in. 
 		/// </summary>
 		/// <value>The duration of the fade.</value>
-		public float fadeDuration
+		public float FadeDuration
 		{
 			get
 			{
-				return mFadeDuration;
+				return fadeDuration;
 			}
 			set
 			{
-				mFadeDuration = value;
+				fadeDuration = value;
 			}
 		}
 
-		public bool mute
+		public bool Mute
 		{
 			get
 			{
-				return mMute;
+				return mute;
 			}
 			set
 			{
-				if(mMute != value)
+				if(mute != value)
 				{
-					mMute = value;
+					mute = value;
 					UpdateMuteState();
 				}
 			}
@@ -86,39 +88,39 @@ namespace UGB.audio
 		/// <summary>
 		/// Stops playback on the specified channel. 
 		/// </summary>
-		/// <param name="pChannel">channel.</param>
-		/// <param name="pImmediately">If set to <c>true</c> stops the channel immediately. (no fading)</param>
-		public void Stop(ChannelInfo pChannel, bool pImmediately)
+		/// <param name="channel">channel.</param>
+		/// <param name="immediately">If set to <c>true</c> stops the channel immediately. (no fading)</param>
+		public void Stop(ChannelInfo channel, bool immediately)
 		{
-			pChannel.channel.Stop(pImmediately);
+			channel.Channel.Stop(immediately);
 		}
 
 		/// <summary>
 		/// Play the specified audio clip. 
 		/// </summary>
-		/// <param name="pClip">audio clip.</param>
-		/// <param name="pLoop">If set to <c>true</c> loops the audio clip.</param>
+		/// <param name="clip">audio clip.</param>
+		/// <param name="loop">If set to <c>true</c> loops the audio clip.</param>
 		/// <returns>A ChannelInfo instance to stop playback or access the channel. </returns>
-		public virtual ChannelInfo Play(AudioClip pClip, bool pLoop)
+		public virtual ChannelInfo Play(AudioClip clip, bool loop)
 		{
 			var channel = GetFreeChannel();
-			channel.clip = pClip;
-			channel.loop = pLoop;
-			channel.fadeDuration = fadeDuration;
+			channel.Clip = clip;
+			channel.Loops = loop;
+			channel.FadeDuration = FadeDuration;
 			channel.Play();
 			ChannelInfo ci = new ChannelInfo();
-			ci.channel = channel;
+			ci.Channel = channel;
 			return ci;
 		}
 
 		/// <summary>
 		/// Plays a short sound effect. Fading is disabled. It will not loop. 
 		/// </summary>
-		/// <param name="pClip">P clip.</param>
-		public virtual void PlaySoundEffect(AudioClip pClip, float pVolume)
+		/// <param name="clip">P clip.</param>
+		public virtual void PlaySoundEffect(AudioClip clip, float volume)
 		{
 			var channel = GetFreeChannel();
-			channel.PlayOneShot(pClip, pVolume);
+			channel.PlayOneShot(clip, volume);
 
 		}
 
@@ -126,7 +128,7 @@ namespace UGB.audio
 		{
 			get
 			{
-				foreach(var ch in mChannels)
+				foreach(var ch in channels)
 				{
 					yield return ch;
 				}
@@ -135,7 +137,7 @@ namespace UGB.audio
 
 		public void Update()
 		{
-			foreach(var channel in mChannels)
+			foreach(var channel in channels)
 			{
 				channel.Update();
 			}
@@ -150,23 +152,23 @@ namespace UGB.audio
 			Channel chnl = null;
 			float minVal = float.MaxValue;
 			float ttl = float.MaxValue;
-			foreach(var channel in mChannels)
+			foreach(var channel in channels)
 			{
-				if(channel.state == Channel.eChannelState.stopped)
+				if(channel.State == Channel.ChannelState.stopped)
 				{
 					chnl = channel;
 					break;
 				}
-				if(channel.state == Channel.eChannelState.oneShot)
+				if(channel.State == Channel.ChannelState.oneShot)
 				{
-					if(channel.oneShotTimeOut < ttl)
+					if(channel.OneShotTimeOut < ttl)
 					{
-						ttl = channel.oneShotTimeOut;
+						ttl = channel.OneShotTimeOut;
 						chnl = channel;
 					}
-				}else if(channel.actualVolume < minVal)
+				}else if(channel.ActualVolume < minVal)
 				{
-					minVal = channel.actualVolume;
+					minVal = channel.ActualVolume;
 					chnl = channel;
 				}
 			}
@@ -175,16 +177,16 @@ namespace UGB.audio
 		
 		void UpdateMuteState()
 		{
-			foreach(var channel in mChannels)
+			foreach(var channel in channels)
 			{
-				channel.mute = mute;
+				channel.Mute = Mute;
 			}
 		}
 		void UpdateFadeDuration()
 		{
-			foreach(var channel in mChannels)
+			foreach(var channel in channels)
 			{
-				channel.fadeDuration = mFadeDuration;
+				channel.FadeDuration = fadeDuration;
 			}
 		}
 	}

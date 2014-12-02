@@ -5,7 +5,7 @@ namespace UGB.audio
 {
 	public class ChannelInfo
 	{
-		public Channel channel
+		public Channel Channel
 		{
 			get;
 			internal set;
