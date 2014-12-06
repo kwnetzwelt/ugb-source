@@ -19,7 +19,12 @@ namespace UGBSetup
 				{
 					try
 					{
-						mIcon = (Texture2D) AssetDatabase.LoadAssetAtPath("Assets/packages/UnityGameBase/Editor/Gizmos/ugb_logo_256.png", typeof(Texture2D));
+                        var assets = AssetDatabase.FindAssets("ugb_logo_256 t:Texture2D");
+                        if (assets.Length > 0)
+                        {
+                            string path = AssetDatabase.GUIDToAssetPath(assets[0]);
+                            mIcon = (Texture2D)AssetDatabase.LoadAssetAtPath(path, typeof(Texture2D));
+                        }
 						//mIcon = (Texture2D)Resources.Load( "ugb_logo_256" );
 					}catch
 					{
