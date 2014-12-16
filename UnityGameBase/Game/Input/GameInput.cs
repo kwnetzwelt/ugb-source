@@ -5,65 +5,59 @@ namespace UGB.Input
 {
 	public class GameInput : TouchDetection
 	{
-		public const string kMappingGenericTap = "genericTap";
-		
-		
-		public List<KeyMapping> mKeyMappings = new List<KeyMapping>();
+		public List<KeyMapping> keyMappings = new List<KeyMapping>();
 	#pragma warning disable 067
-		public event InputDelegates.OnKeyMappingDelegate OnKeyMappingTriggered;
+		public event InputDelegates.KeyMappingDelegate KeyMappingTriggered;
 	#pragma warning restore
 		/// <summary>
 		/// Occurs when on key up or finger up.
 		/// </summary>
-		public event InputDelegates.OnKeyMappingDelegate OnKeyUp;
+		public event InputDelegates.KeyMappingDelegate KeyUp;
 		/// <summary>
 		/// Occurs when on key down or finger down.
 		/// </summary>
-		public event InputDelegates.OnKeyMappingDelegate OnKeyDown;
+		public event InputDelegates.KeyMappingDelegate KeyDown;
 		
 		
 		protected void Start()
 		{
-			TouchStart += HandleOnTouchStart;
-			TouchEnd += HandleOnTouchEnd;
-			SwipeEvent += HandleOnSwipeEvent;
+			TouchStart += HandleTouchStart;
+			TouchEnd += HandleTouchEnd;
+			SwipeEvent += HandleSwipeEvent;
 		}
 		protected override void OnDestroy()
 		{
 			base.OnDestroy();
-			TouchStart -= HandleOnTouchStart;
-			TouchEnd -= HandleOnTouchEnd;
-			SwipeEvent -= HandleOnSwipeEvent;
+			TouchStart -= HandleTouchStart;
+			TouchEnd -= HandleTouchEnd;
+			SwipeEvent -= HandleSwipeEvent;
 		}
-		void HandleOnTouchEnd (TouchInformation pTouchInfo)
+		void HandleTouchEnd (TouchInformation touchInfo)
 		{
-	#if UNITY_ANDROID || UNITY_IOS || UNITY_BB10
-			if(OnKeyUp == null)
+			if(KeyUp == null)
 				return;
 			
-			foreach(KeyMapping km in mKeyMappings)
+			foreach(KeyMapping km in keyMappings)
 			{
-				if(km.GetTouchId() == pTouchInfo.mId)
+				if(km.GetTouchId() == touchInfo.id)
 				{
-					OnKeyUp(km.mName);
+					KeyUp(km.mName);
 				}
-			}	
-	#endif
+			}
 		}
 
-		void HandleOnTouchStart (TouchInformation pTouchInfo)
+		void HandleTouchStart (TouchInformation touchInfo)
 		{
-	#if UNITY_ANDROID || UNITY_IOS || UNITY_BB10
-			foreach(KeyMapping km in mKeyMappings)
+			if(KeyDown == null)
+				return;
+			foreach(KeyMapping km in keyMappings)
 			{
-				if(km.mRelativeScreenRect.Contains(pTouchInfo.relativeScreenPosition))
+				if(km.mRelativeScreenRect.Contains(touchInfo.RelativeScreenPosition))
 				{
-					km.SetTouchId(pTouchInfo.mId);
-					if(OnKeyDown != null)
-						OnKeyDown(km.mName);
+					km.SetTouchId(touchInfo.id);
+					KeyDown(km.mName);
 				}
 			}	
-	#endif		
 		}
 		/// <summary>
 		/// Handles the on swipe event. and calls keymapping delegates
@@ -71,23 +65,21 @@ namespace UGB.Input
 		/// <param name='pTouchInfo'>
 		/// _ti.
 		/// </param>
-		void HandleOnSwipeEvent (TouchInformation pTouchInfo)
+		void HandleSwipeEvent (TouchInformation pTouchInfo)
 		{
-	#if UNITY_ANDROID || UNITY_IOS || UNITY_BB10
-			foreach(KeyMapping km in mKeyMappings)
+			if(KeyMappingTriggered == null)
+				return;
+
+			foreach(KeyMapping km in keyMappings)
 			{
 				if(km.mIsTap && km.mSwipeDirection == pTouchInfo.GetSwipeDirection())
 				{
-					if(km.mRelativeScreenRect.Contains(pTouchInfo.relativeScreenPosition))
+					if(km.mRelativeScreenRect.Contains(pTouchInfo.RelativeScreenPosition))
 					{
-						if(OnKeyMappingTriggered != null)
-						{
-							OnKeyMappingTriggered(km.mName);
-						}
+						KeyMappingTriggered(km.mName);
 					}
 				}
 			}
-	#endif
 		}
 		
 		/// <summary>
@@ -98,38 +90,34 @@ namespace UGB.Input
 		/// </param>
 		void HandleOnTapEvent (TouchInformation pTouchInfo)
 		{
-	#if UNITY_ANDROID || UNITY_IOS || UNITY_BB10
-			foreach(KeyMapping km in mKeyMappings)
+			if(KeyMappingTriggered == null)
+				return;
+
+			foreach(KeyMapping km in keyMappings)
 			{
 				if(km.mIsTap && km.mSwipeDirection == TouchInformation.ESwipeDirection.None)
 				{
-					if(km.mRelativeScreenRect.Contains(pTouchInfo.relativeScreenPosition))
+					if(km.mRelativeScreenRect.Contains(pTouchInfo.RelativeScreenPosition))
 					{
-						if(OnKeyMappingTriggered != null)
-						{
-							OnKeyMappingTriggered(km.mName);
-						}
+						KeyMappingTriggered(km.mName);
 					}
 				}
-
-			}
-	#endif		
+			}	
 		}
-		public KeyMapping GetKeyMapping(string pKeyMappingName)
+		public KeyMapping GetKeyMapping(string keyMappingName)
 		{
-			foreach(KeyMapping km in mKeyMappings)
+			foreach(KeyMapping km in keyMappings)
 			{
-				if(km.mName == pKeyMappingName)
+				if(km.mName == keyMappingName)
 					return km;
 			}
 			return null;
 		}
-		public TouchInformation GetTouch(string _keyMappingName)
+		public TouchInformation GetTouch(string keyMappingName)
 		{
-			KeyMapping km = GetKeyMapping(_keyMappingName);
+			KeyMapping km = GetKeyMapping(keyMappingName);
 			if(km != null)
 			{
-				
 				return GetTouch(km.GetTouchId());
 			}
 			return null;
@@ -138,32 +126,31 @@ namespace UGB.Input
 		protected override void Update()
 		{
 			base.Update();
-			
-			
+
 			UpdateKeyMappings();
 		}
 		
 		
 		void UpdateKeyMappings()
 		{
-			foreach(KeyMapping km in mKeyMappings)
+			foreach(KeyMapping km in keyMappings)
 			{
 				if(km.mKeyMode != KeyMapping.EKeyMode.None)
 				{
 					
 					if((km.mKeyMode == KeyMapping.EKeyMode.Down || km.mKeyMode == KeyMapping.EKeyMode.Any) && UnityEngine.Input.GetKeyDown(km.mKeyCode))
 					{
-						if(OnKeyDown != null)
+						if(KeyDown != null)
 						{
-							OnKeyDown(km.mName);
+							KeyDown(km.mName);
 						}
 					}
 					
 					if((km.mKeyMode == KeyMapping.EKeyMode.Up || km.mKeyMode == KeyMapping.EKeyMode.Any)  && UnityEngine.Input.GetKeyUp(km.mKeyCode))
 					{
-						if(OnKeyUp != null)
+						if(KeyUp != null)
 						{
-							OnKeyUp(km.mName);
+							KeyUp(km.mName);
 						}
 					}
 				}
