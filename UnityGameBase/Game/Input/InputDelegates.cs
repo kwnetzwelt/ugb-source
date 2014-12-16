@@ -17,5 +17,12 @@ namespace UGB.Input
 		/// Delegate used by UGB.Input.GameInput to notify other classes of a key mapping event. 
 		/// </summary>
 		public delegate void KeyMappingDelegate(string keyMappingName);
+
+
+
+		/// <summary>
+		/// Delegate used by UGB.Input.GameInput to notify other classes of a gesture event. 
+		/// </summary>
+		public delegate void GestureDelegate(BaseGesture gesture);
 	}
 }

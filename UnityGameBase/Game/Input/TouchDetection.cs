@@ -11,6 +11,20 @@ namespace UGB.Input
 	/// </summary>
 	public class TouchDetection : GameComponent
 	{
+		private bool inputEnabled;
+
+
+		public bool InputEnabled {
+			get { return inputEnabled; }
+			set {
+				// if input gets disabled, we end all touches. 
+				if(inputEnabled != value)
+				{
+					inputEnabled = value;
+				}
+			}
+		};
+
 		/// <summary>
 		/// The number of currently active touches (not dead)
 		/// </summary>
@@ -70,14 +84,20 @@ namespace UGB.Input
 		}
 		protected void UpdateMouse()
 		{
-			if(UnityEngine.Input.GetMouseButtonDown(0))
+			if(inputEnabled && UnityEngine.Input.GetMouseButtonDown(0))
 			{
 				CreateTouch(UnityEngine.Input.mousePosition,0);
 			}
 			
 			if(mouseTouch != null)
 			{
-				mouseTouch.Update(UnityEngine.Input.mousePosition,UnityEngine.Input.GetMouseButtonUp(0));
+				if(!inputEnabled)
+				{
+					mouseTouch.Update(UnityEngine.Input.mousePosition,true);
+				}else
+				{
+					mouseTouch.Update(UnityEngine.Input.mousePosition,UnityEngine.Input.GetMouseButtonUp(0));
+				}
 				
 				if(TouchUpdate != null)
 				{
@@ -120,7 +140,14 @@ namespace UGB.Input
 			
 			if(ti != null)
 			{
+
 				ti.Update(touchInfo);
+
+				if(!inputEnabled)
+				{
+					ti.phase = TouchPhase.Canceled;
+				}
+
 				if(TouchUpdate != null)
 				{
 					TouchUpdate(ti);
@@ -188,32 +215,54 @@ namespace UGB.Input
 			
 			touches.Remove(touchInfo);
 		}
+
+
 		void CreateTouch(Vector2 position,int btnId)
 		{
-			touchCount++;
-			TouchInformation ti = new TouchInformation(position,touchCount,btnId);
-			CreateTouch(ti);
+			TouchInformation ti = null;
+			// we don't create any touches if input is disabled. 
+			if(InputEnabled)
+			{
+				touchCount++;
+				ti = new TouchInformation(position,touchCount,btnId);
+				CreateTouch(ti);
+			}
+
 			if(mouseTouch != null)
 			{
 				DestroyTouch(mouseTouch);
 			}
+
 			mouseTouch = ti;
 		}
+
+
 		void CreateTouch(Touch touch)
 		{
-			touchCount++;
-			
-			TouchInformation ti = new TouchInformation(touch,touchCount);
-			CreateTouch(ti);
+			// we don't create any touches if input is disabled. 
+			if(InputEnabled)
+			{
+
+				touchCount++;
+				
+				TouchInformation ti = new TouchInformation(touch,touchCount);
+				CreateTouch(ti);
+			}
 		}
+
+
 		void CreateTouch(TouchInformation touchInfo)
 		{
-			
-			touches.Add(touchInfo);
-			
-			if(TouchStart != null)
+			// we don't create any touches if input is disabled. 
+			if(InputEnabled)
 			{
-				TouchStart(touchInfo);
+
+				touches.Add(touchInfo);
+				
+				if(TouchStart != null)
+				{
+					TouchStart(touchInfo);
+				}
 			}
 		}
 	}

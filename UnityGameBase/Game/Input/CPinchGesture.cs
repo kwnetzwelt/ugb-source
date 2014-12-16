@@ -4,142 +4,52 @@ using System.Collections.Generic;
 
 namespace UGB.Input
 {
-	public class CPinchGesture : GameComponent
+	public class CPinchGesture : GestureHandlerComponent<PinchGesture>
 	{
-		
-		public event System.Action<PinchGestureEvent>OnPinchStart;
-		
-		public event System.Action<PinchGestureEvent>OnPinchEnd;
+		PinchGesture currentGesture;
+		TouchInformation firstTouch;
 
-		
-		List<PinchGestureEvent> mPinchGestures = new List<PinchGestureEvent>();
-		
-		PinchGestureEvent mCurrentPinch;
-		
-		void OnEnable()
-		{
-			GInput.TouchStart += OnTouchStart;
-			GInput.TouchEnd += OnTouchEnd;
-		}
-		
-		void OnDisable()
-		{
-			GInput.TouchStart -= OnTouchStart;
-			GInput.TouchEnd -= OnTouchEnd;
-			OnPinchEnd = null;
-			OnPinchStart = null;
-		}
 
-		void OnTouchEnd (TouchInformation _pTouchInfo)
+		#region implemented abstract members of GestureHandlerComponent
+
+		protected override void HandleTouchEnd (TouchInformation touchInfo)
 		{
-			if(mCurrentPinch == null)
-				return;
-			
-			if(mCurrentPinch.mTouchOne == _pTouchInfo)
+			if(firstTouch == touchInfo)
 			{
-				mCurrentPinch = null;
+				firstTouch = null;
 				return;
 			}
 			
-			foreach(var p in mPinchGestures)
+			if(currentGesture == null)
 			{
-				if(p.mTouchOne == _pTouchInfo || p.mTouchTwo == _pTouchInfo)
-				{
-					mPinchGestures.Remove(p);
-					p.mIsDead = true;
-					try
-					{
-						
-						if(OnPinchEnd != null)
-							OnPinchEnd(p);
-						
-					}catch(Exception e)
-					{
-						Debug.LogException(e);
-					}
-					break;
-				}
+				return;
 			}
 			
-		}
-
-		void OnTouchStart (TouchInformation _pTouchInfo)
-		{
-			if(mCurrentPinch != null)
+			// we are currently pinching. if any of the touches involved ended, we end the gesture. 
+			
+			foreach(var p in currentGesture.RelatedTouches)
 			{
-				mCurrentPinch.mTouchTwo = _pTouchInfo;
-				mCurrentPinch.mStartDistance = mCurrentPinch.GetCurrentDistance();
-				mPinchGestures.Add(mCurrentPinch);
-				
-				try
+				if(p.IsDead)
 				{
-					
-					if(OnPinchStart != null)
-						OnPinchStart(mCurrentPinch);
-					
-				} catch(Exception e)
-				{
-					Debug.LogException(e);
+					currentGesture.EndGesture();
+					currentGesture = null;
 				}
+			}
+		}
+		protected override void HandleTouchStart (TouchInformation touchInfo)
+		{
+			if(firstTouch != null)
+			{
+				currentGesture = CreateGesture(firstTouch,touchInfo);
+				currentGesture.mStartDistance = currentGesture.GetCurrentDistance();
 				
-				mCurrentPinch = null;
-				
+				currentGesture.StartGesture();
 				
 			}else
 			{
-				mCurrentPinch = new PinchGestureEvent();
-				mCurrentPinch.mTouchOne = _pTouchInfo;
+				firstTouch = touchInfo;
 			}
 		}
-		
+		#endregion
 	}
-
-
-	public class PinchGestureEvent
-	{
-		public TouchInformation mTouchOne;
-		
-		public TouchInformation mTouchTwo;
-		
-		public float mStartDistance;
-		
-		
-		public float GetCurrentDistance()
-		{
-			return Vector2.Distance(mTouchOne.endPosition, mTouchTwo.endPosition);
-		}
-		
-		/// <summary>
-		/// Using the given camera the two touches are projectes onto the given plane and the distance is calculated
-		/// </summary>
-		/// <returns>
-		/// The current distance.
-		/// </returns>
-		/// <param name='pCamera'>
-		/// P camera.
-		/// </param>
-		/// <param name='pPlane'>
-		/// P plane.
-		/// </param>
-		public float GetCurrentDistance(Camera pCamera, Plane pPlane, out Vector3 pCenter)
-		{
-			Ray r1 = pCamera.ScreenPointToRay(mTouchOne.endPosition);
-			Ray r2 = pCamera.ScreenPointToRay(mTouchTwo.endPosition);
-			
-			float dist1 = 0;
-			float dist2 = 0;
-			
-			pPlane.Raycast(r1, out dist1);
-			pPlane.Raycast(r2, out dist2);
-			
-			Vector3 p1 = r1.GetPoint(dist1);
-			Vector3 p2 = r2.GetPoint(dist2);
-			
-			pCenter = (p2 - p1) * 0.5f + p2;
-			return Vector3.Distance(p1,p2);
-		}
-		
-		public bool mIsDead = false;
-	}
-
 }

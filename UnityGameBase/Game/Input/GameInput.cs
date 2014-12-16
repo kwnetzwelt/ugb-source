@@ -5,6 +5,8 @@ namespace UGB.Input
 {
 	public class GameInput : TouchDetection
 	{
+		public List<GestureHandlerBase> gestureHandlers = new List<GestureHandlerBase>();
+
 		public List<KeyMapping> keyMappings = new List<KeyMapping>();
 	
 		/// <summary>
@@ -20,6 +22,45 @@ namespace UGB.Input
 		/// Occurs when on key down or finger down.
 		/// </summary>
 		public event InputDelegates.KeyMappingDelegate KeyDown;
+
+		/// <summary>
+		/// Occurs when gesture start.
+		/// </summary>
+		public event InputDelegates.GestureDelegate GestureStart;
+
+		/// <summary>
+		/// Occurs when gesture ends.
+		/// </summary>
+		public event InputDelegates.GestureDelegate GestureEnd;
+
+		/// <summary>
+		/// Used to emit gesture events. If you want to use gestures register you gesture implementation with 
+		/// </summary>
+		/// <param name="gesture">Gesture.</param>
+		public void EmitGesture (BaseGesture gesture)
+		{
+			if(gesture.IsDead)
+			{
+				if(GestureEnd != null)
+					GestureEnd(gesture);
+			}else
+			{
+				if(GestureStart != null)
+					GestureStart(gesture);
+			}
+		}
+
+		public void RegisterGestureHandler(GestureHandlerBase component)
+		{
+
+			gestureHandlers.Add(component);
+			component.Initialize(Game.Instance.gameInput);
+		}
+
+		public void DeregisterGestureHandler(GestureHandlerBase component)
+		{
+			gestureHandlers.Remove(component);
+		}
 
 		
 		public KeyMapping GetKeyMapping(string keyMappingName)
