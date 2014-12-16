@@ -73,16 +73,16 @@ namespace UGB.Input
 					OnTouchUpdate(mMouseTouch);
 				}
 				
-				if(mMouseTouch.isTap)
+				if(mMouseTouch.IsTap)
 				{
 					HandleTap(mMouseTouch);
 				}
-				if(mMouseTouch.isSwipe)
+				if(mMouseTouch.IsSwipe)
 				{
 					HandleSwipe(mMouseTouch);
 				}
 				
-				if(mMouseTouch.isDead)
+				if(mMouseTouch.IsDead)
 				{
 					DestroyTouch(mMouseTouch);
 					mMouseTouch = null;
@@ -99,7 +99,7 @@ namespace UGB.Input
 				if(ti != null)
 				{
 					// Touch was started twice; weird! Bug?
-					ti.mPhase = TouchPhase.Canceled;
+					ti.phase = TouchPhase.Canceled;
 					DestroyTouch(ti);		
 				}
 				CreateTouch(pTouchInfo);
@@ -116,17 +116,17 @@ namespace UGB.Input
 				}
 			}
 
-			if(ti.isTap)
+			if(ti.IsTap)
 			{
 				HandleTap(ti);
 			}
 			
-			if(ti.isSwipe)
+			if(ti.IsSwipe)
 			{
 				HandleSwipe(ti);
 			}
 			
-			if(ti.isDead)
+			if(ti.IsDead)
 			{
 				DestroyTouch(ti);
 				return;
@@ -153,7 +153,7 @@ namespace UGB.Input
 		{
 			foreach(TouchInformation ti in mTouches)
 			{
-				if(ti.mId == pId)
+				if(ti.id == pId)
 					return ti;
 			}
 			return null;

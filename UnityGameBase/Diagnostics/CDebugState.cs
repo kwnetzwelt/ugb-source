@@ -92,11 +92,11 @@ namespace UGB.Diagnostics
 		
 		void OnTap (TouchInformation _pTouchInfo)
 		{
-			if(mHidden && mHiddenTriggerRect.Contains( _pTouchInfo.screenPosition ))
+			if(mHidden && mHiddenTriggerRect.Contains( _pTouchInfo.ScreenPosition ))
 			{
 				mHidden = false;
 			}
-			if(!mHidden && !mVisibleTriggerRect.Contains( _pTouchInfo.screenPosition ))
+			if(!mHidden && !mVisibleTriggerRect.Contains( _pTouchInfo.ScreenPosition ))
 			{
 				mHidden = true;
 			}

@@ -106,7 +106,7 @@ namespace UGB.Input
 		
 		public float GetCurrentDistance()
 		{
-			return Vector2.Distance(mTouchOne.mEndPosition, mTouchTwo.mEndPosition);
+			return Vector2.Distance(mTouchOne.endPosition, mTouchTwo.endPosition);
 		}
 		
 		/// <summary>
@@ -123,8 +123,8 @@ namespace UGB.Input
 		/// </param>
 		public float GetCurrentDistance(Camera pCamera, Plane pPlane, out Vector3 pCenter)
 		{
-			Ray r1 = pCamera.ScreenPointToRay(mTouchOne.mEndPosition);
-			Ray r2 = pCamera.ScreenPointToRay(mTouchTwo.mEndPosition);
+			Ray r1 = pCamera.ScreenPointToRay(mTouchOne.endPosition);
+			Ray r2 = pCamera.ScreenPointToRay(mTouchTwo.endPosition);
 			
 			float dist1 = 0;
 			float dist2 = 0;
