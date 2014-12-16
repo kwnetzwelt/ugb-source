@@ -12,12 +12,12 @@ namespace UGB.Input
 		/// <summary>
 		/// Virtual joystick radius in inches. See 
 		/// </summary>
-		public float joystickSize = 0.5f;
+		public static float joystickSize = 0.5f;
 		/// <summary>
 		/// Swipe threshold in pixels. If a touch is moved more than this threshold it is considered a swipe. 
 		/// <see cref="UGB.Input.TouchInformation.IsSwipe"/>
 		/// </summary>
-		public float swipeThreshold = 10.0f;
+		public static float swipeThreshold = 10.0f;
 
 
 		/// <summary>
@@ -132,6 +132,7 @@ namespace UGB.Input
 			}
 			lastUpdateTime = Time.time;
 		}
+
 		/// <summary>
 		/// Updates this instance with a touch created by the Unity Engine. 
 		/// </summary>
@@ -165,6 +166,7 @@ namespace UGB.Input
 				  return phase == TouchPhase.Canceled || phase == TouchPhase.Ended;
 			}
 		}
+
 		/// <summary>
 		/// Determines if this is a tap. This is a tap, if it is dead and is not considered a swipe. 
 		/// </summary>
@@ -197,6 +199,7 @@ namespace UGB.Input
 				return new Vector2(endPosition.x,Screen.height - endPosition.y);
 			}
 		}
+
 		/// <summary>
 		/// The relative screen position (0 to 1 on both axis) of this instance. The axis origin is in the top left corner of the screen. 
 		/// </summary>
@@ -243,7 +246,6 @@ namespace UGB.Input
 		/// <summary>
 		/// Returns the swipe direction of this touch. 
 		/// </summary>
-		/// <returns>The swipe direction.</returns>
 		public ESwipeDirection GetSwipeDirection()
 		{
 			if(IsHorizontalSwipe)
@@ -266,7 +268,6 @@ namespace UGB.Input
 		/// Virtual Joystick. Returns the current horizontal axis value (relative: -1 to 1) of this instance. 
 		/// The Joystick is created at the startposition of this touch. Its size is fixed. 
 		/// </summary>
-		/// <returns>The horizontal axis.</returns>
 		public float GetHorizontalAxis()
 		{
 			return Mathf.Clamp(distanceX / (GetDPI() * joystickSize),-1.0f,1.0f);
@@ -276,7 +277,6 @@ namespace UGB.Input
 		/// Virtual Joystick. Returns the current vertical axis value (relative: -1 to 1) of this instance. 
 		/// The Joystick is created at the startposition of this touch. Its size is fixed. 
 		/// </summary>
-		/// <returns>The vertical axis.</returns>
 		public float GetVerticalAxis()
 		{
 			return Mathf.Clamp(distanceY / (GetDPI() * joystickSize),-1.0f,1.0f);
@@ -285,19 +285,15 @@ namespace UGB.Input
 		/// <summary>
 		/// Returns the time in seconds passed since the birth of this touch. 
 		/// </summary>
-		/// <value>The life time.</value>
 		public float LifeTime{	get { return Time.time - birthTime;}	}
 		
 		/// <summary>
 		/// Extrapolate the touch in its last direction. Used for kinetic scroll values
 		/// </summary>
-		/// <param name='pScreenPosition'>
-		/// _screen position.
-		/// </param>
-		public Vector2 Extrapolate(bool pScreenPosition)
+		public Vector2 Extrapolate(bool screenPosition)
 		{
 			Vector2 o = endPosition + lastDirection * 0.5f * Mathf.Clamp01(1 - 2*(Time.time - lastUpdateTime));
-			if(pScreenPosition)
+			if(screenPosition)
 				o.y = Screen.height - o.y;
 			return o;
 		}
