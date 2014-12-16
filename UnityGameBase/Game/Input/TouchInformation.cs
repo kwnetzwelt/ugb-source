@@ -281,14 +281,7 @@ namespace UGB.Input
 		{
 			return Mathf.Clamp(distanceY / (GetDPI() * joystickSize),-1.0f,1.0f);
 		}
-		
-		float GetDPI()
-		{
-			if(Screen.dpi == 0)
-				return 90;
-			return Screen.dpi;
-		}
-			
+					
 		/// <summary>
 		/// Returns the time in seconds passed since the birth of this touch. 
 		/// </summary>
@@ -307,6 +300,14 @@ namespace UGB.Input
 			if(pScreenPosition)
 				o.y = Screen.height - o.y;
 			return o;
-		}	
+		}
+
+		
+		float GetDPI()
+		{
+			if(Screen.dpi == 0)
+				return 90;
+			return Screen.dpi;
+		}
 	}
 }

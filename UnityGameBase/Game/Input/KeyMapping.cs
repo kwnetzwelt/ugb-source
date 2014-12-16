@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 namespace UGB.Input
 {
@@ -17,23 +18,16 @@ namespace UGB.Input
 			Down,
 			None
 		}
-		public EKeyMode mKeyMode;
-		public KeyCode mKeyCode;
-		public string mName;
+		public EKeyMode keyMode;
+		public KeyCode keyCode;
+		public string name;
 		
-		public bool mIsTap;
-		public TouchInformation.ESwipeDirection mSwipeDirection;
-		public Rect mRelativeScreenRect;
-		
-		private int mTouchId = -1;
-		public int GetTouchId()
-		{
-			return mTouchId;
-		}
-		public void SetTouchId(int pValue)
-		{
-			mTouchId = pValue;
-		}
+		public bool isTap;
+		public TouchInformation.ESwipeDirection swipeDirection;
+		public Rect relativeScreenRect;
+
+		[NonSerialized]
+		public int touchId;
 		
 		public KeyMapping()
 		{

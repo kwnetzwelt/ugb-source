@@ -6,9 +6,12 @@ namespace UGB.Input
 	public class GameInput : TouchDetection
 	{
 		public List<KeyMapping> keyMappings = new List<KeyMapping>();
-	#pragma warning disable 067
+	
+		/// <summary>
+		/// This even will fire, when a keymapping is triggered. You can configure keymappings either in the editor or at runtime. 
+		/// </summary>
 		public event InputDelegates.KeyMappingDelegate KeyMappingTriggered;
-	#pragma warning restore
+	
 		/// <summary>
 		/// Occurs when on key up or finger up.
 		/// </summary>
@@ -17,7 +20,26 @@ namespace UGB.Input
 		/// Occurs when on key down or finger down.
 		/// </summary>
 		public event InputDelegates.KeyMappingDelegate KeyDown;
+
 		
+		public KeyMapping GetKeyMapping(string keyMappingName)
+		{
+			foreach(KeyMapping km in keyMappings)
+			{
+				if(km.name == keyMappingName)
+					return km;
+			}
+			return null;
+		}
+		public TouchInformation GetTouch(string keyMappingName)
+		{
+			KeyMapping km = GetKeyMapping(keyMappingName);
+			if(km != null)
+			{
+				return GetTouch(km.touchId);
+			}
+			return null;
+		}
 		
 		protected void Start()
 		{
@@ -39,9 +61,9 @@ namespace UGB.Input
 			
 			foreach(KeyMapping km in keyMappings)
 			{
-				if(km.GetTouchId() == touchInfo.id)
+				if(km.touchId == touchInfo.id)
 				{
-					KeyUp(km.mName);
+					KeyUp(km.name);
 				}
 			}
 		}
@@ -52,19 +74,14 @@ namespace UGB.Input
 				return;
 			foreach(KeyMapping km in keyMappings)
 			{
-				if(km.mRelativeScreenRect.Contains(touchInfo.RelativeScreenPosition))
+				if(km.relativeScreenRect.Contains(touchInfo.RelativeScreenPosition))
 				{
-					km.SetTouchId(touchInfo.id);
-					KeyDown(km.mName);
+					km.touchId = touchInfo.id;
+					KeyDown(km.name);
 				}
 			}	
 		}
-		/// <summary>
-		/// Handles the on swipe event. and calls keymapping delegates
-		/// </summary>
-		/// <param name='pTouchInfo'>
-		/// _ti.
-		/// </param>
+
 		void HandleSwipeEvent (TouchInformation pTouchInfo)
 		{
 			if(KeyMappingTriggered == null)
@@ -72,22 +89,16 @@ namespace UGB.Input
 
 			foreach(KeyMapping km in keyMappings)
 			{
-				if(km.mIsTap && km.mSwipeDirection == pTouchInfo.GetSwipeDirection())
+				if(km.isTap && km.swipeDirection == pTouchInfo.GetSwipeDirection())
 				{
-					if(km.mRelativeScreenRect.Contains(pTouchInfo.RelativeScreenPosition))
+					if(km.relativeScreenRect.Contains(pTouchInfo.RelativeScreenPosition))
 					{
-						KeyMappingTriggered(km.mName);
+						KeyMappingTriggered(km.name);
 					}
 				}
 			}
 		}
-		
-		/// <summary>
-		/// Handles the on tap event and calls keymapping delegates. 
-		/// </summary>
-		/// <param name='pTouchInfo'>
-		/// _ti.
-		/// </param>
+
 		void HandleOnTapEvent (TouchInformation pTouchInfo)
 		{
 			if(KeyMappingTriggered == null)
@@ -95,32 +106,14 @@ namespace UGB.Input
 
 			foreach(KeyMapping km in keyMappings)
 			{
-				if(km.mIsTap && km.mSwipeDirection == TouchInformation.ESwipeDirection.None)
+				if(km.isTap && km.swipeDirection == TouchInformation.ESwipeDirection.None)
 				{
-					if(km.mRelativeScreenRect.Contains(pTouchInfo.RelativeScreenPosition))
+					if(km.relativeScreenRect.Contains(pTouchInfo.RelativeScreenPosition))
 					{
-						KeyMappingTriggered(km.mName);
+						KeyMappingTriggered(km.name);
 					}
 				}
 			}	
-		}
-		public KeyMapping GetKeyMapping(string keyMappingName)
-		{
-			foreach(KeyMapping km in keyMappings)
-			{
-				if(km.mName == keyMappingName)
-					return km;
-			}
-			return null;
-		}
-		public TouchInformation GetTouch(string keyMappingName)
-		{
-			KeyMapping km = GetKeyMapping(keyMappingName);
-			if(km != null)
-			{
-				return GetTouch(km.GetTouchId());
-			}
-			return null;
 		}
 		
 		protected override void Update()
@@ -135,22 +128,22 @@ namespace UGB.Input
 		{
 			foreach(KeyMapping km in keyMappings)
 			{
-				if(km.mKeyMode != KeyMapping.EKeyMode.None)
+				if(km.keyMode != KeyMapping.EKeyMode.None)
 				{
 					
-					if((km.mKeyMode == KeyMapping.EKeyMode.Down || km.mKeyMode == KeyMapping.EKeyMode.Any) && UnityEngine.Input.GetKeyDown(km.mKeyCode))
+					if((km.keyMode == KeyMapping.EKeyMode.Down || km.keyMode == KeyMapping.EKeyMode.Any) && UnityEngine.Input.GetKeyDown(km.keyCode))
 					{
 						if(KeyDown != null)
 						{
-							KeyDown(km.mName);
+							KeyDown(km.name);
 						}
 					}
 					
-					if((km.mKeyMode == KeyMapping.EKeyMode.Up || km.mKeyMode == KeyMapping.EKeyMode.Any)  && UnityEngine.Input.GetKeyUp(km.mKeyCode))
+					if((km.keyMode == KeyMapping.EKeyMode.Up || km.keyMode == KeyMapping.EKeyMode.Any)  && UnityEngine.Input.GetKeyUp(km.keyCode))
 					{
 						if(KeyUp != null)
 						{
-							KeyUp(km.mName);
+							KeyUp(km.name);
 						}
 					}
 				}
