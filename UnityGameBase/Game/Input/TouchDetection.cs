@@ -190,7 +190,7 @@ namespace UGB.Input
 		}
 		void CreateTouch(Vector2 position,int btnId)
 		{
-			touchCount = touchCount+1;
+			touchCount++;
 			TouchInformation ti = new TouchInformation(position,touchCount,btnId);
 			CreateTouch(ti);
 			if(mouseTouch != null)
@@ -201,7 +201,7 @@ namespace UGB.Input
 		}
 		void CreateTouch(Touch touch)
 		{
-			touchCount = touchCount+1;
+			touchCount++;
 			
 			TouchInformation ti = new TouchInformation(touch,touchCount);
 			CreateTouch(ti);
