@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEditor;
 
@@ -22,22 +22,22 @@ namespace UGB.Animation
 			if(tg)
 			{
 				ts.progress = 0;
-				ts.transform.localPosition = ts.mPositionStart;
-				ts.transform.localRotation = Quaternion.Euler( ts.mRotationStart );
+				ts.transform.localPosition = ts.positionStart;
+				ts.transform.localRotation = Quaternion.Euler( ts.rotationStart );
 			}
 			tg = GUILayout.Toggle( ts.progress == 1,"End" ,"button");
 			
 			if(tg)
 			{
 				ts.progress = 1;
-				ts.transform.localPosition = ts.mPositionEnd;
-				ts.transform.localRotation = Quaternion.Euler( ts.mRotationEnd );
+				ts.transform.localPosition = ts.positionEnd;
+				ts.transform.localRotation = Quaternion.Euler( ts.rotationEnd );
 			}
 			
 			
 			GUILayout.EndHorizontal();
 			
-			ts.mEasing = EditorGUILayout.CurveField("Easing", ts.mEasing);
+			ts.easing = EditorGUILayout.CurveField("Easing", ts.easing);
 			
 			ts.speed = EditorGUILayout.Slider("Speed", ts.speed,0.01f,50.0f);
 			
@@ -58,12 +58,12 @@ namespace UGB.Animation
 			
 			if(mTarget.progress == 1)
 			{
-				mTarget.mRotationEnd = mTarget.transform.localRotation.eulerAngles;
-				mTarget.mPositionEnd = mTarget.transform.localPosition;
+				mTarget.rotationEnd = mTarget.transform.localRotation.eulerAngles;
+				mTarget.positionEnd = mTarget.transform.localPosition;
 			}else
 			{
-				mTarget.mRotationStart = mTarget.transform.localRotation.eulerAngles;
-				mTarget.mPositionStart = mTarget.transform.localPosition;
+				mTarget.rotationStart = mTarget.transform.localRotation.eulerAngles;
+				mTarget.positionStart = mTarget.transform.localPosition;
 			}
 			
 			EditorUtility.SetDirty(mTarget);

@@ -12,26 +12,26 @@ namespace UGB.Animation
 		/// Gets a value indicating whether this <see cref="ILoadingScreenController"/> is initialized.
 		/// </summary>
 		/// <value><c>true</c> if is initialized; otherwise, <c>false</c>.</value>
-		bool isInitialized{ get; }
+		bool IsInitialized{ get; }
 
 		/// <summary>
 		/// Initialize this instance. Load and setup prefabs or a scene. 
 		/// </summary>
-		void Initialize( System.Action pDoneCbk );
+		void Initialize( System.Action doneCbk );
 
 		/// <summary>
 		/// Called by SceneTransition when you should begin animating the scene transition. 
 		/// When your animation is done, you need to call pDoneCbk to actually start the loading process. 
 		/// </summary>
 		/// <param name="pDoneCbk">Callback for when your animation is finished. </param>
-		void OnAnimateInBegin( System.Action pDoneCbk );
+		void AnimateInBegin( System.Action doneCbk );
 
 		/// <summary>
 		/// Called by SceneTransition when you should end animating the scene transition. 
 		/// When your animation is done, you need to call pDoneCbk. 
 		/// </summary>
 		/// <param name="pDoneCbk">Callback for when your animation is finished. .</param>
-		void OnAnimateOutBegin( System.Action pDoneCbk );
+		void AnimateOutBegin( System.Action doneCbk );
 
 		/// <summary>
 		/// Calley by SceneTransition to decide if the device and license is sufficient to load asynconously. 

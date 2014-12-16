@@ -19,65 +19,65 @@ namespace UGB.Animation
 		/// The name of the scene, which is loaded (additive) to the game on startup. This scene must contain a CLoadingScene Component. 
 		/// </summary>
 		public string mSceneName;
-		bool mInitialized = false;
+		bool initialized = false;
 
-		CLoadingScene mLoadingScene;
+		CLoadingScene loadingScene;
 
-		public void Initialize (Action pDoneCbk)
+		public void Initialize (Action doneCallback)
 		{
-			mInitialized = false;
+			initialized = false;
 			Application.LoadLevelAdditive(mSceneName);
-			StartCoroutine(WaitForScene(pDoneCbk));
+			StartCoroutine(WaitForScene(doneCallback));
 		}
 
-		IEnumerator WaitForScene(System.Action pDoneCbk)
+		IEnumerator WaitForScene(System.Action doneCallback)
 		{
-			while(mLoadingScene == null)
+			while(loadingScene == null)
 			{
-				mLoadingScene = GameObject.FindObjectOfType(typeof(CLoadingScene)) as CLoadingScene;
-				if(mLoadingScene == null)
+				loadingScene = GameObject.FindObjectOfType(typeof(CLoadingScene)) as CLoadingScene;
+				if(loadingScene == null)
 					yield return 0;
 			}
 
-			mLoadingScene.mCamera.enabled = false;
-			mInitialized = true;
+			loadingScene.camera.enabled = false;
+			initialized = true;
 
-			if(pDoneCbk != null)
-				pDoneCbk();
+			if(doneCallback != null)
+				doneCallback();
 		}
 
-		public void OnAnimateInBegin (Action pDoneCbk)
+		public void AnimateInBegin (Action doneCallback)
 		{
-			mLoadingScene.mCamera.enabled = true;
-			var animation = mLoadingScene.GetComponent<UnityEngine.Animation>();
-			animation.Play( mLoadingScene.mInAnimation.name );
-			StartCoroutine(WaitForEndOfAnimation(mLoadingScene.mInAnimation.name, () => {
+			loadingScene.camera.enabled = true;
+			var animation = loadingScene.GetComponent<UnityEngine.Animation>();
+			animation.Play( loadingScene.inAnimation.name );
+			StartCoroutine(WaitForEndOfAnimation(loadingScene.inAnimation.name, () => {
 			
-				animation.Play( mLoadingScene.mLoopAnimation.name );
-				if(pDoneCbk != null)
-					pDoneCbk();
+				animation.Play( loadingScene.loopAnimation.name );
+				if(doneCallback != null)
+					doneCallback();
 
 			}));
 		}
 
-		public void OnAnimateOutBegin (Action pDoneCbk)
+		public void AnimateOutBegin (Action doneCallback)
 		{
-			var animation = mLoadingScene.GetComponent<UnityEngine.Animation>();
-			animation.Stop( mLoadingScene.mLoopAnimation.name );
-			animation.Play(mLoadingScene.mOutAnimation.name);
-			StartCoroutine(WaitForEndOfAnimation(mLoadingScene.mOutAnimation.name, () => {
+			var animation = loadingScene.GetComponent<UnityEngine.Animation>();
+			animation.Stop( loadingScene.loopAnimation.name );
+			animation.Play(loadingScene.outAnimation.name);
+			StartCoroutine(WaitForEndOfAnimation(loadingScene.outAnimation.name, () => {
 
-				mLoadingScene.mCamera.enabled = false;
+				loadingScene.camera.enabled = false;
 
-				if(pDoneCbk != null)
-					pDoneCbk();
+				if(doneCallback != null)
+					doneCallback();
 
 			}));
 		}
 
-		public bool isInitialized {
+		public bool IsInitialized {
 			get {
-				return mInitialized;
+				return initialized;
 			}
 		}
 
@@ -94,18 +94,18 @@ namespace UGB.Animation
 		}
 
 
-		IEnumerator WaitForEndOfAnimation(string pAnimation, System.Action pDoneCbk)
+		IEnumerator WaitForEndOfAnimation(string animation, System.Action doneCallback)
 		{
 
-			while(mLoadingScene.GetComponent<UnityEngine.Animation>().IsPlaying(pAnimation))
+			while(loadingScene.GetComponent<UnityEngine.Animation>().IsPlaying(animation))
 			{
 				//Debug.Log("Waiting for Animation: " + pAnimation);
 				yield return 0;
 			}
 
 
-			if(pDoneCbk != null)
-				pDoneCbk();
+			if(doneCallback != null)
+				doneCallback();
 		}
 
 	}

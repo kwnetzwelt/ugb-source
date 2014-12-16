@@ -11,19 +11,17 @@ namespace UGB.Animation
 	public class CLoadingScene : MonoBehaviour
 	{
 
-		public AnimationClip mInAnimation;
+		public AnimationClip inAnimation;
+		public AnimationClip loopAnimation;
+		public AnimationClip outAnimation;
 
-		public AnimationClip mLoopAnimation;
-
-		public AnimationClip mOutAnimation;
-
-		public Camera mCamera;
+		public Camera loadingCamera;
 
 		void Awake()
 		{
 			GameObject.DontDestroyOnLoad(this.gameObject);
-			if(mCamera != null)
-				GameObject.DontDestroyOnLoad(mCamera.gameObject);
+			if(loadingCamera != null)
+				GameObject.DontDestroyOnLoad(loadingCamera.gameObject);
 		}
 
 	}

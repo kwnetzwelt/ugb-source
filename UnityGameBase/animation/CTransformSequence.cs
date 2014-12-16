@@ -6,27 +6,27 @@ namespace UGB.Animation
 	[ExecuteInEditMode()]
 	public class CTransformSequence : MonoBehaviour
 	{
-		public Vector3 mRotationStart;
-		public Vector3 mRotationEnd;
-		public Vector3 mPositionStart;
-		public Vector3 mPositionEnd;
+		public Vector3 rotationStart;
+		public Vector3 rotationEnd;
+		public Vector3 positionStart;
+		public Vector3 positionEnd;
 		
-		public AnimationCurve mEasing = new AnimationCurve( new Keyframe(0,0), new Keyframe(1,1));
+		public AnimationCurve easing = new AnimationCurve( new Keyframe(0,0), new Keyframe(1,1));
 		
 		public float progress;
 		public float speed;
 		
-		float mReverse;
-		public bool isReverse
+		float reverse;
+		public bool IsReverse
 		{
 			get
 			{
-				return mReverse != 1;
+				return reverse != 1;
 			}
 		}
 		
 		[SerializeField]
-		public bool isPlaying
+		public bool IsPlaying
 		{
 			get;
 			private set;
@@ -39,37 +39,37 @@ namespace UGB.Animation
 		}
 		
 		
-		public void Play(bool pReverse)
+		public void Play(bool reverse)
 		{
-			mReverse = (pReverse)? -1 : 1;
-			isPlaying = true;	
+			this.reverse = (reverse)? -1 : 1;
+			IsPlaying = true;	
 		}
 		
 		
 		public void Pause()
 		{
-			isPlaying = false;
+			IsPlaying = false;
 		}
 		
 		
 		void Update ()
 		{
-			if(isPlaying)
+			if(IsPlaying)
 			{
 				if(progress > 1 || progress < 0)
 				{
 					// implement loop mode if wanted
-					isPlaying = false;
+					IsPlaying = false;
 					progress = Mathf.Clamp01( progress );
 				}else
 				{
-					progress += Time.deltaTime * mReverse * speed;
+					progress += Time.deltaTime * reverse * speed;
 				}
 				
-				this.transform.localPosition = Vector3.Lerp(mPositionStart,mPositionEnd, mEasing.Evaluate( progress ));
+				this.transform.localPosition = Vector3.Lerp(positionStart,positionEnd, easing.Evaluate( progress ));
 				this.transform.localRotation = Quaternion.Lerp(
-					Quaternion.Euler( mRotationStart )
-					,Quaternion.Euler( mRotationEnd )
+					Quaternion.Euler( rotationStart )
+					,Quaternion.Euler( rotationEnd )
 					, progress);
 				
 			}

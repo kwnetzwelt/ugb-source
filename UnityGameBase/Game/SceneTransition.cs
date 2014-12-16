@@ -8,24 +8,37 @@ namespace UGB
 	/// </summary>
 	public class SceneTransition : GameComponent
 	{
+
+		
+
+
 		/// <summary>
 		/// The Texture to fade to. This texture will be displayed fullscreen using the Unity3D IMGUI System. 
 		/// For advanced loading screen behaviour you can use SceneTransition::mLoadingScreenController. 
 		/// </summary>
-		public Texture2D mFadeTexture;
+		public Texture2D fadeTexture;
 
 		/// <summary>
 		/// The duration of the fade animation.
 		/// </summary>
-		public float mFadeDuration = 0.5f;
+		public float fadeDuration = 0.5f;
 
+		bool transitionRunning = false;
+		
+		float guiAlpha;
+		
+		int nextSceneIdx = 0;
+		float fadeStartTime = 0;
+		
+		bool animateInDone = false;
+		bool animateOutDone = false;
 
 
 		/// <summary>
 		/// The Alpha of all other gui element. Will be interpolated to 0, when a transition takes place and back to 1, when the transition is done. 
 		/// </summary>
 		/// <value>The GUI alpha.</value>
-		public static float guiAlpha{
+		public static float GUIAlpha{
 			get;
 			private set;
 		}
@@ -33,110 +46,98 @@ namespace UGB
 		/// <summary>
 		/// Used for Scene Transition Events. 
 		/// </summary>
-		public delegate void SceneTransitionDelegate(int pSceneID);
+		public delegate void SceneTransitionDelegate(int sceneId);
 
 		/// <summary>
 		/// Will be emitted, when the application is loading the requested scene. 
 		/// </summary>
-		public event SceneTransitionDelegate OnSceneIsLoading;
+		public event SceneTransitionDelegate SceneIsLoading;
 
 		/// <summary>
 		/// Will be emitted, when the requested scene was loaded successfully. 
 		/// </summary>
-		public event SceneTransitionDelegate OnSceneHasChanged;
+		public event SceneTransitionDelegate SceneHasChanged;
 
 		/// <summary>
 		/// Will be emitted, when the scene was loaded successfully and the transition is done. 
 		/// </summary>
-		public event SceneTransitionDelegate OnSceneTransitionIsDone;
+		public event SceneTransitionDelegate SceneTransitionIsDone;
 
-		bool mTransitionRunning = false;
-		float fmGuiALPHA = 0;
-		float mGuiAlpha {get { return fmGuiALPHA; } set{
-				Debug.Log("set " + value);
-				fmGuiALPHA = value;
-			}}
-
-		int mNextSceneIdx = 0;
-		float mFadeStartTime = 0;
 
 		/// <summary>
 		/// A custom controller for loading screen behaviour. 
 		/// If you leave this member to null, the SceneTransition::mFadeTexture is used. 
 		/// </summary>
-		public Animation.ILoadingScreenController mLoadingScreenController;
+		public Animation.ILoadingScreenController loadingScreenController;
 
-		bool mAnimateInDone = false;
-		bool mAnimateOutDone = false;
-		void OnAnimateInDone()
+		/// <summary>
+		/// Loads the scene with the given Index
+		/// </summary>
+		public void LoadScene(int sceneId)
 		{
-			mAnimateInDone = true;
-		}
-		void OnAnimateOutDone()
-		{
-			mAnimateOutDone = true;
-		}
-
-		
-		public void LoadScene(int pSceneID)
-		{
-			LoadScene(pSceneID, false);
+			LoadScene(sceneId, false);
 		}
 		/// <summary>
-		/// Loads the requested scene id.
+		/// Loads the requested scene id. Use the force! uhm ... to reload a scene. 
 		/// </summary>
-		/// <param name='pSceneID'>
-		/// Scene id.
-		/// </param>
-		/// <param name='pForce'>
-		/// P force. use to force a reload of the scene
-		/// </param>
-		public void LoadScene(int pSceneID, bool pForce)
+		public void LoadScene(int sceneId, bool force)
 		{
 			
-			if(mLoadingScreenController != null && !mLoadingScreenController.isInitialized)
+			if(loadingScreenController != null && !loadingScreenController.IsInitialized)
 			{
-				mLoadingScreenController.Initialize( () => {
-
-					LoadScene(pSceneID, pForce);
-
+				loadingScreenController.Initialize( () => {
+					
+					LoadScene(sceneId, force);
+					
 				} );
 				return;
 			}
-
-			if(pSceneID == Application.loadedLevel && !pForce)
+			
+			if(sceneId == Application.loadedLevel && !force)
 				return;
-			if(pSceneID == mNextSceneIdx && !pForce)
+			if(sceneId == nextSceneIdx && !force)
 				return;
 			
-			if(mTransitionRunning)
+			if(transitionRunning)
 			{
 				Debug.LogError("A scene transition is already running!", this);
 				return;
 			}
-
-			Debug.Log("Requested scene: " + pSceneID, this);
-
-
-
-			mNextSceneIdx = pSceneID;
-			mFadeStartTime = Time.time;
-
-			mAnimateInDone = false;
-			mAnimateOutDone = false;
-
+			
+			Debug.Log("Requested scene: " + sceneId, this);
+			
+			
+			
+			nextSceneIdx = sceneId;
+			fadeStartTime = Time.time;
+			
+			animateInDone = false;
+			animateOutDone = false;
+			
 			StartCoroutine(SceneChangeCoroutine());
+		}
+
+
+
+		void OnAnimateInDone()
+		{
+			animateInDone = true;
+		}
+
+		void OnAnimateOutDone()
+		{
+			animateOutDone = true;
 		}
 
 		
 		void Update ()
 		{
-			guiAlpha = 1-mGuiAlpha;
+			GUIAlpha = 1-guiAlpha;
 		}
 
 		bool CanLoadAsync ()
 		{
-			if(mLoadingScreenController == null)
+			if(loadingScreenController == null)
 			{
 				if(Application.HasProLicense())
 				{
@@ -148,32 +149,32 @@ namespace UGB
 				return false;
 			}
 
-			return mLoadingScreenController.CanLoadAsync();
+			return loadingScreenController.CanLoadAsync();
 		}
 
 		IEnumerator SceneChangeCoroutine()
 		{
-			mTransitionRunning = true;
+			transitionRunning = true;
 
 
 			// fade in
 			
-			if(mLoadingScreenController != null)
+			if(loadingScreenController != null)
 			{
 
-				mLoadingScreenController.OnAnimateInBegin(OnAnimateInDone);
-				while(!mAnimateInDone)
+				loadingScreenController.AnimateInBegin(OnAnimateInDone);
+				while(!animateInDone)
 				{
 					yield return 0;
 				}
 			}else
 			{
-				while(mGuiAlpha != 1)
+				while(guiAlpha != 1)
 				{
-					if(mFadeDuration != 0)
-						mGuiAlpha = Mathf.Lerp(0,1,(Time.time - mFadeStartTime) / mFadeDuration);
+					if(fadeDuration != 0)
+						guiAlpha = Mathf.Lerp(0,1,(Time.time - fadeStartTime) / fadeDuration);
 					else
-						mGuiAlpha = 1;
+						guiAlpha = 1;
 					yield return 0;
 				}
 			}
@@ -181,52 +182,52 @@ namespace UGB
 
 			// load level 
 
-			TryCall(OnSceneIsLoading);
+			TryCall(SceneIsLoading);
 			if(CanLoadAsync())
 			{
-				var loadingProcess = Application.LoadLevelAsync(mNextSceneIdx);
+				var loadingProcess = Application.LoadLevelAsync(nextSceneIdx);
 				
 
 				while(!loadingProcess.isDone)
 					yield return 0;
 			}else
 			{
-				Application.LoadLevel(mNextSceneIdx);
+				Application.LoadLevel(nextSceneIdx);
 			}
-			TryCall(OnSceneHasChanged);
+			TryCall(SceneHasChanged);
 				
 
 
 			// fade out
-			if(mLoadingScreenController != null)
+			if(loadingScreenController != null)
 			{
-				mLoadingScreenController.OnAnimateOutBegin(OnAnimateOutDone);
-				while(!mAnimateOutDone)
+				loadingScreenController.AnimateOutBegin(OnAnimateOutDone);
+				while(!animateOutDone)
 				{
 					yield return 0;
 				}
 			}
 
-			mFadeStartTime = Time.time;
-			while(mGuiAlpha != 0)
+			fadeStartTime = Time.time;
+			while(guiAlpha != 0)
 			{
-				if(mFadeDuration != 0)
-					mGuiAlpha = Mathf.Lerp(1,0,(Time.time - mFadeStartTime) / mFadeDuration);
+				if(fadeDuration != 0)
+					guiAlpha = Mathf.Lerp(1,0,(Time.time - fadeStartTime) / fadeDuration);
 				else
-					mGuiAlpha = 0;
+					guiAlpha = 0;
 				yield return 0;
 			}
 			
-			TryCall(OnSceneTransitionIsDone);
-			mTransitionRunning = false;
+			TryCall(SceneTransitionIsDone);
+			transitionRunning = false;
 		}
 
-		void TryCall(SceneTransitionDelegate pDelegate)
+		void TryCall(SceneTransitionDelegate callback)
 		{
 			try
 			{
-				if(pDelegate != null)
-					pDelegate(mNextSceneIdx);
+				if(callback != null)
+					callback(nextSceneIdx);
 			}catch(System.Exception e)
 			{
 				Debug.LogException(e);
@@ -235,13 +236,13 @@ namespace UGB
 
 		void OnGUI()
 		{
-			if(mGuiAlpha == 0)
+			if(guiAlpha == 0)
 				return;
 			// this will always be infront of everything
 			GUI.depth = int.MinValue;
-			GUI.color = new Color(1,1,1,mGuiAlpha);
+			GUI.color = new Color(1,1,1,guiAlpha);
 			
-			GUI.DrawTexture(new Rect(0,0,Screen.width,Screen.height) , mFadeTexture, ScaleMode.StretchToFill);
+			GUI.DrawTexture(new Rect(0,0,Screen.width,Screen.height) , fadeTexture, ScaleMode.StretchToFill);
 			
 		}
 	}
