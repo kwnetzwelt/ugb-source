@@ -23,7 +23,7 @@ namespace UGB.Input
 					inputEnabled = value;
 				}
 			}
-		};
+		}
 
 		/// <summary>
 		/// The number of currently active touches (not dead)
