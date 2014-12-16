@@ -18,14 +18,14 @@ namespace UGB.Input
 		
 		void OnEnable()
 		{
-			GInput.OnTouchStart += OnTouchStart;
-			GInput.OnTouchEnd += OnTouchEnd;
+			GInput.TouchStart += OnTouchStart;
+			GInput.TouchEnd += OnTouchEnd;
 		}
 		
 		void OnDisable()
 		{
-			GInput.OnTouchStart -= OnTouchStart;
-			GInput.OnTouchEnd -= OnTouchEnd;
+			GInput.TouchStart -= OnTouchStart;
+			GInput.TouchEnd -= OnTouchEnd;
 			OnPinchEnd = null;
 			OnPinchStart = null;
 		}

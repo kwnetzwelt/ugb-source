@@ -80,13 +80,13 @@ namespace UGB.Diagnostics
 			mHiddenTriggerRect = mHandleRect;
 			mVisibleTriggerRect = mContentRect;
 			
-			Game.Instance.gameInput.OnTapEvent += OnTap;
+			Game.Instance.gameInput.TapEvent += OnTap;
 			DontDestroyOnLoad(this.gameObject);
 		}
 
 		void OnDestroy()
 		{
-			Game.Instance.gameInput.OnTapEvent -= OnTap;
+			Game.Instance.gameInput.TapEvent -= OnTap;
 		}
 		
 		

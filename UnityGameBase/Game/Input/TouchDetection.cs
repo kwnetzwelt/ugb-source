@@ -4,43 +4,54 @@ using System.Collections.Generic;
 
 namespace UGB.Input
 {
+	/// <summary>
+	/// A class which handles touch detection and mouse events and emits corresponding events. 
+	/// Touches are persistant. That is, whenever a touch starts a new instance of UGB.Input.TouchInformation is created. 
+	/// Its data is then updated automatically by this class. 
+	/// </summary>
 	public class TouchDetection : GameComponent
 	{
+		/// <summary>
+		/// The number of currently active touches (not dead)
+		/// </summary>
+		/// <value>The current touch count.</value>
+		public int CurrentTouchCount
+		{
+			get { return touches.Count;}
+		}
 
-		public int currentTouchCnt
+
+		protected List<TouchInformation>touches = new List<TouchInformation>();
+		
+		/// <summary>
+		/// Number of touches ever started
+		/// </summary>
+		/// <value>The touch count.</value>
+		public static int TouchCount
 		{
-			get { return mTouches.Count;}
+			get { return touchCount;}
 		}
 		
-		protected List<TouchInformation>mTouches = new List<TouchInformation>();
+		private static int touchCount = 0;
 		
-		
-		public static int touchCnt
-		{
-			get { return mTouchCnt;}
-		}
-		
-		private static int mTouchCnt = 0;
-		
-		public delegate void OnTouchEventDelegate(TouchInformation _pTouchInfo);
+		public delegate void TouchEventDelegate(TouchInformation touchInfo);
 		
 		// Tap Event
-		public event OnTouchEventDelegate OnTapEvent;
+		public event TouchEventDelegate TapEvent;
 		// Swipe Event
-		public event OnTouchEventDelegate OnSwipeEvent;
+		public event TouchEventDelegate SwipeEvent;
 		// Finger Up
-		public event OnTouchEventDelegate OnTouchEnd;
+		public event TouchEventDelegate TouchEnd;
 		// Finger Down
-		public event OnTouchEventDelegate OnTouchStart;
+		public event TouchEventDelegate TouchStart;
 		// Finger generic update
-		public event OnTouchEventDelegate OnTouchUpdate;
+		public event TouchEventDelegate TouchUpdate;
 		
-		TouchInformation mMouseTouch;
+		TouchInformation mouseTouch;
 		
 		// Use this for initialization
 		void Start ()
 		{
-		
 		}
 		
 		// Update is called once per frame
@@ -64,37 +75,37 @@ namespace UGB.Input
 				CreateTouch(UnityEngine.Input.mousePosition,0);
 			}
 			
-			if(mMouseTouch != null)
+			if(mouseTouch != null)
 			{
-				mMouseTouch.Update(UnityEngine.Input.mousePosition,UnityEngine.Input.GetMouseButtonUp(0));
+				mouseTouch.Update(UnityEngine.Input.mousePosition,UnityEngine.Input.GetMouseButtonUp(0));
 				
-				if(OnTouchUpdate != null)
+				if(TouchUpdate != null)
 				{
-					OnTouchUpdate(mMouseTouch);
+					TouchUpdate(mouseTouch);
 				}
 				
-				if(mMouseTouch.IsTap)
+				if(mouseTouch.IsTap)
 				{
-					HandleTap(mMouseTouch);
+					HandleTap(mouseTouch);
 				}
-				if(mMouseTouch.IsSwipe)
+				if(mouseTouch.IsSwipe)
 				{
-					HandleSwipe(mMouseTouch);
+					HandleSwipe(mouseTouch);
 				}
 				
-				if(mMouseTouch.IsDead)
+				if(mouseTouch.IsDead)
 				{
-					DestroyTouch(mMouseTouch);
-					mMouseTouch = null;
+					DestroyTouch(mouseTouch);
+					mouseTouch = null;
 					return;
 				}
 			}
 		}
-		protected void UpdateTouch(Touch pTouchInfo)
+		protected void UpdateTouch(Touch touchInfo)
 		{
-			TouchInformation ti = GetTouch(pTouchInfo);
+			TouchInformation ti = GetTouch(touchInfo);
 			
-			if(pTouchInfo.phase == TouchPhase.Began)
+			if(touchInfo.phase == TouchPhase.Began)
 			{
 				if(ti != null)
 				{
@@ -102,17 +113,17 @@ namespace UGB.Input
 					ti.phase = TouchPhase.Canceled;
 					DestroyTouch(ti);		
 				}
-				CreateTouch(pTouchInfo);
+				CreateTouch(touchInfo);
 				return;
 			}
 			
 			
 			if(ti != null)
 			{
-				ti.Update(pTouchInfo);
-				if(OnTouchUpdate != null)
+				ti.Update(touchInfo);
+				if(TouchUpdate != null)
 				{
-					OnTouchUpdate(ti);
+					TouchUpdate(ti);
 				}
 			}
 
@@ -134,75 +145,75 @@ namespace UGB.Input
 			
 		}
 				
-		void HandleSwipe(TouchInformation pTouchInfo)
+		void HandleSwipe(TouchInformation touchInfo)
 		{
-			if(OnSwipeEvent != null)
+			if(SwipeEvent != null)
 			{
-				OnSwipeEvent(pTouchInfo);
+				SwipeEvent(touchInfo);
 			}
 		}
 		
-		void HandleTap(TouchInformation pTouchInfo)
+		void HandleTap(TouchInformation touchInfo)
 		{
-			if(OnTapEvent != null)
+			if(TapEvent != null)
 			{
-				OnTapEvent(pTouchInfo);
+				TapEvent(touchInfo);
 			}
 		}
-		protected TouchInformation GetTouch(int pId)
+		protected TouchInformation GetTouch(int id)
 		{
-			foreach(TouchInformation ti in mTouches)
+			foreach(TouchInformation ti in touches)
 			{
-				if(ti.id == pId)
+				if(ti.id == id)
 					return ti;
 			}
 			return null;
 		}
-		protected TouchInformation GetTouch(Touch pTouch)
+		protected TouchInformation GetTouch(Touch touch)
 		{
-			foreach(TouchInformation ti in mTouches)
+			foreach(TouchInformation ti in touches)
 			{
-				if(ti.Handles(pTouch))
+				if(ti.Handles(touch))
 					return ti;
 			}
 			return null;
 		}
 
-		void DestroyTouch (TouchInformation pTouchInfo)
+		void DestroyTouch (TouchInformation touchInfo)
 		{
-			if(OnTouchEnd != null)
+			if(TouchEnd != null)
 			{
-				OnTouchEnd(pTouchInfo);
+				TouchEnd(touchInfo);
 			}
 			
-			mTouches.Remove(pTouchInfo);
+			touches.Remove(touchInfo);
 		}
-		void CreateTouch(Vector2 pPosition,int pBtnId)
+		void CreateTouch(Vector2 position,int btnId)
 		{
-			mTouchCnt = mTouchCnt+1;
-			TouchInformation ti = new TouchInformation(pPosition,mTouchCnt,pBtnId);
+			touchCount = touchCount+1;
+			TouchInformation ti = new TouchInformation(position,touchCount,btnId);
 			CreateTouch(ti);
-			if(mMouseTouch != null)
+			if(mouseTouch != null)
 			{
-				DestroyTouch(mMouseTouch);
+				DestroyTouch(mouseTouch);
 			}
-			mMouseTouch = ti;
+			mouseTouch = ti;
 		}
-		void CreateTouch(Touch pTouch)
+		void CreateTouch(Touch touch)
 		{
-			mTouchCnt = mTouchCnt+1;
+			touchCount = touchCount+1;
 			
-			TouchInformation ti = new TouchInformation(pTouch,mTouchCnt);
+			TouchInformation ti = new TouchInformation(touch,touchCount);
 			CreateTouch(ti);
 		}
-		void CreateTouch(TouchInformation pTouchInfo)
+		void CreateTouch(TouchInformation touchInfo)
 		{
 			
-			mTouches.Add(pTouchInfo);
+			touches.Add(touchInfo);
 			
-			if(OnTouchStart != null)
+			if(TouchStart != null)
 			{
-				OnTouchStart(pTouchInfo);
+				TouchStart(touchInfo);
 			}
 		}
 	}

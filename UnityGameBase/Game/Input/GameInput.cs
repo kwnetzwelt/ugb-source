@@ -24,16 +24,16 @@ namespace UGB.Input
 		
 		protected void Start()
 		{
-			OnTouchStart += HandleOnTouchStart;
-			OnTouchEnd += HandleOnTouchEnd;
-			OnSwipeEvent += HandleOnSwipeEvent;
+			TouchStart += HandleOnTouchStart;
+			TouchEnd += HandleOnTouchEnd;
+			SwipeEvent += HandleOnSwipeEvent;
 		}
 		protected override void OnDestroy()
 		{
 			base.OnDestroy();
-			OnTouchStart -= HandleOnTouchStart;
-			OnTouchEnd -= HandleOnTouchEnd;
-			OnSwipeEvent -= HandleOnSwipeEvent;
+			TouchStart -= HandleOnTouchStart;
+			TouchEnd -= HandleOnTouchEnd;
+			SwipeEvent -= HandleOnSwipeEvent;
 		}
 		void HandleOnTouchEnd (TouchInformation pTouchInfo)
 		{
