@@ -13,49 +13,49 @@ namespace UGB.Utils
 {
 	public class UGBHelpers
 	{
-		public static void LogStackTrace (string pText)
+		public static void LogStackTrace(string text)
 		{
-			System.Diagnostics.Debug.Assert(false, pText);
-			
+			System.Diagnostics.Debug.Assert(false, text);
 		}
 
 		/// <summary>
 		/// Tries to get a component of the given type on the GameObject of the given MonoBehaviour. If none exists adds a component to the GameObject. 
 		/// </summary>
 		/// <returns>The component if not exists.</returns>
-		/// <param name="pTarget">P target.</param>
+		/// <param name="target">target.</param>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public static T CreateComponentIfNotExists<T> (MonoBehaviour pTarget) where T : Component
+		public static T CreateComponentIfNotExists<T>(MonoBehaviour target) where T : Component
 		{
-			T comp = pTarget.gameObject.GetComponent<T>();
-			if(comp != null)
+			T comp = target.gameObject.GetComponent<T>();
+			if (comp != null)
 				return comp;
 			
-			return pTarget.gameObject.AddComponent<T>();
+			return target.gameObject.AddComponent<T>();
 		}
 
 		/// <summary>
 		///  Tries to get a component of the given type on the given GameObject. If none exists adds a component to the GameObject. 
 		/// </summary>
 		/// <returns>The component if not exists.</returns>
-		/// <param name="pTarget">P target.</param>
+		/// <param name="target">target.</param>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public static T CreateComponentIfNotExists<T> (GameObject pTarget) where T : Component
+		public static T CreateComponentIfNotExists<T>(GameObject target) where T : Component
 		{
-			T comp = pTarget.GetComponent<T>();
-			if(comp != null)
+			T comp = target.GetComponent<T>();
+			if (comp != null)
 				return comp;
 			
-			return pTarget.AddComponent<T>();
+			return target.AddComponent<T>();
 		}
 
 		/// <summary>
 		/// Returns true if the game is running on a mobile platform. 
 		/// </summary>
 		/// <value><c>true</c> if on mobile platform; otherwise, <c>false</c>.</value>
-		public static bool OnMobilePlatform 
+		public static bool OnMobilePlatform
 		{
-			get {
+			get
+			{
 				return RuntimePlatform.WP8Player == Application.platform ||
 					RuntimePlatform.Android == Application.platform ||
 					RuntimePlatform.BlackBerryPlayer == Application.platform ||
@@ -73,17 +73,18 @@ namespace UGB.Utils
 		/// Randomizes the given list by iterating all entries and moving them to a random location within the list. 
 		/// </summary>
 		/// <param name="list">List.</param>
-		public static void RandomizeList( IList list)  
+		public static void RandomizeList(IList list)
 		{  
-		    System.Random rng = new System.Random();  
-		    int n = list.Count;  
-		    while (n > 1) {  
-		        n--;  
-		        int k = rng.Next(n + 1);  
-		        var value = list[k];  
-		        list[k] = list[n];  
-		        list[n] = value;  
-		    }
+			System.Random rng = new System.Random();  
+			int n = list.Count;  
+			while (n > 1)
+			{  
+				n--;  
+				int k = rng.Next(n + 1);  
+				var value = list [k];  
+				list [k] = list [n];  
+				list [n] = value;  
+			}
 		}
 
 		/// <summary>
@@ -95,27 +96,27 @@ namespace UGB.Utils
 		public static IEnumerable<T> GetRandom<T>(List<T> list)
 		{
 			System.Random random = new System.Random();
-		    List<T> copy = new List<T>(list);
+			List<T> copy = new List<T>(list);
 		
-		    while (copy.Count > 0)
-		    {
-		        int index = random.Next(copy.Count);
-		        yield return copy[index];
-		        copy.RemoveAt(index);
-		    }	
+			while (copy.Count > 0)
+			{
+				int index = random.Next(copy.Count);
+				yield return copy [index];
+				copy.RemoveAt(index);
+			}	
 		}
 
 		[System.Obsolete("You should use Transform.FindChild(name) instead.")]
 		public static Transform FindInChildren(Transform parent, string name)
 		{
 
-			foreach(Transform child in parent)
+			foreach (Transform child in parent)
 			{
-				if(child.name == name)
+				if (child.name == name)
 					return child;
 				Transform childSearch = FindInChildren(child, name);
 				
-				if(childSearch != null)
+				if (childSearch != null)
 					return childSearch;
 			}
 			
@@ -129,10 +130,10 @@ namespace UGB.Utils
 		public static void Encapsulate(Transform transform, ref Bounds bounds)
 		{
 			Renderer r = transform.GetComponent<Renderer>();
-			if(r != null)
-				bounds.Encapsulate( r.bounds );
+			if (r != null)
+				bounds.Encapsulate(r.bounds);
 			
-			foreach(Transform t in transform)
+			foreach (Transform t in transform)
 			{
 				Encapsulate(t, ref bounds);
 			}
@@ -146,9 +147,9 @@ namespace UGB.Utils
 		{
 			parent.gameObject.layer = layer;
 			
-			foreach(Transform t in parent)
+			foreach (Transform t in parent)
 			{
-				SetLayerRecursively(t,layer);
+				SetLayerRecursively(t, layer);
 			}
 		}
 
@@ -159,37 +160,60 @@ namespace UGB.Utils
 		/// </summary>
 		/// <returns>The types with attribute.</returns>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public static List<System.Type> GetTypesWithAttribute<T>()
+		public static List<Type> GetTypesWithAttribute<T>()
 		{
 			var searchType = typeof(T);
-
-#if UNITY_METRO && !UNITY_EDITOR
-			var currentAssembly = searchType.GetTypeInfo().Assembly;
-
-			var outList = new List<Type>();
-			
-			var types = currentAssembly.DefinedTypes; 
-			foreach(var t in types)
+			var list = new List<Type>();
+			var assemblies = GetAssembly<T>();
+			foreach (var assembly in assemblies)
 			{
-				if(t.GetCustomAttribute(searchType) != null)
+				var types = GetAssemblyTypes(assembly);
+				foreach (var t in types)
 				{
-					outList.Add(t.AsType());
-				}
-			}
-			return outList;
-#else
-			var list = new List<System.Type>();
-
-			foreach( var assembly in System.AppDomain.CurrentDomain.GetAssemblies())
-			{
-				foreach(System.Type type in assembly.GetTypes()) {
-					if (type.GetCustomAttributes(searchType, true).Length > 0) {
-						list.Add(type);
+					// Replaced the type.GetCustromAttributes approach with this reflection-context-only one.
+					// The t.GetCA will try to create the custom attribute object which can lead to crashes e.g. in IL2CPP context.
+					// Anyhow the CustomAttribute isn't supported for IL2CPP.
+					var data = CustomAttributeData.GetCustomAttributes(t);
+					foreach (var cad in data)
+					{
+						if (cad.Constructor.DeclaringType == searchType)
+							list.Add(t);
 					}
 				}
 			}
 			return list;
-#endif
+		}
+
+		private static Assembly[] GetAssembly<T>()
+		{
+			Assembly[] assembly;
+			#if UNITY_METRO && !UNITY_EDITOR
+			var ca = typeof(T).GetTypeInfo().Assembly;
+			assembly = new Assembly[1]
+			{
+				ca
+			};
+			#else
+			assembly = AppDomain.CurrentDomain.GetAssemblies();
+			#endif
+			return assembly;
+		}
+
+		private static Type[] GetAssemblyTypes(Assembly assembly)
+		{
+			Type[] types;
+			#if UNITY_METRO && !UNITY_EDITOR
+			typeInfos = assembly.DefinedTypes; //IEnumerable<TypeInfo>
+			List<Type> justTypes = new List<Type>();
+			foreach(var ti in typeInfos)
+			{
+				justTypes.Add(ti.AsType());
+			}
+			types = justTypes.ToArray();
+			#else
+			types = assembly.GetTypes();
+			#endif
+			return types;
 		}
 
 		/// <summary>
@@ -197,39 +221,34 @@ namespace UGB.Utils
 		/// </summary>
 		/// <returns>The types assignable from.</returns>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public static List<System.Type> GetTypesAssignableFrom<T>()
+		public static List<Type> GetTypesAssignableFrom<T>()
 		{
-			var list = new List<System.Type>();
+			var list = new List<Type>();
 			var searchType = typeof(T);
+			var assemblies = GetAssembly<T>();
 
-#if UNITY_METRO && !UNITY_EDITOR
-			var currentAssembly = searchType.GetTypeInfo().Assembly;
-			
-			var outList = new List<Type>();
-			
-			var types = currentAssembly.DefinedTypes;
-			foreach (var t in types)
+			foreach (var assembly in assemblies)
 			{
-				if (t.ImplementedInterfaces.Contains(searchType))
-					outList.Add(t.AsType());
-			}
-			return outList;
-#else
-
-			foreach( var assembly in System.AppDomain.CurrentDomain.GetAssemblies())
-			{
-				foreach(System.Type type in assembly.GetTypes()) {
-					if (searchType.IsAssignableFrom(type) && type != searchType) {
-						list.Add(type);
+				var types = GetAssemblyTypes(assembly);
+				foreach (var t in types)
+				{
+					#if UNITY_METRO && !UNITY_EDITOR
+					if (t.ImplementedInterfaces.Contains(searchType))
+					{
+						list.Add(t);
 					}
+					#else
+					if (searchType.IsAssignableFrom(t) && t != searchType)
+					{
+						list.Add(t);
+					}
+					#endif
 				}
 			}
 			return list;
-#endif
 		}
 
 		#endregion
-
 	}
 
 }
