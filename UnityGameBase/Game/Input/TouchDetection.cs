@@ -11,14 +11,15 @@ namespace UGB.Input
 	/// </summary>
 	public class TouchDetection : GameComponent
 	{
-		private bool inputEnabled;
+		private bool inputEnabled = true;
 
-
-		public bool InputEnabled {
+		public bool InputEnabled
+		{
 			get { return inputEnabled; }
-			set {
+			set
+			{
 				// if input gets disabled, we end all touches. 
-				if(inputEnabled != value)
+				if (inputEnabled != value)
 				{
 					inputEnabled = value;
 				}
@@ -64,56 +65,56 @@ namespace UGB.Input
 		TouchInformation mouseTouch;
 		
 		// Use this for initialization
-		void Start ()
+		void Start()
 		{
 		}
 		
 		// Update is called once per frame
-		protected virtual void Update ()
+		protected virtual void Update()
 		{
 			bool anyTouchBegan = false;
-			foreach(Touch t in UnityEngine.Input.touches)
+			foreach (Touch t in UnityEngine.Input.touches)
 			{
-				if(t.phase == TouchPhase.Began)
+				if (t.phase == TouchPhase.Began)
 					anyTouchBegan = true;
 				UpdateTouch(t);
 			}
-			if(!anyTouchBegan)
+			if (!anyTouchBegan)
 				UpdateMouse();
 
 		}
 		protected void UpdateMouse()
 		{
-			if(inputEnabled && UnityEngine.Input.GetMouseButtonDown(0))
+			if (inputEnabled && UnityEngine.Input.GetMouseButtonDown(0))
 			{
-				CreateTouch(UnityEngine.Input.mousePosition,0);
+				CreateTouch(UnityEngine.Input.mousePosition, 0);
 			}
 			
-			if(mouseTouch != null)
+			if (mouseTouch != null)
 			{
-				if(!inputEnabled)
+				if (!inputEnabled)
 				{
-					mouseTouch.Update(UnityEngine.Input.mousePosition,true);
-				}else
+					mouseTouch.Update(UnityEngine.Input.mousePosition, true);
+				} else
 				{
-					mouseTouch.Update(UnityEngine.Input.mousePosition,UnityEngine.Input.GetMouseButtonUp(0));
+					mouseTouch.Update(UnityEngine.Input.mousePosition, UnityEngine.Input.GetMouseButtonUp(0));
 				}
 				
-				if(TouchUpdate != null)
+				if (TouchUpdate != null)
 				{
 					TouchUpdate(mouseTouch);
 				}
 				
-				if(mouseTouch.IsTap)
+				if (mouseTouch.IsTap)
 				{
 					HandleTap(mouseTouch);
 				}
-				if(mouseTouch.IsSwipe)
+				if (mouseTouch.IsSwipe)
 				{
 					HandleSwipe(mouseTouch);
 				}
 				
-				if(mouseTouch.IsDead)
+				if (mouseTouch.IsDead)
 				{
 					DestroyTouch(mouseTouch);
 					mouseTouch = null;
@@ -125,9 +126,9 @@ namespace UGB.Input
 		{
 			TouchInformation ti = GetTouch(touchInfo);
 			
-			if(touchInfo.phase == TouchPhase.Began)
+			if (touchInfo.phase == TouchPhase.Began)
 			{
-				if(ti != null)
+				if (ti != null)
 				{
 					// Touch was started twice; weird! Bug?
 					ti.phase = TouchPhase.Canceled;
@@ -138,33 +139,33 @@ namespace UGB.Input
 			}
 			
 			
-			if(ti != null)
+			if (ti != null)
 			{
 
 				ti.Update(touchInfo);
 
-				if(!inputEnabled)
+				if (!inputEnabled)
 				{
 					ti.phase = TouchPhase.Canceled;
 				}
 
-				if(TouchUpdate != null)
+				if (TouchUpdate != null)
 				{
 					TouchUpdate(ti);
 				}
 			}
 
-			if(ti.IsTap)
+			if (ti.IsTap)
 			{
 				HandleTap(ti);
 			}
 			
-			if(ti.IsSwipe)
+			if (ti.IsSwipe)
 			{
 				HandleSwipe(ti);
 			}
 			
-			if(ti.IsDead)
+			if (ti.IsDead)
 			{
 				DestroyTouch(ti);
 				return;
@@ -174,7 +175,7 @@ namespace UGB.Input
 				
 		void HandleSwipe(TouchInformation touchInfo)
 		{
-			if(SwipeEvent != null)
+			if (SwipeEvent != null)
 			{
 				SwipeEvent(touchInfo);
 			}
@@ -182,33 +183,33 @@ namespace UGB.Input
 		
 		void HandleTap(TouchInformation touchInfo)
 		{
-			if(TapEvent != null)
+			if (TapEvent != null)
 			{
 				TapEvent(touchInfo);
 			}
 		}
 		protected TouchInformation GetTouch(int id)
 		{
-			foreach(TouchInformation ti in touches)
+			foreach (TouchInformation ti in touches)
 			{
-				if(ti.id == id)
+				if (ti.id == id)
 					return ti;
 			}
 			return null;
 		}
 		protected TouchInformation GetTouch(Touch touch)
 		{
-			foreach(TouchInformation ti in touches)
+			foreach (TouchInformation ti in touches)
 			{
-				if(ti.Handles(touch))
+				if (ti.Handles(touch))
 					return ti;
 			}
 			return null;
 		}
 
-		void DestroyTouch (TouchInformation touchInfo)
+		void DestroyTouch(TouchInformation touchInfo)
 		{
-			if(TouchEnd != null)
+			if (TouchEnd != null)
 			{
 				TouchEnd(touchInfo);
 			}
@@ -217,18 +218,18 @@ namespace UGB.Input
 		}
 
 
-		void CreateTouch(Vector2 position,int btnId)
+		void CreateTouch(Vector2 position, int btnId)
 		{
 			TouchInformation ti = null;
 			// we don't create any touches if input is disabled. 
-			if(InputEnabled)
+			if (InputEnabled)
 			{
 				touchCount++;
-				ti = new TouchInformation(position,touchCount,btnId);
+				ti = new TouchInformation(position, touchCount, btnId);
 				CreateTouch(ti);
 			}
 
-			if(mouseTouch != null)
+			if (mouseTouch != null)
 			{
 				DestroyTouch(mouseTouch);
 			}
@@ -240,12 +241,12 @@ namespace UGB.Input
 		void CreateTouch(Touch touch)
 		{
 			// we don't create any touches if input is disabled. 
-			if(InputEnabled)
+			if (InputEnabled)
 			{
 
 				touchCount++;
 				
-				TouchInformation ti = new TouchInformation(touch,touchCount);
+				TouchInformation ti = new TouchInformation(touch, touchCount);
 				CreateTouch(ti);
 			}
 		}
@@ -254,12 +255,12 @@ namespace UGB.Input
 		void CreateTouch(TouchInformation touchInfo)
 		{
 			// we don't create any touches if input is disabled. 
-			if(InputEnabled)
+			if (InputEnabled)
 			{
 
 				touches.Add(touchInfo);
 				
-				if(TouchStart != null)
+				if (TouchStart != null)
 				{
 					TouchStart(touchInfo);
 				}
