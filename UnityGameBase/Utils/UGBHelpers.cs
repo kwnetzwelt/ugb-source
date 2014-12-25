@@ -19,36 +19,6 @@ namespace UGB.Utils
 		}
 
 		/// <summary>
-		/// Tries to get a component of the given type on the GameObject of the given MonoBehaviour. If none exists adds a component to the GameObject. 
-		/// </summary>
-		/// <returns>The component if not exists.</returns>
-		/// <param name="target">target.</param>
-		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public static T CreateComponentIfNotExists<T>(MonoBehaviour target) where T : Component
-		{
-			T comp = target.gameObject.GetComponent<T>();
-			if (comp != null)
-				return comp;
-			
-			return target.gameObject.AddComponent<T>();
-		}
-
-		/// <summary>
-		///  Tries to get a component of the given type on the given GameObject. If none exists adds a component to the GameObject. 
-		/// </summary>
-		/// <returns>The component if not exists.</returns>
-		/// <param name="target">target.</param>
-		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public static T CreateComponentIfNotExists<T>(GameObject target) where T : Component
-		{
-			T comp = target.GetComponent<T>();
-			if (comp != null)
-				return comp;
-			
-			return target.AddComponent<T>();
-		}
-
-		/// <summary>
 		/// Returns true if the game is running on a mobile platform. 
 		/// </summary>
 		/// <value><c>true</c> if on mobile platform; otherwise, <c>false</c>.</value>
@@ -64,9 +34,9 @@ namespace UGB.Utils
 		}
 
 		[System.Obsolete("You should use Resources.Load<T> instead.")]
-		public static T GetResource<T>(string pPath) where T : UnityEngine.Object
+		public static T GetResource<T>(string path) where T : UnityEngine.Object
 		{
-			return Resources.Load<T>(pPath);
+			return Resources.Load<T>(path);
 		}
 
 		/// <summary>

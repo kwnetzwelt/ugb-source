@@ -13,7 +13,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-
 /*! \page base_lib_intro Introduction
 
 \section purpose_sec Purpose 
@@ -85,7 +84,7 @@ To actually use the implementation add the UGB.GameLogicImplementationAttribute 
 /// <summary>
 /// Game Main Class. Please look at \ref base_lib_getting_started for further instructions on using it. 
 /// </summary>
-using UGB.Utils;
+using UGB.Extensions;
 using UGB.Input;
 using UGB.Audio;
 using UGB.Player;
@@ -95,12 +94,7 @@ namespace UGB
 {
 	public class Game : MonoBehaviour
 	{
-		
 		public bool testing;
-		
-
-
-
 
 		public static Game Instance
 		{
@@ -132,79 +126,74 @@ namespace UGB
 
 		System.Type GetGameLogicType()
 		{
-			var implementations = UGBHelpers.GetTypesWithAttribute<GameLogicImplementationAttribute>();
-			if(implementations.Count > 0)
+			var implementations = Utils.UGBHelpers.GetTypesWithAttribute<GameLogicImplementationAttribute>();
+			if (implementations.Count > 0)
 			{
-				Debug.Log("Found Game logic class: " + implementations[0].Name);
-				return implementations[0];
+				Debug.Log("Found Game logic class: " + implementations [0].Name);
+				return implementations [0];
 			}
 			return null;
 		}
 
 		void InitLogicImplementation()
 		{
-			if(CurrentGameLogic != null)
+			if (CurrentGameLogic != null)
 			{
 				Debug.Log("Game logic already set. Not creating a new instance. ");
 				return;
 			}
 			System.Type logicType = GetGameLogicType();
-			if(logicType == null)
+			if (logicType == null)
 			{
-				if(CurrentGameLogic == null)
+				if (CurrentGameLogic == null)
 					CurrentGameLogic = new DontUse.LogicDummy();
 				Debug.LogError("No Logic found. Add the GameLogicImplementation Attribute to a class derived from GameLogicImplementationBase. ");
-			}else
+			} else
 			{
-	#if !UNITY_METRO
-				if(typeof(GameLogicImplementationBase).IsAssignableFrom(logicType))
+				#if !UNITY_METRO
+				if (typeof(GameLogicImplementationBase).IsAssignableFrom(logicType))
 				{
 					var t = System.Activator.CreateInstance(logicType);	
 					CurrentGameLogic = t as GameLogicImplementationBase;
-				}else
+				} else
 				{
 					Debug.LogError("Your Game Logic Implementation is not of type " + typeof(GameLogicImplementationBase).ToString());
 				}
-	#else
+				#else
 				var t = System.Activator.CreateInstance(logicType);	
 				CurrentGameLogic = t as GameLogicImplementationBase;
-	#endif
+				#endif
 			}
-
-
 		}
 		
-		void Initialize ()
+		void Initialize()
 		{
 			initialized = true;
 			Instance = this;
 			DontDestroyOnLoad(this);
 
-			ThreadingBridge.Initialize();
+			Utils.ThreadingBridge.Initialize();
 
 			InitLogicImplementation();
 			CurrentGameLogic.Start();
 			
-			gameOptions = UGBHelpers.CreateComponentIfNotExists<GameOptions>(this);
-			gameState = UGBHelpers.CreateComponentIfNotExists<GameStateManager>(this);
-			gamePlayer = UGBHelpers.CreateComponentIfNotExists<GamePlayer>(this);
-			gameMusic = UGBHelpers.CreateComponentIfNotExists<GameMusic>(this);
-			gameLoca = UGBHelpers.CreateComponentIfNotExists<GameLocalization>(this);
+			gameOptions = this.AddComponentIfNotExists<GameOptions>();
+			gameState = this.AddComponentIfNotExists<GameStateManager>();
+			gamePlayer = this.AddComponentIfNotExists<GamePlayer>();
+			gameMusic = this.AddComponentIfNotExists<GameMusic>();
+			gameLoca = this.AddComponentIfNotExists<GameLocalization>();
 			gameLoca.Initialize();
-			gamePause = UGBHelpers.CreateComponentIfNotExists<GamePause>(this);
-			gameInput = UGBHelpers.CreateComponentIfNotExists<GameInput>(this);
-			sceneTransition = UGBHelpers.CreateComponentIfNotExists<SceneTransition>(this);
-			gameData = UGBHelpers.CreateComponentIfNotExists<GameData>(this);
+			gamePause = this.AddComponentIfNotExists<GamePause>();
+			gameInput = this.AddComponentIfNotExists<GameInput>();
+			sceneTransition = this.AddComponentIfNotExists<SceneTransition>();
+			gameData = this.AddComponentIfNotExists<GameData>();
 			
 			firstFrame = true;
-			
 		}
-		
-		
 		
 		void OnEnable()
 		{
-			if((testing && !Application.isEditor) || (Application.isEditor && testing && Instance != null))
+			if ((testing && !Application.isEditor) || (Application.isEditor && testing && Instance != null))
 			{
 				
 					
@@ -212,34 +201,30 @@ namespace UGB
 				Debug.Log("Destroyed Test Game Instance");
 				return;
 			}
-			if(Instance != null)
+			if (Instance != null)
 			{
 				GameObject.Destroy(this);
 				return;
 			}
 			Instance = this;
-			if(!initialized)
+			if (!initialized)
 				Initialize();
 		}
-		
-		
 		
 		public void QuitGame()
 		{
 			Application.Quit();
 		}
 		
-		
-		
 		void Update()
 		{
-			if(UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+			if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
 			{
-				if(gameOptions.IsOptionsDialogVisible)
+				if (gameOptions.IsOptionsDialogVisible)
 					gameOptions.IsOptionsDialogVisible = false;
 				
 			}
-			if(firstFrame)
+			if (firstFrame)
 			{
 				firstFrame = false;
 				
@@ -252,13 +237,13 @@ namespace UGB
 		/// This can be used to force a reload of all visual elements. 
 		/// \see GameLogicImplementationBase::OnBeforeRestart
 		/// </summary>
-		public void Restart ()
+		public void Restart()
 		{
-			if(!CurrentGameLogic.OnBeforeRestart())
+			if (!CurrentGameLogic.OnBeforeRestart())
 				return;
 			
 			UnityEngine.Object[] allGameObjects = FindObjectsOfType(typeof(GameObject)); 
-			foreach(GameObject go in allGameObjects)
+			foreach (GameObject go in allGameObjects)
 				GameObject.Destroy(go);
 			Application.LoadLevel(1);
 		}
@@ -269,22 +254,21 @@ namespace UGB
 		/// \see GameLogicImplementationBase::OnBeforePause
 		/// </summary>
 		/// <param name="pValue">If set to <c>true</c> p value.</param>
-		public void PauseGame (bool pValue)
+		public void PauseGame(bool pValue)
 		{
-			if(!CurrentGameLogic.OnBeforePause())
+			if (!CurrentGameLogic.OnBeforePause())
 				return;
-			UnityEngine.Object[] objects = FindObjectsOfType (typeof(GameObject));
+			UnityEngine.Object[] objects = FindObjectsOfType(typeof(GameObject));
 			
 			foreach (GameObject go in objects)
 			{
-				go.SendMessage ( "OnPauseGame", pValue , SendMessageOptions.DontRequireReceiver);
+				go.SendMessage("OnPauseGame", pValue, SendMessageOptions.DontRequireReceiver);
 			}
 		}
 		
-		
 		public static void SetTargetFramerate(int pFrames)
 		{
-			if(Application.targetFrameRate != pFrames)
+			if (Application.targetFrameRate != pFrames)
 			{
 				Application.targetFrameRate = pFrames;
 			}
@@ -295,5 +279,4 @@ namespace UGB
 			CurrentGameLogic = pLogic;
 		}
 	}
-
 }
