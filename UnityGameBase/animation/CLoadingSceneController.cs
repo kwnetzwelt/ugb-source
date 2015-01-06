@@ -39,7 +39,7 @@ namespace UGB.Animation
 					yield return 0;
 			}
 
-			loadingScene.camera.enabled = false;
+			loadingScene.GetComponent<Camera>().enabled = false;
 			initialized = true;
 
 			if(doneCallback != null)
@@ -48,7 +48,7 @@ namespace UGB.Animation
 
 		public void AnimateInBegin (Action doneCallback)
 		{
-			loadingScene.camera.enabled = true;
+			loadingScene.GetComponent<Camera>().enabled = true;
 			var animation = loadingScene.GetComponent<UnityEngine.Animation>();
 			animation.Play( loadingScene.inAnimation.name );
 			StartCoroutine(WaitForEndOfAnimation(loadingScene.inAnimation.name, () => {
@@ -67,7 +67,7 @@ namespace UGB.Animation
 			animation.Play(loadingScene.outAnimation.name);
 			StartCoroutine(WaitForEndOfAnimation(loadingScene.outAnimation.name, () => {
 
-				loadingScene.camera.enabled = false;
+				loadingScene.GetComponent<Camera>().enabled = false;
 
 				if(doneCallback != null)
 					doneCallback();
