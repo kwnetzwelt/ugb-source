@@ -21,34 +21,34 @@ namespace UGB.Globalization
 		public Languages mCurrentLanguage = Languages.Invalid;
 		public Languages currentLanguage
 		{
-			get {return mCurrentLanguage; }
+			get { return mCurrentLanguage; }
 		}
 
-		public void SetLanguage (int pLanguage)
+		public void SetLanguage(int pLanguage)
 		{
 			mCurrentLanguage = pLanguage;
 			Initialize();
 		}
 		public string GetText(string pKey, params object[] pParams)
 		{
-			if(mData != null)
+			if (mData != null)
 			{
-				return System.String.Format(mData.GetText(currentLanguage,pKey),pParams);
+				return System.String.Format(mData.GetText(pKey), pParams);
 			}
 			return null;
 		}
 		public string GetText(string pKey)
 		{
-			if(mData != null)
+			if (mData != null)
 			{
-				return mData.GetText(currentLanguage,pKey);
+				return mData.GetText(pKey);
 			}
 			return null;
 		}
 		
 		public void Initialize()
 		{
-			mData = LocaData.Load( GetCurrentLanguageShort() );
+			mData = LocaData.Load(GetCurrentLanguageShort());
 		}
 		
 		public static string GetCurrentLanguageShort()
@@ -57,12 +57,12 @@ namespace UGB.Globalization
 			Languages defLanguageShort = GetSystemLanguageShort();
 			
 			// checking for language setting in playerprefs
-			defLanguageShort = PlayerPrefs.GetInt(GameOptions.LanguageOption,defLanguageShort);
+			defLanguageShort = PlayerPrefs.GetInt(GameOptions.LanguageOption, defLanguageShort);
 
 			// enumerating all langauges to find a match with the language set in the system
-			foreach(int lang in Languages.Enumerate())
+			foreach (int lang in Languages.Enumerate())
 			{
-				if((Languages)lang == defLanguageShort)
+				if ((Languages)lang == defLanguageShort)
 				{
 					return defLanguageShort;
 				}
@@ -84,9 +84,9 @@ namespace UGB.Globalization
 			
 			string sysLang = lang.ToString();
 			
-			foreach(CultureInfo ci in GetCultures())
+			foreach (CultureInfo ci in GetCultures())
 			{
-				if(ci.DisplayName == sysLang)
+				if (ci.DisplayName == sysLang)
 				{
 					return ci.Name;
 				}
@@ -97,11 +97,11 @@ namespace UGB.Globalization
 
 		static CultureInfo[] GetCultures()
 		{
-	#if UNITY_METRO && !UNITY_EDITOR
+			#if UNITY_METRO && !UNITY_EDITOR
 			return CultureHelper.GetCultures( CultureHelper.CultureTypes.AllCultures ).ToArray();
-	#else
+			#else
 			return CultureInfo.GetCultures(CultureTypes.AllCultures);
-	#endif
+			#endif
 		}
 
 	}

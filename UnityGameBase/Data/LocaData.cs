@@ -24,13 +24,17 @@ namespace UGB.Data
 		
 		XmlLocaData mXmlData;
 		
-		public string GetText(Languages pLang, string pKey)
+		public string GetText(string pKey)
 		{
+			if (pKey == null)
+				return "Empty Key!";
+		
 			if (mXmlData.mData.ContainsKey(pKey))
 				return mXmlData.mData [pKey];
-			
+				
 			return "KNF:" + pKey;
 		}
+		
 	#if UNITY_EDITOR
 		public void AddText(string pKey, string pText)
 		{
@@ -42,16 +46,59 @@ namespace UGB.Data
 		{
 			if (Application.isPlaying)
 				return Load(Game.Instance.gameLoca.currentLanguage.ToString());
-			
 			return null;
 		}
-		public static LocaData Load(string pLanguageShort)
+		
+		#if UNITY_EDITOR
+		public static LocaData LoadFromEditor(string pLanguageShort)
 		{
 			LocaData lData = new LocaData();
-			string path = "loca/loca_" + pLanguageShort;
+			string path = Application.dataPath + "/Resources/loca/loca_" + pLanguageShort;
 			try
 			{
 				FileInfo file = new FileInfo(path);
+				if (!file.Exists)
+				{
+					Debug.LogWarning("Localization: File not found: " + file.FullName);
+					return lData;
+				}
+				
+				path = Path.GetFileNameWithoutExtension(path);
+				path = "loca/" + path;
+				TextAsset ta = Resources.Load(path) as TextAsset;
+				
+				MemoryStream ms = new MemoryStream(ta.bytes);
+				
+				XmlSerializer s = new XmlSerializer(typeof(XmlLocaData));
+				XmlLocaData data = s.Deserialize(ms) as XmlLocaData;
+				
+				lData.mXmlData = data;
+				
+				lData.mXmlData.PostRead();
+				
+			}
+			catch (Exception e)
+			{
+				Debug.LogWarning("Error loading loca file for requested language. " + e.Message);
+				lData.mXmlData = new XmlLocaData();
+				lData.mXmlData.mLanguage = pLanguageShort;
+			}
+			
+			return lData;
+		}
+        #endif
+        
+        
+		public static LocaData Load(string pLanguageShort)
+		{
+			LocaData lData = new LocaData();
+			lData.mXmlData = new XmlLocaData();
+			lData.mXmlData.mLanguage = pLanguageShort;
+			
+			string path = "loca/loca_" + pLanguageShort;
+			try
+			{
+				FileInfo file = new FileInfo(Application.dataPath + "/Resources/" + path + ".xml");
 				if (!file.Exists)
 				{
 					Debug.LogWarning("Localization: File not found: " + file.FullName);
@@ -69,11 +116,11 @@ namespace UGB.Data
 				
 				lData.mXmlData.PostRead();
 				
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				Debug.LogWarning("Error loading loca file for requested language. " + e.Message);
-				lData.mXmlData = new XmlLocaData();
-				lData.mXmlData.mLanguage = pLanguageShort;
+				
 			}
 			
 			return lData;
@@ -92,7 +139,7 @@ namespace UGB.Data
 			string path = "Assets/Resources/loca/"; 
 
 			DirectoryInfo di = new DirectoryInfo(path);
-			if(!di.Exists)
+			if (!di.Exists)
 				di.Create();
 
 			path += "loca_" + mXmlData.mLanguage + ".xml";
