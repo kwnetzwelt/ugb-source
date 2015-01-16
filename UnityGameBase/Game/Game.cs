@@ -135,6 +135,16 @@ namespace UGB
 			return null;
 		}
 
+		/// <summary>
+		/// Temporary helper for webgl platforms
+		/// </summary>
+		public static UGB.WebGL.IWebGLPlatformHelper webGLHelper;
+		void InitLogicImplementationExternal()
+		{
+			SetLogic( webGLHelper.InitLogic() );
+		}
+
+
 		void InitLogicImplementation()
 		{
 			if (CurrentGameLogic != null)
@@ -174,7 +184,13 @@ namespace UGB
 
 			Utils.ThreadingBridge.Initialize();
 
+			// for webgl we cannot use custom attributes to find classes, so we rely on a delegate to create the logic instance for us. 
+
+#if UNITY_WEBGL
+			InitLogicImplementationExternal();
+#else
 			InitLogicImplementation();
+#endif
 			CurrentGameLogic.Start();
 			
 			gameOptions = this.AddComponentIfNotExists<GameOptions>();

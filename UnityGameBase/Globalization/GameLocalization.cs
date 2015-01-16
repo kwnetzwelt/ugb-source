@@ -97,7 +97,9 @@ namespace UGB.Globalization
 
 		static CultureInfo[] GetCultures()
 		{
-			#if UNITY_METRO && !UNITY_EDITOR
+			#if UNITY_WEBGL
+			return Game.webGLHelper.GetAllCultures();
+			#elif UNITY_METRO && !UNITY_EDITOR
 			return CultureHelper.GetCultures( CultureHelper.CultureTypes.AllCultures ).ToArray();
 			#else
 			return CultureInfo.GetCultures(CultureTypes.AllCultures);

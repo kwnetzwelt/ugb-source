@@ -148,8 +148,9 @@ namespace UGB
 
 			showTouchFeedback = System.Convert.ToBoolean( PlayerPrefs.GetInt(TouchFeedbackOption,1));
 			GLoca.SetLanguage(language);
+#if !UNITY_WEBGL
 			QualitySettings.SetQualityLevel(qualityLevel);
-			
+#endif
 			if(OnAnyOptionChanged != null)
 				OnAnyOptionChanged();
 		}

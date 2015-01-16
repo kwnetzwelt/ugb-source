@@ -98,12 +98,6 @@ namespace UGB.Data
 			string path = "loca/loca_" + pLanguageShort;
 			try
 			{
-				FileInfo file = new FileInfo(Application.dataPath + "/Resources/" + path + ".xml");
-				if (!file.Exists)
-				{
-					Debug.LogWarning("Localization: File not found: " + file.FullName);
-					return lData;
-				}
 
 				TextAsset ta = Resources.Load(path) as TextAsset;
 
