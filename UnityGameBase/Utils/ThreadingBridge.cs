@@ -5,7 +5,7 @@ using System.Collections;
 
 #if UNITY_METRO && !UNITY_EDITOR
 using Windows.System.Threading;
-#else
+#elif !UNITY_WEBGL
 using System.Threading;
 #endif
 
@@ -65,7 +65,9 @@ namespace UGB.Utils
 		/// <param name="action">The action to be executed. </param>
 		public static void ExecuteThreaded(System.Action action)
 		{
-#if UNITY_METRO && !UNITY_EDITOR
+#if UNITY_WEBGL
+			throw new NotSupportedException("Threading is not supported on this platform. ");
+#elif UNITY_METRO && !UNITY_EDITOR
 #pragma warning disable 4014
 			ThreadPool.RunAsync( (source) => { pAction(); });
 #pragma warning restore
