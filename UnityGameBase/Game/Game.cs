@@ -141,6 +141,10 @@ namespace UGB
 		public static UGB.WebGL.IWebGLPlatformHelper webGLHelper;
 		void InitLogicImplementationExternal()
 		{
+			if(webGLHelper == null)
+			{
+				throw new System.NullReferenceException("WebGLHelper must be registered in Game on WebGL platform. ");
+			}
 			SetLogic( webGLHelper.InitLogic() );
 		}
 
