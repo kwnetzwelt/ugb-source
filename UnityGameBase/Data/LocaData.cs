@@ -17,70 +17,73 @@ namespace UGB.Data
 	public class LocaData
 	{
 		
-		private LocaData()
+		private LocaData ()
 		{
 			
 		}
 		
 		XmlLocaData mXmlData;
 		
-		public string GetText(string pKey)
+		public string GetText (string pKey)
 		{
 			if (pKey == null)
 				return "Empty Key!";
 		
-			if (mXmlData.mData.ContainsKey(pKey))
+			if (mXmlData.mData.ContainsKey (pKey))
 				return mXmlData.mData [pKey];
 				
 			return "KNF:" + pKey;
 		}
 		
+		public string[] GetKeys ()
+		{
+			string[] keys = new string[mXmlData.mData.Keys.Count];
+			mXmlData.mData.Keys.CopyTo (keys, 0);
+			return keys;
+		}
+		
 	#if UNITY_EDITOR
-		public void AddText(string pKey, string pText)
+		public void AddText (string pKey, string pText)
 		{
 			mXmlData.mData [pKey] = pText;
 		}
 	#endif
 		
-		public static LocaData Load()
+		public static LocaData Load ()
 		{
 			if (Application.isPlaying)
-				return Load(Game.Instance.gameLoca.currentLanguage.ToString());
+				return Load (Game.Instance.gameLoca.currentLanguage.ToString ());
 			return null;
 		}
 		
 		#if UNITY_EDITOR
-		public static LocaData LoadFromEditor(string pLanguageShort)
+		public static LocaData LoadFromEditor (string pLanguageShort)
 		{
-			LocaData lData = new LocaData();
+			LocaData lData = new LocaData ();
 			string path = Application.dataPath + "/Resources/loca/loca_" + pLanguageShort;
-			try
-			{
-				FileInfo file = new FileInfo(path);
-				if (!file.Exists)
-				{
-					Debug.LogWarning("Localization: File not found: " + file.FullName);
+			try {
+				FileInfo file = new FileInfo (path);
+				if (!file.Exists) {
+					Debug.LogWarning ("Localization: File not found: " + file.FullName);
 					return lData;
 				}
 				
-				path = Path.GetFileNameWithoutExtension(path);
+				path = Path.GetFileNameWithoutExtension (path);
 				path = "loca/" + path;
-				TextAsset ta = Resources.Load(path) as TextAsset;
+				TextAsset ta = Resources.Load (path) as TextAsset;
 				
-				MemoryStream ms = new MemoryStream(ta.bytes);
+				MemoryStream ms = new MemoryStream (ta.bytes);
 				
-				XmlSerializer s = new XmlSerializer(typeof(XmlLocaData));
-				XmlLocaData data = s.Deserialize(ms) as XmlLocaData;
+				XmlSerializer s = new XmlSerializer (typeof(XmlLocaData));
+				XmlLocaData data = s.Deserialize (ms) as XmlLocaData;
 				
 				lData.mXmlData = data;
 				
-				lData.mXmlData.PostRead();
+				lData.mXmlData.PostRead ();
 				
-			}
-			catch (Exception e)
-			{
-				Debug.LogWarning("Error loading loca file for requested language. " + e.Message);
-				lData.mXmlData = new XmlLocaData();
+			} catch (Exception e) {
+				Debug.LogWarning ("Error loading loca file for requested language. " + e.Message);
+				lData.mXmlData = new XmlLocaData ();
 				lData.mXmlData.mLanguage = pLanguageShort;
 			}
 			
@@ -121,33 +124,32 @@ namespace UGB.Data
 		}
 
 	#if UNITY_EDITOR
-		public void Save()
+		public void Save ()
 		{
-			if (Application.isPlaying)
-			{
-				Debug.LogError("Not available at runtime!");
+			if (Application.isPlaying) {
+				Debug.LogError ("Not available at runtime!");
 				return;
 			}
 			
-			mXmlData.PreWrite();
+			mXmlData.PreWrite ();
 			string path = "Assets/Resources/loca/"; 
 
-			DirectoryInfo di = new DirectoryInfo(path);
+			DirectoryInfo di = new DirectoryInfo (path);
 			if (!di.Exists)
-				di.Create();
+				di.Create ();
 
 			path += "loca_" + mXmlData.mLanguage + ".xml";
 			
-			Debug.Log("Writing Loca file to : " + path);
+			Debug.Log ("Writing Loca file to : " + path);
 			
-			XmlSerializer serializer = new XmlSerializer(typeof(XmlLocaData));
+			XmlSerializer serializer = new XmlSerializer (typeof(XmlLocaData));
 			
 			
-			TextWriter writer = new StreamWriter(path);
-			serializer.Serialize(writer, mXmlData);
+			TextWriter writer = new StreamWriter (path);
+			serializer.Serialize (writer, mXmlData);
 			
-			writer.Flush();
-			writer.Close();
+			writer.Flush ();
+			writer.Close ();
 			
 		}
 	#endif
