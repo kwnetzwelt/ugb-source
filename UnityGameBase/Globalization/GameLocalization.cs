@@ -45,7 +45,16 @@ namespace UGB.Globalization
 			}
 			return null;
 		}
-		
+
+		public string[] GetKeys()
+        {
+            if (mData != null)
+            {
+                mData.GetKeys();
+            }
+            return null;
+        }
+
 		public void Initialize()
 		{
 			mData = LocaData.Load(GetCurrentLanguageShort());
