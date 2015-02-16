@@ -22,6 +22,8 @@ public class CodeWatchdogInspector : Editor
     
     string lastFileContent = "";
     
+    const int MaxPreviewChars = 4096;
+    
     /// <summary>
     /// Override the standard inspector GUI.
     /// </summary>
@@ -37,7 +39,11 @@ public class CodeWatchdogInspector : Editor
             
             lastCheckErrors = "";
             
-            cswd.woff += (string message) => {lastCheckErrors += message + "\n";};
+            cswd.woff += (string message) => {
+            
+                    lastCheckErrors += message + "\n";
+                    
+                };
             
             string path = AssetDatabase.GetAssetPath(Selection.activeObject);
             
@@ -49,7 +55,26 @@ public class CodeWatchdogInspector : Editor
             
             lastFileViewed = Selection.activeObject.name;
             
-            lastFileContent = File.ReadAllText(AssetDatabase.GetAssetPath(Selection.activeObject));
+            using (StreamReader reader = new StreamReader(AssetDatabase.GetAssetPath(Selection.activeObject)))
+            {
+                // Don't slurp in the entire file. Apart from
+                // accidental 2 GB files, this is also useful
+                // for GUILayout.Label, which actually has an
+                // upper limit it can handle.
+                //
+                char[] charBuffer = new char[MaxPreviewChars];
+                
+                int charsRead = reader.ReadBlock(charBuffer, 0, MaxPreviewChars);
+                
+                // http://www.dotnetperls.com/convert-char-array-string
+                //
+                lastFileContent = new string(charBuffer);
+                
+                if (charsRead == MaxPreviewChars)
+                {
+                    lastFileContent += string.Format("\n...\n(Preview ends here after {0} characters)", MaxPreviewChars);
+                }
+            }
         }
         
         GUILayout.Label("CodeWatchdog Results", EditorStyles.boldLabel);
