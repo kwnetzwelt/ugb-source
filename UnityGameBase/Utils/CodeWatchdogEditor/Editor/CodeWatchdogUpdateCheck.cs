@@ -17,6 +17,7 @@ public class CodeWatchdogUpdateCheck : AssetPostprocessor
                                        string[] movedFromAssetsPaths)
     {
         // TODO: Offer configuration for directories and files to include / exclude.
+        // TODO: Offer configuration to log an error / warning to the Unit log when files pass below a configurable threshold.
         
 //        Debug.Log(string.Format("OnPostprocessAllAssets({0}, {1}, {2}, {3})",
 //                                importedAssets.Length,
@@ -59,23 +60,31 @@ public class CodeWatchdogUpdateCheck : AssetPostprocessor
             
             if (filename.EndsWith(".cs"))
             {
+                // TODO: Remove
+                //
+                Debug.Log("Checking " + filename);
+                
                 log.AppendLine("\nChecking " + filename);
                 
                 cswd.Check(filename);
             }
         }
         
-        WatchdogEditorWindow w = (WatchdogEditorWindow)EditorWindow.GetWindow(typeof(WatchdogEditorWindow));
+        // TODO: Disabled, as it is really annoying
         
-        w.summary = cswd.Summary();
-        
-        w.log = log.ToString();
-        
-        w.title = "CodeWatchdog Results";
-        
-        w.minSize = new Vector2(500, 500);
-        
-        w.Show();
+//        WatchdogEditorWindow w = (WatchdogEditorWindow)EditorWindow.GetWindow(typeof(WatchdogEditorWindow));
+//        
+//        w.summary = cswd.Summary();
+//        
+//        w.log = log.ToString();
+//        
+//        w.title = "CodeWatchdog Results";
+//        
+//        // TODO: Is any min size reasonable?
+//        //
+//        // w.minSize = new Vector2(500, 500);
+//        
+//        w.Show();
         
         cswd = null;
         
