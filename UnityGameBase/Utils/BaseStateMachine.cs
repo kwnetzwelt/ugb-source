@@ -66,7 +66,13 @@ namespace UGB.Utils
             return null;
         }
         
-        //returns the given state or null
+        //returns the active state or null
+        public BaseState GetActiveState()
+        {
+            return this.activeState;
+        }
+        
+        //returns the previous state or null
         public BaseState GetPreviousState()
         {
             return this.previousState;
@@ -123,7 +129,6 @@ namespace UGB.Utils
             {
                 this.activeState.Update();
             }
-        }
-        
+        }        
     }
 }
