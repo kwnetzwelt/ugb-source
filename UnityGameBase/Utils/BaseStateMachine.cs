@@ -32,6 +32,7 @@ namespace UGB.Utils
             if(!this.states.ContainsKey(state.Name))
             {
                 this.states.Add(state.Name, state);
+                state.Statemachine = this;
                 return ResultCode.StateAdded;
             }
             

@@ -6,6 +6,9 @@ namespace UGB.Utils
 {
     public abstract class BaseState
     {   
+        //the statemachine which owned the state
+        public BaseStateMachine Statemachine{ get; set; }
+    
         //constructor to use    
         public BaseState(string name)
         {
@@ -22,7 +25,7 @@ namespace UGB.Utils
         public abstract void Start();
         public abstract void End();    
         public abstract void Update();
-        
+                
         //if desired you can overwrite it and do some transition conditions
         public virtual bool IsTransitionAllowed(BaseState target)
         {
