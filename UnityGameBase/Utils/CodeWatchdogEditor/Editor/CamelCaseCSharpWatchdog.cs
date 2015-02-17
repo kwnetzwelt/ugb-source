@@ -25,40 +25,7 @@ namespace CodeWatchdog
         const int ClassNotDocumentedError = 8;
         const int MethodNotDocumentedError = 9;
         const int InterfaceNamingError = 10;
-        
-        // MSDN Coding Conventions
-        // https://msdn.microsoft.com/en-us/library/ff926074.aspx
-        // https://msdn.microsoft.com/en-us/library/xzf533w0%28v=vs.71%29.aspx
-        //
-        // TODO: camelCase for parameters
-        // TODO: Use implicit typing with var in for, foreach
-        // TODO: Prefer 'using' to 'try ... finally' for cleanups
-        
-        // Selected antipatterns
-        //
-        // TODO: *** if ()- nullchecks without else
-        
-        // C#-Workshop
-        //
-        // TODO: .Equals() statt ==
-        // TODO: int parse mit invariant culture
-        
-        // c2 Code Smells: http://www.c2.com/cgi/wiki?CodeSmell
-        //
-        // TODO: Duplicated code
-        // TODO: Method too big
-        // TODO: Classes with too many variables
-        // TODO: Classes with too little variables
-        // TODO: Classes with too much code
-        // TODO: Classes with too little code
-        // TODO: Too many private methods
-        // TODO: Empty catch clauses
-        // TODO: Long method names
-        // TODO: Too many parameters
-        // TODO: Deeply nested if clauses / loops
-        
-        // TODO: Code-comment-ratio evaluation
-        
+
         /// <summary>
         /// Initialise the underlying Watchdog for C#.
         /// </summary>
@@ -99,12 +66,6 @@ namespace CodeWatchdog
         /// <param name="statement">A string containing a statement, possibly multi-line.</param>
         void CheckStatement(string statement)
         {
-            // TODO: *** /// comment public members
-            
-            // TODO: *** 4-character indents
-            
-            // TODO: Use var for common types and new statements.
-            
             // TabError
             //
             if (statement.Contains("\t"))
@@ -128,9 +89,6 @@ namespace CodeWatchdog
             }
             
             // MultipleStatementError
-            //
-            // TODO: Inline(() => {MethodsShouldProbably(BeLegal);})
-            // TODO: Inline Property get / set should also be legal.q
             //
             // Trim leading spaces before check.
             // Ignore empty statements, e.g. inline 'new' statements.
@@ -205,8 +163,6 @@ namespace CodeWatchdog
                 && possibleIdentifier != "public"
                 && possibleIdentifier != "switch")
             {
-                // TODO: Identifiers should not contain common types. But this is hard to check, as 'Char' or 'Int' may be legitimate in 'Charter' or 'International'.
-                
                 // SpecialCharacterError
                 //
                 if (possibleIdentifier.Contains("_"))
@@ -233,7 +189,6 @@ namespace CodeWatchdog
                     if (statement.Contains("const "))
                     {
                         // PascalCaseError
-                        // TODO: Check for more PascalCase / camelCase characteristics
                         //
                         if (possibleIdentifier.Length > 2 && char.IsLower(possibleIdentifier, 0))
                         {
@@ -258,7 +213,6 @@ namespace CodeWatchdog
                     else
                     {
                         // CamelCaseError
-                        // TODO: Check for more PascalCase / camelCase characteristics
                         //
                         if (possibleIdentifier.Length > 2 && char.IsUpper(possibleIdentifier, 0))
                         {
@@ -320,9 +274,6 @@ namespace CodeWatchdog
         /// <param name="comment">A string containing a comment, possibly multi-line.</param>
         void CheckComment(string comment, string precedingInput)
         {
-            // TODO: Begin comments with uppercase letter
-            // TODO: End comment with a period.
-
             // CommentOnSameLineError
             //
             if (checkedLinesThisFile > 1 && !precedingInput.Contains("\n"))
@@ -409,7 +360,6 @@ namespace CodeWatchdog
                 }
                 
                 // PascalCaseError
-                // TODO: Check for more PascalCase / camelCase characteristics
                 //
                 if (className.Length > 2
                     && char.IsLower(className, 0))
@@ -446,7 +396,6 @@ namespace CodeWatchdog
                 }
                 
                 // PascalCaseError
-                // TODO: Check for more PascalCase / camelCase characteristics
                 //
                 if (enumName.Length > 2 && char.IsLower(enumName, 0))
                 {
@@ -505,8 +454,6 @@ namespace CodeWatchdog
             }
             else if (startBlock.Contains("(") && startBlock.Contains(")"))
             {
-                // TODO: Parameter von Funktionen/Methoden beginnen mit einem kleinen Buchstaben
-                
                 // MethodNotDocumentedError
                 //
                 // Make sure 'public' is before the first brace.
@@ -542,7 +489,6 @@ namespace CodeWatchdog
                 }
                 
                 // PascalCaseError
-                // TODO: Check for more PascalCase / camelCase characteristics
                 //
                 if (methodName.Length > 2
                     && char.IsLower(methodName, 0)
@@ -606,7 +552,6 @@ namespace CodeWatchdog
                 }
                 
                 // PascalCaseError
-                // TODO: Check for more PascalCase / camelCase characteristics
                 //
                 if (propertyName.Length > 2 && char.IsLower(propertyName, 0))
                 {

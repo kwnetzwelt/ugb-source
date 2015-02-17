@@ -17,10 +17,6 @@ namespace CodeWatchdog
     /// </summary>
     public class Watchdog
     {
-        // TODO: Errors should have a severity.
-        
-        // TODO: Most, if not all delimiters should be strings, and be parsed for accordingly.
-        //
         protected char statementDelimiter;
         protected char startBlockDelimiter;
         protected char endBlockDelimiter;
@@ -126,8 +122,6 @@ namespace CodeWatchdog
             checkedLinesThisFile = 0;
             previousToken = "";
             
-            // TODO: stringRunning, comments ... this calls for a state machine.
-
             bool stringRunning = false;
             
             // -1 = not scanning for further delimiters
@@ -463,8 +457,6 @@ namespace CodeWatchdog
                                                  duration.Milliseconds));
             }
             
-            // TODO: Add comment lines value to score formula
-            //
             summary.AppendLine(string.Format("Found {0} comment lines.", commentLines));
             
             int count = 0;
@@ -502,10 +494,6 @@ namespace CodeWatchdog
             
             summary.AppendLine(string.Format("Found {0} error(s).", count));
 
-            // TODO: Add a nice table reporting the error types, sorted by frequency.
-
-            // TODO: Use a fancy rating function, in which little errors quickly provide a bad score
-
             // Compute errors per lines of code. This yields a double [0.0, ~infinity],
             // but typically [0.0, 1.0]. 0.0 means no errors.
             //
@@ -520,24 +508,30 @@ namespace CodeWatchdog
             
             // Now for the psychology part. :-)
             //
-            // Apply a exponential parabola to get quicker to lower values.
-            // Values found by trying.
-            //
-            score = Math.Exp(6 * score - 6);
-            
-            // Alternative:
-            //
             // Apply a quadratic parabola to get quicker to lower values.
-            // Values found by trying.
             //
-            // score = Math.Pow(score, 2);
+            double quadraticScore = Math.Pow(score, 2);
             
             // Weigh MaxCodeScore by the result to get a number that is
             // meaningful to humans. MaxCodeScore means no errors.
             //
-            score = score * MaxCodeScore;
-           
-            summary.AppendLine(string.Format("Your code is rated {0:0.##} / {1:0.##}.", score, MaxCodeScore));
+            quadraticScore = quadraticScore * MaxCodeScore;
+            
+            summary.AppendLine(string.Format("Your code is rated {0:0.##} / {1:0.##}.", quadraticScore, MaxCodeScore));
+            
+            // Alternative:
+            //
+            // Apply a exponential parabola to get quicker to lower values.
+            // Values found by trying.
+            //
+//            double expScore = Math.Exp(6 * score - 6);
+            
+            // Weigh MaxCodeScore by the result to get a number that is
+            // meaningful to humans. MaxCodeScore means no errors.
+            //
+//            expScore = expScore * MaxCodeScore;
+            
+//            summary.AppendLine(string.Format("Your code is rated {0:0.##} / {1:0.##} (exp scale).", expScore, MaxCodeScore));
             
             return summary.ToString();
         }
