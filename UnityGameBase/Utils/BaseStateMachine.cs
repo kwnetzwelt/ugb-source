@@ -15,11 +15,16 @@ namespace UGB.Utils
             StateActivated,
             StateTransitionFailed,
             StateDeleted,
+            StateTransitionActive,
+            StateTransitionActivated,
         }
         
         private Dictionary<string,BaseState> states = new Dictionary<string, BaseState>();        
         private BaseState previousState = null;
         private BaseState activeState = null;
+        private BaseState nextState = null;
+        private bool isInTransition = false;
+        private System.Action transitionReadyCallBack = null;
         
         /// add a state to the statemachine
         public ResultCode AddState(BaseState state)
@@ -55,7 +60,7 @@ namespace UGB.Utils
             
             return ResultCode.StateNotExists;
         }
-        
+              
         /// returns the given state or null
         public BaseState GetState(string name)
         {
@@ -79,8 +84,15 @@ namespace UGB.Utils
         }
                 
         /// set the active state for updating and test before that the transition conditions
-        public virtual ResultCode SetActiveState(string name)
+        public virtual ResultCode SetActiveState(string name, System.Action onDone = null)
         {
+            if(this.isInTransition)
+            {
+                return ResultCode.StateTransitionActive;
+            }
+            
+            this.transitionReadyCallBack = onDone;
+            
             BaseState state = this.GetState(name);
             if(state == null)
             {
@@ -112,23 +124,45 @@ namespace UGB.Utils
                                 
             if(this.activeState != null)
             {
-                this.activeState.End();
-                this.previousState = this.activeState;
+                this.activeState.End(StateEndCallBack);  
+                this.nextState = next;
+                this.isInTransition = true;
+                
+                return ResultCode.StateTransitionActivated;              
             }
             
             this.activeState = next;
-            this.activeState.Start();           
+            this.activeState.Start(StateStartCallBack);
             
-            return ResultCode.StateActivated;
+            return ResultCode.StateTransitionActivated;
         }
         
         /// update the current active state
         public virtual void Update()
         {
-            if(this.activeState != null)
+            if(this.activeState != null && !this.isInTransition)
             {
                 this.activeState.Update();
             }
-        }        
+        }
+        
+        //is called when state End() is ready
+        private void StateEndCallBack()
+        {
+            this.previousState = this.activeState;
+            this.activeState = this.nextState;
+            
+            this.activeState.Start(StateStartCallBack);
+        }             
+        
+        //is called when state Start() is ready
+        private void StateStartCallBack()
+        {
+            this.isInTransition = false;
+            if(this.transitionReadyCallBack != null)
+            {
+                this.transitionReadyCallBack();
+            }
+        }      
     }
 }

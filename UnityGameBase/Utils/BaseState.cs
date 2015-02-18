@@ -22,8 +22,8 @@ namespace UGB.Utils
         }
         
         //important abstract members for statehandling
-        public abstract void Start();
-        public abstract void End();    
+        public abstract void Start(System.Action onDone = null);
+        public abstract void End(System.Action onDone = null);    
         public abstract void Update();
                 
         //if desired you can overwrite it and do some transition conditions
