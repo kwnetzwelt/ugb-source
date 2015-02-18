@@ -6,7 +6,7 @@ namespace UGB.Utils
 {
     public class BaseStateMachine
     {
-        //Resultcode to determine the problems or not
+        /// Resultcode as return value for all public statemachine methods
         public enum ResultCode
         {
             StateNotExists,
@@ -21,7 +21,7 @@ namespace UGB.Utils
         private BaseState previousState = null;
         private BaseState activeState = null;
         
-        //add a state to the statemachine
+        /// add a state to the statemachine
         public ResultCode AddState(BaseState state)
         {
             if(state == null)
@@ -39,7 +39,7 @@ namespace UGB.Utils
             return ResultCode.StateAlreadyExists;
         }
         
-        //remove a state and call the end method for this state if needed
+        /// remove a state and call the end method for this state if needed
         public ResultCode RemoveState(string name, bool callEnd = false)
         {
             if(this.states.ContainsKey(name))
@@ -56,7 +56,7 @@ namespace UGB.Utils
             return ResultCode.StateNotExists;
         }
         
-        //returns the given state or null
+        /// returns the given state or null
         public BaseState GetState(string name)
         {
             if(this.states.ContainsKey(name))
@@ -66,19 +66,19 @@ namespace UGB.Utils
             return null;
         }
         
-        //returns the active state or null
+        /// returns the active state or null
         public BaseState GetActiveState()
         {
             return this.activeState;
         }
         
-        //returns the previous state or null
+        /// returns the previous state or null
         public BaseState GetPreviousState()
         {
             return this.previousState;
         }
                 
-        //set the active state for updating and test before that the transition conditions
+        /// set the active state for updating and test before that the transition conditions
         public virtual ResultCode SetActiveState(string name)
         {
             BaseState state = this.GetState(name);
@@ -102,7 +102,7 @@ namespace UGB.Utils
             return SwitchState(this.GetState(name));
         }
         
-        //switch the state and call Start,End and set the previousState
+        /// switch the state and call Start,End and set the previousState
         protected virtual ResultCode SwitchState(BaseState next)
         {
             if(next == null)
@@ -122,7 +122,7 @@ namespace UGB.Utils
             return ResultCode.StateActivated;
         }
         
-        //update the current active state
+        /// update the current active state
         public virtual void Update()
         {
             if(this.activeState != null)
