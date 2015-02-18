@@ -18,7 +18,7 @@ public class CodeWatchdogInspector : Editor
     string lastCheckErrors = "";
     string lastCheckSummary = "";
     string lastFileContent = "";
-    const int MaxPreviewChars = 4096;
+    const int MaxPreviewChars = 12288;
     
     /// <summary>
     /// Override the standard inspector GUI.
