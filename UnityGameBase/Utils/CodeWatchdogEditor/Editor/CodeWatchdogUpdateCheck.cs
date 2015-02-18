@@ -29,8 +29,7 @@ public class CodeWatchdogUpdateCheck : AssetPostprocessor
         // http://stackoverflow.com/a/59250/1132250
         //
         string[] changedFiles = new string[importedAssets.Length
-                                           + movedAssets.Length
-                                           + movedFromAssetsPaths.Length];
+                                           + movedAssets.Length];
                                            
         Array.Copy(importedAssets,
                    changedFiles,
