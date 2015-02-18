@@ -1,34 +1,51 @@
 README for CodeWatchdog Unity Editor Package
 ============================================
 
-CodeWatchdog is a coding convention compliance checker written in C#.
-
-See https://bitbucket.org/flberger/codewatchdog
+[CodeWatchdog](https://bitbucket.org/flberger/codewatchdog) is a simple
+coding convention compliance checker written in C#.
 
 This package integrates CodeWatchdog into the Unity3D Editor.
+
+**NOTE:** This is an alpha release. Expect a bumpy ride, and please look
+after your data.
+
+
+## Installation
+
+There are several possibilities of getting CodeWatchdog into your project:
+
+1. Using a recent [Unity Game Base](https://git.exozet.com/exozet/ugb-source).
+2. As a buildstep of the [Unity Build System](https://bitbucket.org/kaiwegner/unity-build-system).
+   The buildstep is called *UBS > WatchdogBuildStep*.
+3. As a [Standalone Unity Package in GitLab](https://git.exozet.com/florian.berger/codewatchdog-unity-package).
+   Move the folder "CodeWatchdogEditor" to *Assets/packages/* in your project.
 
 
 ## Usage
 
 There are several ways of using the tool:
 
-- Use the menu UGB > Run CodeWatchdog. This will check the entire
-  'scripts'-folder and display a summary in a dedicated window.
+- **Menu**: Select *UGB > CodeWatchdog > Open Window* to open the CodeWatchdog report window.
+  *UGB > CodeWatchdog > Run* will check all scripts in the *Assets/scripts/* folder and
+  report a summary in the report window if it has been opened.
+- As a **buildstep**, see above.
+- If you select a C# script, its **inspector** will display a CodeWatchdog summary for that file.
+  Below that it displays the file's content, followed by a detailled CodeWatchdog report.
+- C# files **changed outside of Unity** will be checked automatically. If the report window
+  has been opened (see above), a summary will be displayed there.
 
-- Select a C# file in the project view. The Unity Inspector will
-  display the CodeWatchdog output, along with the file's content
-  and a detailled log.
 
-- If you change C# files outside of Unity, CodeWatchdog will run
-  automatically and display a summary for the changed files in
-  a dedicated window.
+## Ideas, Suggestions, and Problems
+
+If you miss a feature in CodeWatchdog or have a problem to report, please open a
+[ticket in GitLab](https://git.exozet.com/florian.berger/codewatchdog-unity-package/issues).
 
 
 ## Files
 
 *CodeWatchdogInspector.cs*: Customises the inspector for C# files.
 
-*CodeWatchdogMenu.cs*: Add the UGB > Run CodeWatchdog menu.
+*CodeWatchdogMenu.cs*: Add the UGB > CodeWatchdog submenu.
 
 *CodeWatchdogUpdateCheck.cs*: Runs CodeWatchdog on changed C# files.
 

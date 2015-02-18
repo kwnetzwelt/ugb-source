@@ -15,13 +15,9 @@ using System.IO;
 public class CodeWatchdogInspector : Editor
 {
     string lastFileViewed = "";
-    
     string lastCheckErrors = "";
-    
     string lastCheckSummary = "";
-    
     string lastFileContent = "";
-    
     const int MaxPreviewChars = 4096;
     
     /// <summary>
@@ -41,9 +37,9 @@ public class CodeWatchdogInspector : Editor
             
             cswd.woff += (string message) => {
             
-                    lastCheckErrors += message + "\n";
+                lastCheckErrors += message + "\n";
                     
-                };
+            };
             
             string path = AssetDatabase.GetAssetPath(Selection.activeObject);
             
@@ -93,8 +89,7 @@ public class CodeWatchdogInspector : Editor
             
             GUILayout.Label(lastCheckErrors);
         }
-        
-        
+
         //        DrawDefaultInspector();
         
         return;

@@ -3,6 +3,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using CodeWatchdog;
 using System.Text;
 
@@ -25,25 +26,24 @@ public class CodeWatchdogUpdateCheck : AssetPostprocessor
 //                                movedAssets.Length,
 //                                movedFromAssetsPaths.Length));
     
-    
-        // http://stackoverflow.com/a/59250/1132250
+        // If there is no window open, there is nothing
+        // to display, and no reason to do a costly parse.
         //
-        string[] changedFiles = new string[importedAssets.Length
-                                           + movedAssets.Length];
-                                           
-        Array.Copy(importedAssets,
-                   changedFiles,
-                   importedAssets.Length);
+        if (WatchdogEditorWindow.instance == null)
+        {
+            if (WatchdogEditorWindow.debug)
+            {
+                Debug.Log(string.Format("WatchdogEditorWindow.instance == '{0}'",
+                                        WatchdogEditorWindow.instance));
+            }
+            
+            return;
+        }
         
-        Array.Copy(movedAssets,
-                   0,
-                   changedFiles,
-                   importedAssets.Length,
-                   movedAssets.Length); 
+        List<string> changedFiles = new List<string>();
         
-        // REMOVE
-        //
-        string changed = "1234";
+        changedFiles.AddRange(importedAssets);
+        changedFiles.AddRange(movedAssets);
         
         StringBuilder log = new StringBuilder();
         
@@ -51,39 +51,32 @@ public class CodeWatchdogUpdateCheck : AssetPostprocessor
         
         cswd.Init();
         
-        cswd.woff += (string message) => {log.AppendLine(message);};
+        cswd.woff += (string message) => {
+                log.AppendLine(message);
+            };
         
-        for (int i = 0; i < changedFiles.Length; i++)
+        foreach (string filename in changedFiles)
         {
-            string filename = changedFiles[i];
-            
             if (filename.EndsWith(".cs"))
             {
-                // TODO: Remove
-                //
-                Debug.Log("Checking " + filename);
+                if (WatchdogEditorWindow.debug)
+                {
+                    Debug.Log(string.Format("Checking '{0}' ({1})",
+                                            Path.GetFileName(filename),
+                                            filename));
+                }
                 
-                log.AppendLine("\nChecking " + filename);
+                log.AppendLine(string.Format("\nChecking '{0}' ({1})",
+                                             Path.GetFileName(filename),
+                                             filename));
                 
                 cswd.Check(filename);
             }
         }
         
-        // TODO: Disabled, as it is really annoying
+        WatchdogEditorWindow.instance.Summary = cswd.Summary();
         
-//        WatchdogEditorWindow w = (WatchdogEditorWindow)EditorWindow.GetWindow(typeof(WatchdogEditorWindow));
-//        
-//        w.summary = cswd.Summary();
-//        
-//        w.log = log.ToString();
-//        
-//        w.title = "CodeWatchdog Results";
-//        
-//        // TODO: Is any min size reasonable?
-//        //
-//        // w.minSize = new Vector2(500, 500);
-//        
-//        w.Show();
+        WatchdogEditorWindow.instance.Log = log.ToString();
         
         cswd = null;
         
