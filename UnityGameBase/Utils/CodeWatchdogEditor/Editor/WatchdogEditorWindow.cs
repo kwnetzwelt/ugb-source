@@ -102,7 +102,7 @@ public class WatchdogEditorWindow : EditorWindow
         
         GUILayout.Label("CodeWatchdog Log", EditorStyles.boldLabel);
         
-        GUILayout.Label(Log, GUILayout.Width(800));
+        GUILayout.Label(displayString, GUILayout.Width(800));
         
         EditorGUILayout.EndScrollView();
         
