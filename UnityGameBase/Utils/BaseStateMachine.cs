@@ -137,7 +137,7 @@ namespace UGB.Utils
             return ResultCode.StateTransitionActivated;
         }
         
-        /// update the current active state
+        //update the current active state
         public virtual void Update()
         {
             if(this.activeState != null && !this.isInTransition)
