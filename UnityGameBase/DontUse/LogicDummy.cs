@@ -7,6 +7,14 @@ namespace UGB.DontUse
 	{
 		
 		#region implemented abstract members of GameLogicImplementationBase
+
+
+        public override void Update()
+        {
+            
+        }
+
+        #endregion
 		public override bool OnBeforeRestart ()
 		{
 			return true;
