@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UGB.Savegame
+namespace UGB.Core.Savegame
 {
 	public interface IIOProvider
 	{

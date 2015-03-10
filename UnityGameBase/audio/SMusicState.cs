@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UGB.Audio
+namespace UGB.Core.Audio
 {
 	/// <summary>
 	/// Music state struct. Can be used to add audio clips to your custom music states. 

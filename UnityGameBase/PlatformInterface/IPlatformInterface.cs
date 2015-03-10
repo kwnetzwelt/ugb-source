@@ -1,5 +1,5 @@
 using System;
-namespace UGB.PlatformInterface
+namespace UGB.Core.PlatformInterface
 {
 	/// <summary>
 	/// Partial interface for platform specific code. Add all your platform specific code to classes implementing this interface. 

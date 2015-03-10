@@ -1,6 +1,6 @@
 using System;
 
-namespace UGB.Savegame
+namespace UGB.Core.Savegame
 {
 	public interface ISavegame
 	{

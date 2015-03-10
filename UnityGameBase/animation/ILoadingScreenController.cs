@@ -1,6 +1,6 @@
 using System;
 
-namespace UGB.Animation
+namespace UGB.Core.Animation
 {
 	/// <summary>
 	/// Implement this interface for custom loading screen behaviour. Your implementation needs to be assigned to 

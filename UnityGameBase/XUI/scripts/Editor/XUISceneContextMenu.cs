@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.Collections;
 
-namespace UGB.XUI
+namespace UGB.Core.XUI
 {
 /// <summary>
 /// currently not used, later for contextmenu in sceneView

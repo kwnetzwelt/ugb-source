@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace UGB.SceneMenu
+namespace UGB.Core.SceneMenu
 {
 	[InitializeOnLoad]
 	public class SceneMenu

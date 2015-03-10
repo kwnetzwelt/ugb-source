@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace UGB.IO
+namespace UGB.Core.IO
 {
     public class WrappedIO
     {

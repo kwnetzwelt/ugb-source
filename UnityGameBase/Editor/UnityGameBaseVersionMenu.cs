@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using UnityEditor;
-using UGB.Utils;
-namespace UGB.Editor
+using UGB.Core.Utils;
+namespace UGB.Core.Editor
 {
 	public class UnityGameBaseVersionMenu
 	{

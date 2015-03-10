@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UGB.Utils
+namespace UGB.Core.Utils
 {
 	public class GenericStateMachine
 	{

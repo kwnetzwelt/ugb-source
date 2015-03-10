@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-namespace UGB.Input
+namespace UGB.Core.Input
 {
 	public class PinchGesture : BaseGesture
 	{

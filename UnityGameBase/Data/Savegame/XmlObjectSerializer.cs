@@ -3,7 +3,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace UGB.Savegame
+namespace UGB.Core.Savegame
 {
 	public class XmlObjectSerializer
 	{

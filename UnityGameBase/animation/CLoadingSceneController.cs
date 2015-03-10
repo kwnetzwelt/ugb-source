@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 
-namespace UGB.Animation
+namespace UGB.Core.Animation
 {
 	/// <summary>
 	/// Controls Playback of an animated scene while loading another scene in sceneTransition. 

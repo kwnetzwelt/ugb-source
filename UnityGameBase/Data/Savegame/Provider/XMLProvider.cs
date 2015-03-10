@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
-using UGB.IO;
+using UGB.Core.IO;
 
-namespace UGB.Savegame
+namespace UGB.Core.Savegame
 {
 #if !UNITY_METRO
 	public class XMLProvider : IIOProvider

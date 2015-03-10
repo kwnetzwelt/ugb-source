@@ -1,5 +1,5 @@
 ﻿
-namespace UGB.Savegame
+namespace UGB.Core.Savegame
 {
 	public sealed class SavegameData {
 

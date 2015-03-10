@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UGB.Player
+namespace UGB.Core.Player
 {
 	public interface IPlayerController
 	{

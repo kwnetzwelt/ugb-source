@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace UGB.Utils
+namespace UGB.Core.Utils
 {
     public abstract class BaseState
     {   

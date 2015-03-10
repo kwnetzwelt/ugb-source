@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace UGB.XUI
+namespace UGB.Core.XUI
 {
 /// <summary>
 /// this class save create all widgetData and keep them in the prefab

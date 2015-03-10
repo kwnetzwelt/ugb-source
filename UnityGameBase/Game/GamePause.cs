@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace UGB
+namespace UGB.Core
 {
 	/// <summary>
 	/// Reacts on the "OnApplicationPause" Message from Unity and sets the IsPaused static member. 

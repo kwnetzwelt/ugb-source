@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Globalization;
 
-namespace UGB.WebGL
+namespace UGB.Core.WebGL
 {
 	/// <summary>
 	/// A temporary interface, that needs to be implemented for each game to support the webGL platform.

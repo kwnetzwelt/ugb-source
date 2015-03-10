@@ -1,5 +1,5 @@
 using System;
-namespace UGB.PlatformInterface
+namespace UGB.Core.PlatformInterface
 {
 
 	/// <summary>

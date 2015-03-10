@@ -1,11 +1,11 @@
 using System;
-using UGB.Savegame;
-using UGB.Input;
-using UGB.Audio;
-using UGB.Player;
-using UGB.Globalization;
+using UGB.Core.Savegame;
+using UGB.Core.Input;
+using UGB.Core.Audio;
+using UGB.Core.Player;
+using UGB.Core.Globalization;
 
-namespace UGB
+namespace UGB.Core
 {
     public abstract class GameLogicImplementationBase
     {

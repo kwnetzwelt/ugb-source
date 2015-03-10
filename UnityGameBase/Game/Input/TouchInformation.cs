@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UGB.Input
+namespace UGB.Core.Input
 {
 	/// <summary>
 	/// Contains persistent information about a single touch or mouse click+drag on the screen. 

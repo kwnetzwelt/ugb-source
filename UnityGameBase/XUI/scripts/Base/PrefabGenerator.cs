@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UGB.XUI;
+using UGB.Core.XUI;
 
-namespace UGB.XUI
+namespace UGB.Core.XUI
 {
 /// <summary>
 /// this component is used for saving the prefab without loosing the child prefab references

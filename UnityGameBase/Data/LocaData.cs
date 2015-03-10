@@ -4,11 +4,11 @@ using UnityEngine;
 using System.IO;
 using System;
 using System.Text;
-using UGB.Utils;
-using UGB.Globalization;
+using UGB.Core.Utils;
+using UGB.Core.Globalization;
 
 
-namespace UGB.Data
+namespace UGB.Core.Data
 {
 	
     /// <summary>

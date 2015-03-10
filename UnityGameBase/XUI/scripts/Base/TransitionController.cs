@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace UGB.XUI
+namespace UGB.Core.XUI
 {
 /// <summary>
 /// this component is the baseclass for all transitions

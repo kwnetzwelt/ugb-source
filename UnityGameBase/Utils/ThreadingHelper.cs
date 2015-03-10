@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.System.Threading;
 
 #endif
-namespace UGB.Utils
+namespace UGB.Core.Utils
 {
     class ThreadingHelper
     {

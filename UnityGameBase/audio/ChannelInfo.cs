@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace UGB.audio
+namespace UGB.Core.audio
 {
 	public class ChannelInfo
 	{

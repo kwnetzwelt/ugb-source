@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 
-namespace UGB.audio
+namespace UGB.Core.audio
 {
 	/// <summary>
 	/// A single channel of audio. This is directly linked to a single UnityEngine.AudioSource instance which is 

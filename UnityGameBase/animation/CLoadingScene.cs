@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UGB.Animation
+namespace UGB.Core.Animation
 {
 	/// <summary>
 	/// Component for use with CLoadingSceneController. 

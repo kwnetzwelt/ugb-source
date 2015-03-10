@@ -1,7 +1,7 @@
 using System;
 using UnityEditor;
 using UnityEngine;
-namespace UGB.SceneMenu.Commands
+namespace UGB.Core.SceneMenu.Commands
 {
 	public class DeleteSelectedCommand : SceneMenuCommand
 	{

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEditor;
 
-namespace UGB.Animation
+namespace UGB.Core.Animation
 {
 	[CustomEditor(typeof(CTransformSequence))]
 	public class CTransformSequenceInspector : UnityEditor.Editor {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace UGB.Input
+namespace UGB.Core.Input
 {
 	/// <summary>
 	/// Abstract base class for all gestures. 

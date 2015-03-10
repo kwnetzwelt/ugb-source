@@ -2,9 +2,9 @@
 using System.Collections;
 using UnityEditor;
 using UnityEngine.Serialization;
-using UGB.XUI;
+using UGB.Core.XUI;
 
-namespace UGB.XUI
+namespace UGB.Core.XUI
 {
 	[CustomEditor(typeof(PrefabGenerator))]
 	public class PrefabGeneratorInspector : UnityEditor.Editor

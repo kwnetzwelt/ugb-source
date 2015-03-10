@@ -10,7 +10,7 @@ using System.Reflection;
 using Windows.Storage;
 using System.Linq;
 #endif
-namespace UGB.Utils
+namespace UGB.Core.Utils
 {
     public class UGBHelpers
     {

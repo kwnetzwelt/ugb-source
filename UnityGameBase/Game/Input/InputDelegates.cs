@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-namespace UGB.Input
+namespace UGB.Core.Input
 {
 	/// <summary>
 	/// Contains all Input Delegates used by UGB.Input.GameInput

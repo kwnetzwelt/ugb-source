@@ -3,7 +3,7 @@ using System.Collections;
 using System.Text;
 using System.Collections.Generic;
 
-namespace UGB.Utils
+namespace UGB.Core.Utils
 {
 #if !UNITY_METRO
 

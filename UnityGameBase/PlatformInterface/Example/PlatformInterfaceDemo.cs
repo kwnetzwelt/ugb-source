@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UGB.PlatformInterface;
+using UGB.Core.PlatformInterface;
 
  
 
-namespace UGB.PlatformInterface.Example
+namespace UGB.Core.PlatformInterface.Example
 {
 	public class PlatformInterfaceDemo : MonoBehaviour {
 #if UGB_PI_DEMO
@@ -88,7 +88,7 @@ namespace UGB.PlatformInterface.Example
 // Example: Interface additions
 //
 #if UGB_PI_DEMO
-namespace UGB.PlatformInterface
+namespace UGB.Core.PlatformInterface
 {
 	public partial interface IPlatformInterface
 	{

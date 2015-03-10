@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UGB
+namespace UGB.Core
 {
 	public class GameLogicImplementationAttribute : Attribute
 	{

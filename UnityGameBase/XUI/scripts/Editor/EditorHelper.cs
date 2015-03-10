@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEditor;
 
-namespace UGB.XUI
+namespace UGB.Core.XUI
 {
 	/// <summary>
 	/// this class Create the XUI prefabs and link to the XUI contextMenu

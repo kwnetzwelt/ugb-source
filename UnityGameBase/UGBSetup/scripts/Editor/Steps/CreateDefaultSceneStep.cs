@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections;
 using UnityEditor;
 using System.IO;
-using UGB;
+using UGB.Core;
 
-namespace UGBSetup
+namespace UGB.Core.Setup
 {
     internal class CreateDefaultSceneStep : UGBSetupStep
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace UGB.Globalization
+namespace UGB.Core.Globalization
 {
 	/// <summary>
 	/// Localized string.

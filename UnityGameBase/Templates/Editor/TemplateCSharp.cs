@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 
 
-namespace UGB.Templates
+namespace UGB.Core.Templates
 {
     public class TemplateCSharp : BaseTemplate
     {
@@ -32,8 +32,8 @@ namespace UGB.Templates
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UGB;
-using UGB.Extensions;
+using UGB.Core;
+using UGB.Core.Extensions;
 
 
 public class " + name + @" 

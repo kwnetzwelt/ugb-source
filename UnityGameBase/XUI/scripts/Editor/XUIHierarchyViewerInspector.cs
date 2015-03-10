@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace UGB.XUI
+namespace UGB.Core.XUI
 {
 /// <summary>
 /// Custom inspector shows all layers and widgets

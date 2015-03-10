@@ -1,5 +1,5 @@
 using System;
-namespace UGB.PlatformInterface
+namespace UGB.Core.PlatformInterface
 {
 	/// <summary>
 	/// Platform specific code interface. This Interface gives access to platform specific functionality and encapsulates all platform specific code. 
@@ -33,7 +33,7 @@ namespace UGB.PlatformInterface
 
 		static IPlatformInterface CreateInstance()
 		{
-			var types = UGB.Utils.UGBHelpers.GetTypesAssignableFrom<PlatformInterfaceCreator>();
+			var types = UGB.Core.Utils.UGBHelpers.GetTypesAssignableFrom<PlatformInterfaceCreator>();
 
 			if(types.Count < 1)
 			{

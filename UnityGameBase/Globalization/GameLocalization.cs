@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Globalization;
-using UGB.Data;
+using UGB.Core.Data;
 
 #if UNITY_METRO && !UNITY_EDITOR
 using System.Runtime.InteropServices;
@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 
 #endif
-namespace UGB.Globalization
+namespace UGB.Core.Globalization
 {
 	/// <summary>
 	/// Loads a LocaData instance. Contains the setting for the currently selected language. Returns translations.

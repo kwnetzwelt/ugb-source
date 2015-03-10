@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-namespace UGB
+namespace UGB.Core
 {
 	/// <summary>
 	/// Game data class. Contains references to data (loaded in the Start Method), that will be needed for the game. 

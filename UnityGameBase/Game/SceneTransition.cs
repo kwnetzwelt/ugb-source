@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace UGB
+namespace UGB.Core
 {
 
 	/// <summary>

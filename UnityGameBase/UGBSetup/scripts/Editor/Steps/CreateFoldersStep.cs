@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEditor;
 using System.IO;
 
-namespace UGBSetup
+namespace UGB.Core.Setup
 {
 	internal class CreateFoldersStep : UGBSetupStep
 	{

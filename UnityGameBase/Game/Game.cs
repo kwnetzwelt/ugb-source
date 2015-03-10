@@ -84,13 +84,13 @@ To actually use the implementation add the UGB.GameLogicImplementationAttribute 
 /// <summary>
 /// Game Main Class. Please look at \ref base_lib_getting_started for further instructions on using it. 
 /// </summary>
-using UGB.Extensions;
-using UGB.Input;
-using UGB.Audio;
-using UGB.Player;
-using UGB.Globalization;
+using UGB.Core.Extensions;
+using UGB.Core.Input;
+using UGB.Core.Audio;
+using UGB.Core.Player;
+using UGB.Core.Globalization;
 
-namespace UGB
+namespace UGB.Core
 {
     public class Game : MonoBehaviour
     {
@@ -138,7 +138,7 @@ namespace UGB
         /// <summary>
         /// Temporary helper for webgl platforms
         /// </summary>
-        public static UGB.WebGL.IWebGLPlatformHelper webGLHelper;
+        public static UGB.Core.WebGL.IWebGLPlatformHelper webGLHelper;
         void InitLogicImplementationExternal()
         {
             if(webGLHelper == null)

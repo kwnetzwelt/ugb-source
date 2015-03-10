@@ -1,6 +1,6 @@
 using System;
 
-namespace UGB.DontUse
+namespace UGB.Core.DontUse
 {
 	
     public class LogicDummy : GameLogicImplementationBase

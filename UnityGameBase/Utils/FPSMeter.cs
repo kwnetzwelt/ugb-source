@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace UGB.Utils
+namespace UGB.Core.Utils
 {
 	public class FPSMeter : MonoBehaviour {
 

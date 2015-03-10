@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace UGB.XUI
+namespace UGB.Core.XUI
 {
 
 	public class RawImage : UnityEngine.UI.RawImage, IWidget

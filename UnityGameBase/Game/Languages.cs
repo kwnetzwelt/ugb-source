@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UGB.Globalization
+namespace UGB.Core.Globalization
 {
 	public struct Languages
 	{
