@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace UGB.Core
+namespace UnityGameBase.Core
 {
 
 

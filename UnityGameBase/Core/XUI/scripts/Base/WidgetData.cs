@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace UGB.Core.XUI
+namespace UnityGameBase.Core.XUI
 {
 /// <summary>
 /// this serializable class save a widget name, layername and object reference

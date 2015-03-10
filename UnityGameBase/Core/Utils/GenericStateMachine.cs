@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UGB.Core.Utils
+namespace UnityGameBase.Core.Utils
 {
 	public class GenericStateMachine
 	{

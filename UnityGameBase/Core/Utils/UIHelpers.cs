@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UGB.Core.Utils
+namespace UnityGameBase.Core.Utils
 {
 	public class UIHelpers
 	{

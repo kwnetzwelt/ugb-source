@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-namespace UGB.Core.Input
+namespace UnityGameBase.Core.Input
 {
 	public abstract class GestureHandlerBase : MonoBehaviour
 	{

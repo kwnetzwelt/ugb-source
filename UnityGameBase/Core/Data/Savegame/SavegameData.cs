@@ -1,5 +1,5 @@
 ﻿
-namespace UGB.Core.Savegame
+namespace UnityGameBase.Core.Savegame
 {
 	public sealed class SavegameData {
 

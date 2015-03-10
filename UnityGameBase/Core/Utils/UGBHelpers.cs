@@ -10,7 +10,7 @@ using System.Reflection;
 using Windows.Storage;
 using System.Linq;
 #endif
-namespace UGB.Core.Utils
+namespace UnityGameBase.Core.Utils
 {
     public class UGBHelpers
     {

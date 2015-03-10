@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 
 
-namespace UGB.Core.Setup
+namespace UnityGameBase.Core.Setup
 {
 	public class UGBTemplateSetup : UGBWindowBase
 	{

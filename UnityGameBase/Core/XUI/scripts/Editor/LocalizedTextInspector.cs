@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEditor;
-using UGB.Core.XUI;
+using UnityGameBase.Core.XUI;
 
 /// <summary>
 /// this class shows an extra inputfield for the loca key and a toggle to use it

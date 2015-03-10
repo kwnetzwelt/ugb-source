@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UGB.Core.Savegame
+namespace UnityGameBase.Core.Savegame
 {
 	/// <summary>
 	/// Provides a list of savegame metadata and IO functionality for their corresponding savegames. 

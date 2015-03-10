@@ -9,7 +9,7 @@ using Windows.System.Threading;
 using System.Threading;
 #endif
 
-namespace UGB.Core.Utils
+namespace UnityGameBase.Core.Utils
 {
 	public class ThreadingBridge : MonoBehaviour
 	{

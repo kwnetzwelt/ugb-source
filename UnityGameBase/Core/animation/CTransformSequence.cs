@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace UGB.Core.Animation
+namespace UnityGameBase.Core.Animation
 {
 	[ExecuteInEditMode()]
 	public class CTransformSequence : MonoBehaviour

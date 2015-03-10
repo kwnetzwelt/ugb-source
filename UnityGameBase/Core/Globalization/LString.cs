@@ -1,6 +1,6 @@
 using System;
 
-namespace UGB.Core.Globalization
+namespace UnityGameBase.Core.Globalization
 {
 	/// <summary>
 	/// Localized string.

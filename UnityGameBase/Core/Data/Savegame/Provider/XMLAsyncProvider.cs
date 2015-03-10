@@ -5,7 +5,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
 
-namespace UGB.Core.Savegame
+namespace UnityGameBase.Core.Savegame
 {
 	public class XMLAsyncProvider : GameComponent, IIOProvider
 	{
@@ -103,7 +103,7 @@ namespace UGB.Core.Savegame
 
 		IEnumerator WriteSavegameAsync(string pTarget, string pData, Action OnComplete)
 		{
-			var progress = UGB.Core.IO.Storage.Save(pTarget, pData);
+			var progress = IO.Storage.Save(pTarget, pData);
 			while(!progress.IsDone)
 				yield return 0;
 
@@ -114,7 +114,7 @@ namespace UGB.Core.Savegame
 		IEnumerator WriteMetadataAsync<T>(string pTarget, Action<T> OnComplete) where T : ISavegame
 		{
 			string content = XmlObjectSerializer.ObjectToString(mMetadataList);
-			var progress = UGB.Core.IO.Storage.Save(pTarget, content);
+			var progress = IO.Storage.Save(pTarget, content);
 			while(!progress.IsDone)
 				yield return 0;
 			
@@ -124,7 +124,7 @@ namespace UGB.Core.Savegame
 
 		IEnumerator ReadSavegameAsync(string pSource, int ID, Action<SavegameData> OnComplete)
 		{
-			var progress = UGB.Core.IO.Storage.Load(pSource);
+			var progress = IO.Storage.Load(pSource);
 			
 			while(!progress.IsDone)
 				yield return true;
@@ -141,7 +141,7 @@ namespace UGB.Core.Savegame
 
 		IEnumerator ReadMetadataAsync<T>(string pSource, Action<List<Metadata>> OnComplete) where T : ISavegame
 		{
-			var progress = UGB.Core.IO.Storage.Load(pSource);
+			var progress = IO.Storage.Load(pSource);
 			
 			while(!progress.IsDone)
 				yield return true;

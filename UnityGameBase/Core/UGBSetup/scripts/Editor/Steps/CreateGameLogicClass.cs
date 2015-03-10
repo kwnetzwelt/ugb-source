@@ -3,9 +3,9 @@ using System.Collections;
 using System;
 using System.IO;
 using UnityEditor;
-using UGB.Core;
+using UnityGameBase.Core;
 
-namespace UGB.Core.Setup
+namespace UnityGameBase.Core.Setup
 {
 	internal class CreateGameLogicClass : UGBSetupStep
 	{
@@ -59,7 +59,7 @@ namespace UGB.Core.Setup
 		}
 
 		const string kClassContent = @"using UnityEngine;
-using UGB.Core;
+using UnityGameBase.Core;
 
 [GameLogicImplementation()]
 public class GameLogic : GameLogicImplementationBase

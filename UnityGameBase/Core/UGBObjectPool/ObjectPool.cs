@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace UGB.Core.ObjPool
+namespace UnityGameBase.Core.ObjPool
 {
 	public class ObjectPool
 	{

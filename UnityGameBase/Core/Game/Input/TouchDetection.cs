@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace UGB.Core.Input
+namespace UnityGameBase.Core.Input
 {
 	/// <summary>
 	/// A class which handles touch detection and mouse events and emits corresponding events. 

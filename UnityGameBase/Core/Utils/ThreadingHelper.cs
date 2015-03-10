@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.System.Threading;
 
 #endif
-namespace UGB.Core.Utils
+namespace UnityGameBase.Core.Utils
 {
     class ThreadingHelper
     {

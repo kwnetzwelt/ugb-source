@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System;
-using UGB.Core.Globalization;
+using UnityGameBase.Core.Globalization;
 
-namespace UGB.Core
+namespace UnityGameBase.Core
 {
 	/// <summary>
 	/// Contains code for setting game options such as language, sound/music enabled/disabled, 

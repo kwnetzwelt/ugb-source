@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-namespace UGB.Core.Player
+namespace UnityGameBase.Core.Player
 {
 	public struct PlayerState
 	{

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UGB.Core.Globalization
+namespace UnityGameBase.Core.Globalization
 {
 	public struct Languages
 	{

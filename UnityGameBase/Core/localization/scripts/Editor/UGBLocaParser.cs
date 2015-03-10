@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.IO;
 
-namespace UGB.Core.Localization
+namespace UnityGameBase.Core.Localization
 {
 	/// <summary>
 	/// Parses Microsoft Excel XML files for loca entries. 

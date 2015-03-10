@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEditor;
 
-namespace UGB.Core.SceneMenu.Commands
+namespace UnityGameBase.Core.SceneMenu.Commands
 {
 
 	public class SwitchDefaultSceneCommand : SceneMenuCommand

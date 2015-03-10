@@ -1,7 +1,7 @@
 using System;
 using UnityEditor;
 using UnityEngine;
-namespace UGB.Core.SceneMenu.Commands
+namespace UnityGameBase.Core.SceneMenu.Commands
 {
 	public class PlayDefaultSceneCommand : SceneMenuCommand
 	{

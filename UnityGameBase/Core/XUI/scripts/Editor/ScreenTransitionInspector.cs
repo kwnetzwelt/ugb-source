@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine.Serialization;
 
 
-namespace UGB.Core.XUI
+namespace UnityGameBase.Core.XUI
 {
 	[CustomEditor(typeof(ScreenTransition))]
 	public class ScreenTransitionInspector : UnityEditor.Editor

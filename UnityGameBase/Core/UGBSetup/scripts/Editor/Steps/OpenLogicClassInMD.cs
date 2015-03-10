@@ -2,7 +2,7 @@ using System;
 using UnityEditorInternal;
 
 
-namespace UGB.Core.Setup
+namespace UnityGameBase.Core.Setup
 {
 	internal class OpenLogicClassInMD : UGBSetupStep
 	{

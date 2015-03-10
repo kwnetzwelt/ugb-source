@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace UGB.Core.XUI
+namespace UnityGameBase.Core.XUI
 {
 /// <summary>
 /// this class is used to Add or Get a BaseScreen

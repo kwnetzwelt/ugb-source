@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using UnityEditor;
-using UGB.Core.Data;
+using UnityGameBase.Core.Data;
 
-namespace UGB.Core.Localization
+namespace UnityGameBase.Core.Localization
 {
 	public class UGBLocaPostProcessor : AssetPostprocessor 
 	{

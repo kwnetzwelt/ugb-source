@@ -1,11 +1,11 @@
 using System;
-using UGB.Core.Savegame;
-using UGB.Core.Input;
-using UGB.Core.Audio;
-using UGB.Core.Player;
-using UGB.Core.Globalization;
+using UnityGameBase.Core.Savegame;
+using UnityGameBase.Core.Input;
+using UnityGameBase.Core.Audio;
+using UnityGameBase.Core.Player;
+using UnityGameBase.Core.Globalization;
 
-namespace UGB.Core
+namespace UnityGameBase.Core
 {
     public abstract class GameLogicImplementationBase
     {

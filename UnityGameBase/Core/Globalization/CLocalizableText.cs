@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace UGB.Core.Globalization
+namespace UnityGameBase.Core.Globalization
 {
 	/// <summary>
 	/// A Text Mesh based text which is localized using the current language. 

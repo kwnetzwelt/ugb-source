@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-namespace UGB.Core.audio
+namespace UnityGameBase.Core.audio
 {
 	/// <summary>
 	/// The MultiChannelController is a GameComponent script, that enables you to play various sound effects or music clips 

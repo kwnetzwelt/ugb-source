@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UGB.Core
+namespace UnityGameBase.Core
 {
 	/// <summary>
 	/// Provides a public event which is triggered whenever the game state changes. Polls the current game state from the game logic. 

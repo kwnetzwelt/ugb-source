@@ -4,9 +4,9 @@ using System;
 using System.IO;
 using System.Reflection;
 using UnityEditor;
-using UGB.Core;
+using UnityGameBase.Core;
 
-namespace UGB.Core.Setup
+namespace UnityGameBase.Core.Setup
 {
     public class UGBSetupPostProcessor : AssetPostprocessor
     {
@@ -57,7 +57,7 @@ namespace UGB.Core.Setup
         }
 
         private static string kClassContent = @"using UnityEngine;
-using UGB.Core;
+using UnityGameBase.Core;
 
 
 public class GameInitializer : MonoBehaviour

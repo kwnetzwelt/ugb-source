@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace UGB.Core.Editor
+namespace UnityGameBase.Core.Editor
 {
 	//Generate a prefab from the selection
 	    //took out if and else statements cause the code wouldn't work I got it to work this way.

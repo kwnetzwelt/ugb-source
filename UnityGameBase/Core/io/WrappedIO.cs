@@ -3,7 +3,7 @@ using System.IO;
 
 #if !UNITY_METRO || UNITY_EDITOR
 
-namespace UGB.Core.IO
+namespace UnityGameBase.Core.IO
 {
 	/// <summary>
 	/// A IO operation wrapper which allows for async io to operate while this class remains persistant. 

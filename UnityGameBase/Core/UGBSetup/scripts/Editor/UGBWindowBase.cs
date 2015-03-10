@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
-namespace UGB.Core.Setup
+namespace UnityGameBase.Core.Setup
 {
 	public class UGBWindowBase : EditorWindow
 	{
@@ -19,7 +19,7 @@ namespace UGB.Core.Setup
 						mBigLogo = (Texture2D) AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guids[0]), typeof(Texture2D));
 					}else
 					{
-						mBigLogo = UGB.Core.Utils.UIHelpers.TransparentTexture;
+						mBigLogo = Utils.UIHelpers.TransparentTexture;
 					}
 				}
 				return mBigLogo;

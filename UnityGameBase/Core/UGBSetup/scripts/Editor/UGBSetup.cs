@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace UGB.Core.Setup
+namespace UnityGameBase.Core.Setup
 {
     public class UGBSetup
     {

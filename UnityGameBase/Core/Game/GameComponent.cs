@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
-using UGB.Core.Input;
-using UGB.Core.Audio;
-using UGB.Core.Player;
-using UGB.Core.Globalization;
+using UnityGameBase.Core.Input;
+using UnityGameBase.Core.Audio;
+using UnityGameBase.Core.Player;
+using UnityGameBase.Core.Globalization;
 
-namespace UGB.Core
+namespace UnityGameBase.Core
 {
 	/// <summary>
 	/// Base Class for all custom components for your game. 

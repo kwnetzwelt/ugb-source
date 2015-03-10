@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 
-namespace UGB.Core.Player
+namespace UnityGameBase.Core.Player
 {
 	/// <summary>
 	/// Contains reference to the PlayerTransform and PlayerController instance. Dispatches playerstatechanges. 

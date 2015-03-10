@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-namespace UGB.Core.Extensions
+namespace UnityGameBase.Core.Extensions
 {
     public static class Extensions
     {

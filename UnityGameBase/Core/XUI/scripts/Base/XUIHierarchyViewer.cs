@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace UGB.Core.XUI
+namespace UnityGameBase.Core.XUI
 {
 
 /// <summary>

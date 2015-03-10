@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEditor;
-namespace UGB.Core.SceneMenu
+namespace UnityGameBase.Core.SceneMenu
 {
 	public abstract class SceneMenuCommand
 	{

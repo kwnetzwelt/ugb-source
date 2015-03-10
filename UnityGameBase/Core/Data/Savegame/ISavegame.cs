@@ -1,6 +1,6 @@
 using System;
 
-namespace UGB.Core.Savegame
+namespace UnityGameBase.Core.Savegame
 {
 	public interface ISavegame
 	{

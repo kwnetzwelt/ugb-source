@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
-using UGB.Core.audio;
+using UnityGameBase.Core.audio;
 
-namespace UGB.Core.Audio
+namespace UnityGameBase.Core.Audio
 {
 	/// <summary>
 	/// Fades and Plays Music (if enabled) according to current game state. 

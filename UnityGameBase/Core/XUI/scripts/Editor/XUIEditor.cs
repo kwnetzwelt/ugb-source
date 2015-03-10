@@ -3,7 +3,7 @@ using UnityEditor;
 
 using System.Collections;
 
-namespace UGB.Core.XUI
+namespace UnityGameBase.Core.XUI
 {
 	/// <summary>
 	/// Contains logic for language selection in editor

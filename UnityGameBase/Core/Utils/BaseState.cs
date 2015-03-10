@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace UGB.Core.Utils
+namespace UnityGameBase.Core.Utils
 {
     public abstract class BaseState
     {   

@@ -1,5 +1,5 @@
 using System;
-namespace UGB.Core.PlatformInterface
+namespace UnityGameBase.Core.PlatformInterface
 {
 
 	/// <summary>

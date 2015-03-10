@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 
-namespace UGB.Core.Input
+namespace UnityGameBase.Core.Input
 {
 	/// <summary>
 	/// Represents a mapping between touch (or mouse) input on a specific screen region and a keycode on a keyboard.

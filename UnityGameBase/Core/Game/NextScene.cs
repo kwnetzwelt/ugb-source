@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UGB.Core
+namespace UnityGameBase.Core
 {
 	public class NextScene
 	{

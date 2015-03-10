@@ -4,7 +4,7 @@ using System.Text;
 
 #if !UNITY_METRO || UNITY_EDITOR
 
-namespace UGB.Core.IO
+namespace UnityGameBase.Core.IO
 {
 	
 	public enum BridgeConfiguration

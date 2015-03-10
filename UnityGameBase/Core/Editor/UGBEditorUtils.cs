@@ -1,9 +1,9 @@
 using System;
 using UnityEditor;
 using UnityEngine;
-using UGB.Core;
+using UnityGameBase.Core;
 
-namespace UGB.CoreSetup
+namespace UnityGameBase.CoreSetup
 {
 	[InitializeOnLoad]
 	public class UGBEditorUtils

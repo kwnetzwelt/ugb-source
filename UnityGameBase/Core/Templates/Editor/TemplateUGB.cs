@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 
 
-namespace UGB.Core.Templates
+namespace UnityGameBase.Core.Templates
 {
     public class TemplateUGB : BaseTemplate
     {
@@ -31,8 +31,8 @@ namespace UGB.Core.Templates
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UGB.Core;
-using UGB.Core.Extensions;
+using UnityGameBase.Core;
+using UnityGameBase.Core.Extensions;
 
 public class " + name + @" : GameComponent
 {

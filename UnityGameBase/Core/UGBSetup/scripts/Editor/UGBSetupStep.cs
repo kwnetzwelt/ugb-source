@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace UGB.Core.Setup
+namespace UnityGameBase.Core.Setup
 {
 	internal abstract class UGBSetupStep
 	{

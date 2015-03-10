@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace UGB.Core.XUI
+namespace UnityGameBase.Core.XUI
 {
 	/// <summary>
 	/// this is the root screen component and the parent canvas of all UI elements for this screen 

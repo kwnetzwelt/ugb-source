@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.IO;
 
-namespace UGB.Core.Templates
+namespace UnityGameBase.Core.Templates
 {
     public abstract class BaseTemplate
     {               

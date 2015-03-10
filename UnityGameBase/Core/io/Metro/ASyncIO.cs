@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace UGB.Core.IO
+namespace UnityGameBase.Core.IO
 {
     public class WrappedIO
     {

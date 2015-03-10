@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Globalization;
-using UGB.Core.Data;
+using UnityGameBase.Core.Data;
 using System.IO;
 using System.Linq;
 
-namespace UGB.Core.XUI
+namespace UnityGameBase.Core.XUI
 {
     public static class LocalizationHelper
     {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System;
 using UnityEditorInternal;
 
-namespace UGB.Core.Setup
+namespace UnityGameBase.Core.Setup
 {
     public class UnityGameBaseSetupWindow : UGBWindowBase
     {
@@ -13,7 +13,7 @@ namespace UGB.Core.Setup
 
         bool mForce = false;
         bool mRunning = false;
-        UGB.Core.Setup.UGBSetup mSetup = new UGB.Core.Setup.UGBSetup();
+        UGBSetup mSetup = new UGBSetup();
         IEnumerator<string> mEnumerator;
 
         [MenuItem("UGB/Setup/Wizard")]

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace UGB.Core.XUI
+namespace UnityGameBase.Core.XUI
 {
     /// <summary>
     /// this class represents an UI Text and manage the localization Stuff
@@ -43,10 +43,10 @@ namespace UGB.Core.XUI
         {
             base.OnEnable();
 
-            if (UGB.Core.Game.Instance != null
+            if (Game.Instance != null
                 && useLocaFiles)
             {
-                this.text = UGB.Core.Game.Instance.gameLoca.GetText(this.key);
+                this.text = Game.Instance.gameLoca.GetText(this.key);
             }
 
 

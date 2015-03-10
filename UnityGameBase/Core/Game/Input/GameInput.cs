@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-namespace UGB.Core.Input
+namespace UnityGameBase.Core.Input
 {
 	public class GameInput : TouchDetection
 	{

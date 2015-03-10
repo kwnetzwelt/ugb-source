@@ -84,13 +84,13 @@ To actually use the implementation add the UGB.GameLogicImplementationAttribute 
 /// <summary>
 /// Game Main Class. Please look at \ref base_lib_getting_started for further instructions on using it. 
 /// </summary>
-using UGB.Core.Extensions;
-using UGB.Core.Input;
-using UGB.Core.Audio;
-using UGB.Core.Player;
-using UGB.Core.Globalization;
+using UnityGameBase.Core.Extensions;
+using UnityGameBase.Core.Input;
+using UnityGameBase.Core.Audio;
+using UnityGameBase.Core.Player;
+using UnityGameBase.Core.Globalization;
 
-namespace UGB.Core
+namespace UnityGameBase.Core
 {
     public class Game : MonoBehaviour
     {
@@ -112,7 +112,9 @@ namespace UGB.Core
         public GameInput gameInput;
         public SceneTransition sceneTransition;
         public GameData gameData;
-		
+        
+        public ObjPool.ObjectPool objectPool;
+
         public int version;
 		
         public GameLogicImplementationBase CurrentGameLogic
@@ -138,7 +140,8 @@ namespace UGB.Core
         /// <summary>
         /// Temporary helper for webgl platforms
         /// </summary>
-        public static UGB.Core.WebGL.IWebGLPlatformHelper webGLHelper;
+        public static WebGL.IWebGLPlatformHelper webGLHelper;
+        
         void InitLogicImplementationExternal()
         {
             if(webGLHelper == null)
@@ -211,7 +214,8 @@ namespace UGB.Core
             gameInput = this.AddComponentIfNotExists<GameInput>();
             sceneTransition = this.AddComponentIfNotExists<SceneTransition>();
             gameData = this.AddComponentIfNotExists<GameData>();
-			
+            objectPool = new ObjPool.ObjectPool();
+
             firstFrame = true;
         }
 		
