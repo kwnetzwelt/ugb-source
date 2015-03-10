@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UnityGameBase.Core.Input
+namespace UnityGameBase
 {
 	/// <summary>
 	/// Contains persistent information about a single touch or mouse click+drag on the screen. 
