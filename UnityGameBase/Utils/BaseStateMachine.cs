@@ -9,7 +9,7 @@ namespace UGB.Utils
         /// Resultcode as return value for all public statemachine methods.
         public enum ResultCode
         {
-            StateNotExists,
+            StateDoesNotExist,
             StateAlreadyExists,
             StateAdded,
             StateActivated,
@@ -33,7 +33,7 @@ namespace UGB.Utils
         {
             if (state == null)
             {
-                return ResultCode.StateNotExists;
+                return ResultCode.StateDoesNotExist;
             }
             
             if (!this.states.ContainsKey(state.Name))
@@ -62,7 +62,7 @@ namespace UGB.Utils
                 return ResultCode.StateDeleted;
             }
             
-            return ResultCode.StateNotExists;
+            return ResultCode.StateDoesNotExist;
         }
               
         /// <summary>
@@ -108,7 +108,7 @@ namespace UGB.Utils
             BaseState state = this.GetState(name);
             if (state == null)
             {
-                return ResultCode.StateNotExists;
+                return ResultCode.StateDoesNotExist;
             }
             
             if (this.activeState != null)
@@ -134,7 +134,7 @@ namespace UGB.Utils
         {
             if (next == null)
             {
-                return ResultCode.StateNotExists;
+                return ResultCode.StateDoesNotExist;
             }
                                 
             if (this.activeState != null)
