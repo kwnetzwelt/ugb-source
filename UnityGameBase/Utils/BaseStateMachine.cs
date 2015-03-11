@@ -124,10 +124,10 @@ namespace UGB.Utils
                                 
             if(this.activeState != null)
             {
-                this.activeState.End(StateEndCallBack);  
                 this.nextState = next;
                 this.isInTransition = true;
-                
+                this.activeState.End(StateEndCallBack);                  
+                                
                 return ResultCode.StateTransitionActivated;              
             }
             
