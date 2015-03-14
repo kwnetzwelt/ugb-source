@@ -6,10 +6,10 @@ namespace UnityGameBase.Core.Utils
 {
     public class BaseStateMachine
     {
-        /// Resultcode as return value for all public statemachine methods
+        /// Resultcode as return value for all public statemachine methods.
         public enum ResultCode
         {
-            StateNotExists,
+            StateDoesNotExist,
             StateAlreadyExists,
             StateAdded,
             StateActivated,
@@ -19,22 +19,24 @@ namespace UnityGameBase.Core.Utils
             StateTransitionActivated,
         }
         
-        private Dictionary<string,BaseState> states = new Dictionary<string, BaseState>();        
+        private Dictionary<string,BaseState> states = new Dictionary<string, BaseState>();
         private BaseState previousState = null;
         private BaseState activeState = null;
         private BaseState nextState = null;
         private bool isInTransition = false;
         private System.Action transitionReadyCallBack = null;
         
-        /// add a state to the statemachine
+        /// <summary>
+        /// Add a state to the statemachine.
+        /// </summary>
         public ResultCode AddState(BaseState state)
         {
-            if(state == null)
+            if (state == null)
             {
-                return ResultCode.StateNotExists;
+                return ResultCode.StateDoesNotExist;
             }
             
-            if(!this.states.ContainsKey(state.Name))
+            if (!this.states.ContainsKey(state.Name))
             {
                 this.states.Add(state.Name, state);
                 state.Statemachine = this;
@@ -44,12 +46,14 @@ namespace UnityGameBase.Core.Utils
             return ResultCode.StateAlreadyExists;
         }
         
-        /// remove a state and call the end method for this state if needed
+        /// <summary>
+        /// Remove a state and call the BaseState.End() method for this state if needed.
+        /// </summary>
         public ResultCode RemoveState(string name, bool callEnd = false)
         {
-            if(this.states.ContainsKey(name))
+            if (this.states.ContainsKey(name))
             {
-                if(callEnd)
+                if (callEnd)
                 {
                     this.states[name].End();
                 }
@@ -58,35 +62,43 @@ namespace UnityGameBase.Core.Utils
                 return ResultCode.StateDeleted;
             }
             
-            return ResultCode.StateNotExists;
+            return ResultCode.StateDoesNotExist;
         }
               
-        /// returns the given state or null
+        /// <summary>
+        /// Return the given state, or null.
+        /// </summary>
         public BaseState GetState(string name)
         {
-            if(this.states.ContainsKey(name))
+            if (this.states.ContainsKey(name))
             {
                 return states[name];
             }
             return null;
         }
         
-        /// returns the active state or null
+        /// <summary>
+        /// Returns the active state, or null.
+        /// </summary>
         public BaseState GetActiveState()
         {
             return this.activeState;
         }
         
-        /// returns the previous state or null
+        /// <summary>
+        /// Returns the previous state, or null.
+        /// </summary>
         public BaseState GetPreviousState()
         {
             return this.previousState;
         }
                 
-        /// set the active state for updating and test before that the transition conditions
+        /// <summary>
+        /// Set the active state for updating and test before the transition conditions.
+        /// </summary>
         public virtual ResultCode SetActiveState(string name, System.Action onDone = null)
         {
-            if(this.isInTransition)
+            if (this.isInTransition)
             {
                 return ResultCode.StateTransitionActive;
             }
@@ -94,14 +106,14 @@ namespace UnityGameBase.Core.Utils
             this.transitionReadyCallBack = onDone;
             
             BaseState state = this.GetState(name);
-            if(state == null)
+            if (state == null)
             {
-                return ResultCode.StateNotExists;
+                return ResultCode.StateDoesNotExist;
             }
             
-            if(this.activeState != null)
+            if (this.activeState != null)
             {
-                if(this.activeState.IsTransitionAllowed(state))
+                if (this.activeState.IsTransitionAllowed(state))
                 {
                     return this.SwitchState(state);
                 }
@@ -109,20 +121,23 @@ namespace UnityGameBase.Core.Utils
                 {
                     return ResultCode.StateTransitionFailed;
                 }
-            }   
-            //switch state because no active state exist
+            }
+            
+            // Switch state because no active state exists.
             return SwitchState(this.GetState(name));
         }
         
-        /// switch the state and call Start,End and set the previousState
+        /// <summary>
+        /// Switch the state and call BaseState.Start(), BaseState.End() and set the previousState.
+        /// </summary>
         protected virtual ResultCode SwitchState(BaseState next)
         {
-            if(next == null)
+            if (next == null)
             {
-                return ResultCode.StateNotExists;
+                return ResultCode.StateDoesNotExist;
             }
                                 
-            if(this.activeState != null)
+            if (this.activeState != null)
             {
                 this.nextState = next;
                 this.isInTransition = true;
@@ -137,16 +152,20 @@ namespace UnityGameBase.Core.Utils
             return ResultCode.StateTransitionActivated;
         }
         
-        //update the current active state
+        /// <summary>
+        /// Update the current active state.
+        /// </summary>
         public virtual void Update()
         {
-            if(this.activeState != null && !this.isInTransition)
+            if (this.activeState != null && !this.isInTransition)
             {
                 this.activeState.Update();
             }
         }
         
-        //is called when state End() is ready
+        /// <summary>
+        /// Called when state BaseState.End() is ready.
+        /// </summary>
         private void StateEndCallBack()
         {
             this.previousState = this.activeState;
@@ -155,11 +174,13 @@ namespace UnityGameBase.Core.Utils
             this.activeState.Start(StateStartCallBack);
         }             
         
-        //is called when state Start() is ready
+        /// <summary>
+        /// Called when state BaseState.Start() is ready.
+        /// </summary>
         private void StateStartCallBack()
         {
             this.isInTransition = false;
-            if(this.transitionReadyCallBack != null)
+            if (this.transitionReadyCallBack != null)
             {
                 this.transitionReadyCallBack();
             }
