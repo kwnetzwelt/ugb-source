@@ -18,6 +18,12 @@ namespace UnityGameBase.Core.Utils
             StateTransitionActive,
             StateTransitionActivated,
         }
+
+        public delegate void StateChangedDelegate(BaseState previous, BaseState next);
+        /// <summary>
+        /// Occurs when a state has changed.
+        /// </summary>
+        public event StateChangedDelegate StateChanged;
         
         private Dictionary<string,BaseState> states = new Dictionary<string, BaseState>();
         private BaseState previousState = null;
@@ -170,6 +176,11 @@ namespace UnityGameBase.Core.Utils
         {
             this.previousState = this.activeState;
             this.activeState = this.nextState;
+
+            if (StateChanged != null)
+            {
+                StateChanged(this.previousState, this.activeState);
+            }
             
             this.activeState.Start(StateStartCallBack);
         }             
