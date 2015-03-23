@@ -41,23 +41,23 @@ namespace UnityGameBase.Core.Audio
 			FadeDuration = mFadeTime;
 		
 			mInitialized = true;
-			GOptions.OnAnyOptionChanged += OnAnyOptionChangedEvent;
+            UGB.Options.OnAnyOptionChanged += OnAnyOptionChangedEvent;
 			
 		}
-		protected override void OnDestroy()
+
+		protected virtual void OnDestroy()
 		{
-			base.OnDestroy();
-			GOptions.OnAnyOptionChanged -= OnAnyOptionChangedEvent;
+            UGB.Options.OnAnyOptionChanged -= OnAnyOptionChangedEvent;
 			
 		}
 		
 		
 		public void OnAnyOptionChangedEvent()
 		{
-			if(mEnabled != GOptions.IsMusicOn)
+			if(mEnabled != UGB.Options.IsMusicOn)
 			{
-				mEnabled = GOptions.IsMusicOn;
-				Mute = !GOptions.IsMusicOn;
+                mEnabled = UGB.Options.IsMusicOn;
+                Mute = !UGB.Options.IsMusicOn;
 			}
 		}
 		

@@ -14,7 +14,7 @@ namespace UnityGameBase.Core.Globalization
     /// <summary>
     /// Loads a LocaData instance. Contains the setting for the currently selected language. Returns translations.
     /// </summary>
-    public class GameLocalization : GameComponent
+    public class GameLocalization : MonoBehaviour
     {
         LocaData mData;
         public Languages mCurrentLanguage = Languages.Invalid;

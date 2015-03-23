@@ -88,9 +88,8 @@ namespace UnityGameBase.Core.Input
 			TouchEnd += HandleTouchEnd;
 			SwipeEvent += HandleSwipeEvent;
 		}
-		protected override void OnDestroy()
+		protected virtual void OnDestroy()
 		{
-			base.OnDestroy();
 			TouchStart -= HandleTouchStart;
 			TouchEnd -= HandleTouchEnd;
 			SwipeEvent -= HandleSwipeEvent;

@@ -5,7 +5,6 @@ using UnityGameBase.Core.Globalization;
 using UnityGameBase.Core.Input;
 using UnityGameBase.Core.ObjPool;
 using UnityGameBase.Core.PlatformInterface;
-using UnityGameBase.Core.Player;
 
 namespace UnityGameBase
 {
@@ -27,22 +26,6 @@ namespace UnityGameBase
             }
         }
 
-        public static GameStateManager GameState
-        {
-            get
-            {
-                return GetGame().gameState;
-            }
-        }
-
-        public static GamePlayer Player
-        {
-            get
-            {
-                return GetGame().gamePlayer;
-            }
-        }
-
         public static GameMusic Music
         {
             get
@@ -56,14 +39,6 @@ namespace UnityGameBase
             get
             {
                 return GetGame().gameLoca;
-            }
-        }
-
-        public static GameData Storage
-        {
-            get
-            {
-                return GetGame().gameData;
             }
         }
 
@@ -83,14 +58,22 @@ namespace UnityGameBase
             }
         }
 
-        public static T GetGameLogic<T>() where T : GameLogicImplementationBase
+
+        public static T GetGame<T>() where T : Game
         {
-            return GetGame().CurrentGameLogic as T;
+            if (Game.Instance != null)
+            {
+                return Game.Instance as T;
+            }
+            else
+            {
+                throw new Exception("No Game Instance found. Do you have a GameRoot in your scene?");
+            }
         }
 
         private static Game GetGame()
         {
-            if (Game.Instance != null)
+            if(Game.Instance != null)
             {
                 return Game.Instance;
             }

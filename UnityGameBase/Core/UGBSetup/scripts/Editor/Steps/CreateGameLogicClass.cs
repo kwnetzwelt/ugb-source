@@ -4,18 +4,32 @@ using System;
 using System.IO;
 using UnityEditor;
 using UnityGameBase.Core;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace UnityGameBase.Core.Setup
 {
 	internal class CreateGameLogicClass : UGBSetupStep
 	{
-		const string kClassName = "GameLogic";
-		const string kClassPath = "Assets/scripts/" + kClassName + ".cs";
-
+		
+		
 		public static string LogicClassFile()
 		{
-			return kClassPath;
+            
+            return "Assets/scripts/" + LogicClassName() + ".cs";
 		}
+
+        public static string LogicClassName()
+        {
+            
+            DirectoryInfo di = new DirectoryInfo(Application.dataPath);
+            //string pattern = @"\W|_";
+            //string[] result = Regex.Split( di.Parent.Name , pattern, RegexOptions.IgnoreCase);
+
+            return CamelCase(di.Parent.Name);
+
+        }
 
 		public override string GetName ()
 		{
@@ -37,10 +51,11 @@ namespace UnityGameBase.Core.Setup
 			//
 			// roughly similar to : http://answers.unity3d.com/questions/14367/how-can-i-wait-for-unity-to-recompile-during-the-e.html?page=1&pageSize=5&sort=votes
 			//
+            
+            
+            File.WriteAllText(LogicClassFile(), kClassContent.Replace("%CLASSNAME%", LogicClassName() ));
 
-			File.WriteAllText( kClassPath, kClassContent);
-
-			AssetDatabase.ImportAsset( kClassPath );
+            AssetDatabase.ImportAsset(LogicClassFile());
 
 
 		}
@@ -51,7 +66,7 @@ namespace UnityGameBase.Core.Setup
 			{
 				foreach (var t in assembly.GetTypes())
 				{
-					if(t.Name == kClassName && t.IsAssignableFrom(typeof(GameLogicImplementationBase)))
+					if(t.Name == LogicClassName() && t.IsAssignableFrom(typeof(Game)))
 						return t;
 				}
 			}
@@ -59,49 +74,76 @@ namespace UnityGameBase.Core.Setup
 		}
 
 		const string kClassContent = @"using UnityEngine;
-using UnityGameBase.Core;
+using UnityGameBase;
 
-[GameLogicImplementation()]
-public class GameLogic : GameLogicImplementationBase
+public class %CLASSNAME% : Game
 {
-	#region implemented abstract members of GameLogicImplementationBase
+    #region implemented abstract members of Game
 
-	public override void Start ()
-	{
-		throw new System.NotImplementedException ();
-	}
+    protected override void Initialize ()
+    {
+        throw new System.NotImplementedException ();
+    }
 
-	public override void GameSetupReady ()
-	{
-		throw new System.NotImplementedException ();
-	}
+    protected override void GameSetupReady ()
+    {
+        throw new System.NotImplementedException ();
+    }
 
-	public override void GameStateChanged (SGameState pOldState, SGameState pCurrentGameState)
-	{
-		throw new System.NotImplementedException ();
-	}
-
-	public override SGameState GetCurrentGameState ()
-	{
-		throw new System.NotImplementedException ();
-	}
-
-	public override bool OnBeforeRestart ()
-	{
-		throw new System.NotImplementedException ();
-	}
-
-	public override bool OnBeforePause ()
-	{
-		throw new System.NotImplementedException ();
-	}
-
-	#endregion
-
-
+#endregion
 }
 
 ";
-	}
+	
+        public static string CamelCase(string original)
+        {
+            if (string.IsNullOrEmpty(original))
+            {
+                return string.Empty;
+            }
+            bool flag = NoLowerCase(original);
+            var builder = new StringBuilder();
+            if (!IsSeparatorChar(original[0]))
+            {
+                builder.Append(char.ToUpper(original[0]));
+            }
+            for (int i = 1; i < original.Length; i++)
+            {
+                if (!IsSeparatorChar(original[i]))
+                {
+                    if (IsSeparatorChar(original[i - 1]))
+                    {
+                        builder.Append(char.ToUpper(original[i]));
+                    }
+                    else if (flag)
+                    {
+                        builder.Append(char.ToLower(original[i]));
+                    }
+                    else
+                    {
+                        builder.Append(original[i]);
+                    }
+                }
+            }
+            return builder.ToString();
+        }
 
+        private static bool IsSeparatorChar(char value)
+        {
+            return !char.IsLetterOrDigit(value);
+        }
+
+        private static bool NoLowerCase(string value)
+        {
+            foreach (char ch in value)
+            {
+                if (char.IsLower(ch))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 }
+ 

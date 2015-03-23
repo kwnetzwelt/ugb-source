@@ -87,13 +87,42 @@ To actually use the implementation add the UGB.GameLogicImplementationAttribute 
 using UnityGameBase.Core.Extensions;
 using UnityGameBase.Core.Input;
 using UnityGameBase.Core.Audio;
-using UnityGameBase.Core.Player;
 using UnityGameBase.Core.Globalization;
+using UnityGameBase.Core.Utils;
+using UnityGameBase.Core;
+using UnityGameBase.Core.ObjPool;
 
-namespace UnityGameBase.Core
+namespace UnityGameBase
 {
-    public class Game : MonoBehaviour
+    [ScriptExecutionOrder(-1000)]
+    public abstract class Game : MonoBehaviour
     {
+        #region abstract methods
+
+        /// <summary>
+        /// Use this method to setup your environment before you load the first (visible) scene. Usually
+        /// this is the place where languages, game states, events and player states are registered. 
+        /// This method is called before any other game component is present. 
+        /// Calling \link GameLogicImplementationBase::GState GState \endlink or \link GameLogicImplementationBase::GLoca GLoca \endlink will therefore result in a NullReferenceException. 
+        /// If you need access to another component for your setup use \link GameLogicImplementationBase::GameSetupReady GameSetupReady \endlink.
+        /// 
+        /// \see Languages
+        /// \see SGameEventType
+        /// \see SPlayerState
+        /// \see SGameState
+        /// 
+        /// </summary>
+        protected abstract void Initialize();
+
+        /// <summary>
+        /// All Game components are loaded and the game can commence. 
+        /// Use this method to setup further components you will need later. 
+        /// When you are ready with your last setup steps you would usually want to load the scene with index 1. 
+        /// </summary>
+        protected abstract void GameSetupReady();
+
+        #endregion
+
         public bool testing;
 
         public static Game Instance
@@ -104,119 +133,41 @@ namespace UnityGameBase.Core
 		
         // Game Components
         public GameOptions gameOptions;
-        public GameStateManager gameState;
-        public GamePlayer gamePlayer;
         public GameMusic gameMusic;
         public GameLocalization gameLoca;
-        public GamePause gamePause;
         public GameInput gameInput;
         public SceneTransition sceneTransition;
-        public GameData gameData;
         
-        public ObjPool.ObjectPool objectPool;
+        public ObjectPool objectPool;
 
         public int version;
 		
-        public GameLogicImplementationBase CurrentGameLogic
-        {
-            get;
-            private set;
-        }
-		
-        bool firstFrame = false;
         bool initialized = false;
 
-        System.Type GetGameLogicType()
-        {
-            var implementations = Utils.UGBHelpers.GetTypesWithAttribute<GameLogicImplementationAttribute>();
-            if(implementations.Count > 0)
-            {
-                Debug.Log("Found Game logic class: " + implementations[0].Name);
-                return implementations[0];
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Temporary helper for webgl platforms
-        /// </summary>
-        public static WebGL.IWebGLPlatformHelper webGLHelper;
-        
-        void InitLogicImplementationExternal()
-        {
-            if(webGLHelper == null)
-            {
-                throw new System.NullReferenceException("WebGLHelper must be registered in Game on WebGL platform. ");
-            }
-            SetLogic(webGLHelper.InitLogic());
-        }
-
-
-        void InitLogicImplementation()
-        {
-            if(CurrentGameLogic != null)
-            {
-                Debug.Log("Game logic already set. Not creating a new instance. ");
-                return;
-            }
-            System.Type logicType = GetGameLogicType();
-            if(logicType == null)
-            {
-                if(CurrentGameLogic == null)
-                {
-                    CurrentGameLogic = new DontUse.LogicDummy();
-                }
-                Debug.LogError("No Logic found. Add the GameLogicImplementation Attribute to a class derived from GameLogicImplementationBase. ");
-            }
-            else
-            {
-                #if !UNITY_METRO
-                if(typeof(GameLogicImplementationBase).IsAssignableFrom(logicType))
-                {
-                    var t = System.Activator.CreateInstance(logicType);	
-                    CurrentGameLogic = t as GameLogicImplementationBase;
-                }
-                else
-                {
-                    Debug.LogError("Your Game Logic Implementation is not of type " + typeof(GameLogicImplementationBase).ToString());
-                }
-                #else
-				var t = System.Activator.CreateInstance(logicType);	
-				CurrentGameLogic = t as GameLogicImplementationBase;
-                #endif
-            }
-        }
-		
-        void Initialize()
+        IEnumerator InitializeInternal()
         {
             initialized = true;
             Instance = this;
             DontDestroyOnLoad(this);
 
-            Utils.ThreadingBridge.Initialize();
+            ThreadingBridge.Initialize();
 
             // for webgl we cannot use custom attributes to find classes, so we rely on a delegate to create the logic instance for us. 
 
-#if UNITY_WEBGL
-			InitLogicImplementationExternal();
-#else
-            InitLogicImplementation();
-#endif
-            CurrentGameLogic.Start();
-			
+            Initialize();
+
             gameOptions = this.AddComponentIfNotExists<GameOptions>();
-            gameState = this.AddComponentIfNotExists<GameStateManager>();
-            gamePlayer = this.AddComponentIfNotExists<GamePlayer>();
             gameMusic = this.AddComponentIfNotExists<GameMusic>();
             gameLoca = this.AddComponentIfNotExists<GameLocalization>();
             gameLoca.Initialize();
-            gamePause = this.AddComponentIfNotExists<GamePause>();
             gameInput = this.AddComponentIfNotExists<GameInput>();
             sceneTransition = this.AddComponentIfNotExists<SceneTransition>();
-            gameData = this.AddComponentIfNotExists<GameData>();
-            objectPool = new ObjPool.ObjectPool();
+            
+            objectPool = new ObjectPool();
 
-            firstFrame = true;
+            yield return new WaitForEndOfFrame();
+
+            GameSetupReady();
         }
 		
         void OnEnable()
@@ -229,15 +180,16 @@ namespace UnityGameBase.Core
                 Debug.Log("Destroyed Test Game Instance");
                 return;
             }
+            
             if(Instance != null)
             {
                 GameObject.Destroy(this);
                 return;
             }
-            Instance = this;
+
             if(!initialized)
             {
-                Initialize();
+                StartCoroutine(InitializeInternal());
             }
         }
 		
@@ -246,24 +198,6 @@ namespace UnityGameBase.Core
             Application.Quit();
         }
 		
-        void Update()
-        {
-            if(UnityEngine.Input.GetKeyDown(KeyCode.Escape))
-            {
-                if(gameOptions.IsOptionsDialogVisible)
-                {
-                    gameOptions.IsOptionsDialogVisible = false;
-                }
-				
-            }
-            if(firstFrame)
-            {
-                firstFrame = false;
-				
-                CurrentGameLogic.GameSetupReady();
-            }
-            CurrentGameLogic.Update();
-        }
 		
         /// <summary>
         /// If game logic approves this will destroy all game objects and then load level 1. 
@@ -272,11 +206,6 @@ namespace UnityGameBase.Core
         /// </summary>
         public void Restart()
         {
-            if(!CurrentGameLogic.OnBeforeRestart())
-            {
-                return;
-            }
-			
             UnityEngine.Object[] allGameObjects = FindObjectsOfType(typeof(GameObject)); 
             foreach(GameObject go in allGameObjects)
                 GameObject.Destroy(go);
@@ -291,10 +220,6 @@ namespace UnityGameBase.Core
         /// <param name="pValue">If set to <c>true</c> p value.</param>
         public void PauseGame(bool pValue)
         {
-            if(!CurrentGameLogic.OnBeforePause())
-            {
-                return;
-            }
             UnityEngine.Object[] objects = FindObjectsOfType(typeof(GameObject));
 			
             foreach(GameObject go in objects)
@@ -309,11 +234,6 @@ namespace UnityGameBase.Core
             {
                 Application.targetFrameRate = pFrames;
             }
-        }
-
-        public void SetLogic(GameLogicImplementationBase pLogic)
-        {
-            CurrentGameLogic = pLogic;
         }
     }
 }

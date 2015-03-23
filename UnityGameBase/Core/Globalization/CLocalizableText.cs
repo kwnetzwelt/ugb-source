@@ -6,7 +6,7 @@ namespace UnityGameBase.Core.Globalization
 	/// <summary>
 	/// A Text Mesh based text which is localized using the current language. 
 	/// </summary>
-	public class LocalizableText : GameComponent
+	public class LocalizableText : MonoBehaviour
 	{
 		public string locaKey;
 		LString translation;

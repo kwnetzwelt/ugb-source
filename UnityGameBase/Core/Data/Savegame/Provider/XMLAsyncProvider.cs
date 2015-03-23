@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
+using UnityEngine;
 
 namespace UnityGameBase.Core.Savegame
 {
-	public class XMLAsyncProvider : GameComponent, IIOProvider
+	public class XMLAsyncProvider : MonoBehaviour, IIOProvider
 	{
 		static string mPath = UnityEngine.Application.persistentDataPath + "/saveGames/";
 		static string mFilenameTemplate = "saveGame_{0}.xml";

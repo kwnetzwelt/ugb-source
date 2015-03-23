@@ -22,7 +22,7 @@ namespace UnityGameBase.Core.audio
 	/// A free channel is any channel not currently playing. If no channel is free, the controller will return the controller with the lowest volume. If there is still no channel found, the first channel will be used. 
 	/// 
 	/// </summary>
-	public class MultiChannelController : GameComponent
+	public class MultiChannelController : MonoBehaviour
 	{
 		[SerializeField]
 		[HideInInspector]

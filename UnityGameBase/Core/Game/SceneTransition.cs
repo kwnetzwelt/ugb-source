@@ -7,7 +7,7 @@ namespace UnityGameBase.Core
 	/// <summary>
 	/// Use this class to fade between scenes using a (IMGUI-)texture. Access through Game::m_sceneTransition. 
 	/// </summary>
-	public class SceneTransition : GameComponent
+	public class SceneTransition : MonoBehaviour
 	{
 		/// <summary>
 		/// The Texture to fade to. This texture will be displayed fullscreen using the Unity3D IMGUI System. 

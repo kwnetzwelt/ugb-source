@@ -8,7 +8,7 @@ namespace UnityGameBase.Core.Utils
 	/// Inherit from this class to us this functionality and implement a LazyUpdate method. 
 	/// IMPORTANT: This class can only be used to run code LESS-frequent than the update method runs. 
 	/// </summary>
-	public abstract class LazyUpdates : GameComponent
+	public abstract class LazyUpdates : MonoBehaviour
 	{
 
 		float lastLazyUpdateTime;

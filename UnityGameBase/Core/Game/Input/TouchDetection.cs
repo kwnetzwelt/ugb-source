@@ -9,7 +9,7 @@ namespace UnityGameBase.Core.Input
 	/// Touches are persistant. That is, whenever a touch starts a new instance of UGB.Input.TouchInformation is created. 
 	/// Its data is then updated automatically by this class. 
 	/// </summary>
-	public class TouchDetection : GameComponent
+	public class TouchDetection : MonoBehaviour
 	{
 		private bool inputEnabled = true;
 

@@ -9,7 +9,7 @@ namespace UnityGameBase.Core
 	/// Contains code for setting game options such as language, sound/music enabled/disabled, 
 	/// the Quality setting and if touch feedback should be visible
 	/// </summary>
-	public class GameOptions : GameComponent
+	public class GameOptions : MonoBehaviour
 	{
 		const string SoundOption = "OptSound";
 		const string MusicOption = "OptMusic";
@@ -79,7 +79,7 @@ namespace UnityGameBase.Core
 				int i = 0;
 				foreach(int lang in Languages.Enumerate())
 				{
-					if(lang == GLoca.currentLanguage)
+					if(lang == UGB.Loca.currentLanguage)
 					{
 						break;
 					}
@@ -147,7 +147,7 @@ namespace UnityGameBase.Core
 			language = PlayerPrefs.GetInt(LanguageOption,Languages.First);
 
 			showTouchFeedback = System.Convert.ToBoolean( PlayerPrefs.GetInt(TouchFeedbackOption,1));
-			GLoca.SetLanguage(language);
+			UGB.Loca.SetLanguage(language);
 #if !UNITY_WEBGL
 			QualitySettings.SetQualityLevel(qualityLevel);
 #endif
