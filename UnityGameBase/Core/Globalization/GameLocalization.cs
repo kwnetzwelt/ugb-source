@@ -52,7 +52,7 @@ namespace UnityGameBase.Core.Globalization
         {
             if (mData != null)
             {
-                mData.GetKeys();
+                return mData.GetKeys();
             }
             return null;
         }
