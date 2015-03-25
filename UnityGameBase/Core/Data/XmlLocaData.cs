@@ -15,7 +15,8 @@ public class XmlLocaData
 		
         // the following is needed to store the text Property in a CData Section
         [XmlIgnore]
-        public string text;
+        public string
+            text;
 		
 		#if	!UNITY_METRO || UNITY_EDITOR
         public XmlCDataSection TextXml { get; set; }
@@ -43,9 +44,12 @@ public class XmlLocaData
     public string language = "";
 	
     [XmlIgnore]
-    public Dictionary<string,string> data = new Dictionary<string, string>();
+    public Dictionary<string,string>
+        data = new Dictionary<string, string>();
 	
-    public XmlLocaDataEntry[] dataBuffer;
+    
+    public XmlLocaDataEntry[]
+        dataBuffer = new XmlLocaDataEntry[0];
 	
     /// <summary>
     /// Method executed prio to write xml serialization. Copies all entries from the dictionary to the buffer
@@ -56,7 +60,7 @@ public class XmlLocaData
 		
         dataBuffer = new XmlLocaDataEntry[data.Count];
 		
-        foreach (KeyValuePair<string,string>e in data)
+        foreach(KeyValuePair<string,string>e in data)
         {
             XmlLocaDataEntry xmle = new XmlLocaDataEntry();
             xmle.key = e.Key;
@@ -73,7 +77,7 @@ public class XmlLocaData
     {
         data = new Dictionary<string, string>();
 		
-        foreach (XmlLocaDataEntry e in dataBuffer)
+        foreach(XmlLocaDataEntry e in dataBuffer)
         {
             e.PostRead();	
             data[e.key] = e.text;

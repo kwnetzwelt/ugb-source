@@ -23,12 +23,12 @@ namespace UnityGameBase.Core.Data
 		
         public string GetText(string pKey)
         {
-            if (pKey == null)
+            if(pKey == null)
             {
                 return "Empty Key!";
             }
 		
-            if (xmlData.data.ContainsKey(pKey))
+            if(xmlData.data.ContainsKey(pKey))
             {
                 return xmlData.data[pKey];
             }
@@ -52,7 +52,7 @@ namespace UnityGameBase.Core.Data
 		
         public static LocaData Load()
         {
-            if (Application.isPlaying)
+            if(Application.isPlaying)
             {
                 return Load(Game.Instance.gameLoca.currentLanguage.ToString());
             }
@@ -62,38 +62,42 @@ namespace UnityGameBase.Core.Data
 		#if UNITY_EDITOR
         public static LocaData LoadFromEditor(string pLanguageShort)
         {
+            UnityEditor.AssetDatabase.Refresh();
             LocaData lData = new LocaData();
             string path = Application.dataPath + "/Resources/loca/loca_" + pLanguageShort;
             try
             {
                 FileInfo file = new FileInfo(path);
-                if (!file.Exists)
+                if(!file.Exists)
                 {
                     Debug.LogWarning("Localization: File not found: " + file.FullName);
                     return lData;
                 }
 				
-                path = Path.GetFileNameWithoutExtension(path);
-                path = "loca/" + path;
-                TextAsset ta = Resources.Load(path) as TextAsset;
-				
+                path = Path.GetFileName(path);
+                path = "Assets/Resources/loca/" + path;
+
+                TextAsset ta = UnityEditor.AssetDatabase.LoadAssetAtPath(path, typeof(TextAsset)) as TextAsset;
+
+                Debug.Log(ta.text.Length);
+                
                 MemoryStream ms = new MemoryStream(ta.bytes);
 				
                 XmlSerializer s = new XmlSerializer(typeof(XmlLocaData));
                 XmlLocaData data = s.Deserialize(ms) as XmlLocaData;
-				
+              
                 lData.xmlData = data;
 				
                 lData.xmlData.PostRead();
 				
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Debug.LogWarning("Error loading loca file for requested language. " + e.Message);
                 lData.xmlData = new XmlLocaData();
                 lData.xmlData.language = pLanguageShort;
             }
-			
+
             return lData;
         }
         #endif
@@ -109,7 +113,7 @@ namespace UnityGameBase.Core.Data
             {
                 // iOS related crash with connected Xcode (EXC_BAD_ACCESS) - check for file 'exists'
                 TextAsset ta = Resources.Load<TextAsset>(path);
-                if (ta == null)
+                if(ta == null)
                 {
                     throw new FileNotFoundException("File not found: " + path);
                 }
@@ -124,7 +128,7 @@ namespace UnityGameBase.Core.Data
                 lData.xmlData.PostRead();
 				
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Debug.LogWarning("Error loading loca file for requested language. " + e.Message);
 				
@@ -136,7 +140,7 @@ namespace UnityGameBase.Core.Data
 	#if UNITY_EDITOR
         public void Save()
         {
-            if (Application.isPlaying)
+            if(Application.isPlaying)
             {
                 Debug.LogError("Not available at runtime!");
                 return;
@@ -146,7 +150,7 @@ namespace UnityGameBase.Core.Data
             string path = "Assets/Resources/loca/"; 
 
             DirectoryInfo di = new DirectoryInfo(path);
-            if (!di.Exists)
+            if(!di.Exists)
             {
                 di.Create();
             }
@@ -162,6 +166,7 @@ namespace UnityGameBase.Core.Data
 			
             writer.Flush();
             writer.Close();
+            
         }
 	#endif
     }
