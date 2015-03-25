@@ -61,7 +61,7 @@ namespace UnityGameBase.Core.Utils
         /// Randomizes the given list by iterating all entries and moving them to a random location within the list. 
         /// </summary>
         /// <param name="list">List.</param>
-        public static void RandomizeList(IList list)
+        public static void Shuffle(IList list)
         {  
             System.Random rng = new System.Random();  
             int n = list.Count;  
