@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityGameBase;
 
 namespace UnityGameBase.Core.XUI
 {
@@ -43,14 +44,14 @@ namespace UnityGameBase.Core.XUI
         {
             base.OnEnable();
 
-            if (Game.Instance != null
+            if(Game.Instance != null
                 && useLocaFiles)
             {
                 this.text = Game.Instance.gameLoca.GetText(this.key);
             }
 
 
-            if (this.text == "")
+            if(this.text == "")
             {
                 this.text = "NAME HERE";
             }
@@ -64,25 +65,24 @@ namespace UnityGameBase.Core.XUI
         }
 
         private string FormatText(string _key, params object[] _params)
-        {
-            return System.String.Format(_key, _params);
+        {           
+            return System.String.Format(_key, _params);            
         }
 
         public void ReCreate()
         {
             //in editor show only the translated text 
 #if UNITY_EDITOR
-            if (useLocaFiles)
+            if(useLocaFiles)
             {
                 this.text = LocalizationHelper.GetText(this.key);                
             }
             
             //locaKeys = LocalizationHelper.GetKeys();
 #else
-            if (UGB.Game.Instance != null
-                && useLocaFiles)
+            if (useLocaFiles)
             {
-                this.text = UGB.Game.Instance.gameLoca.GetText(this.key);
+                this.text = UGB.Loca.GetText(this.key);
             }
 #endif
         }
