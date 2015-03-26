@@ -103,7 +103,7 @@ namespace UnityGameBase.Core.XUI
             Destroy(tempParent);
             this.screenInstance = tempScreen;
 			
-            this.screenInstance.transform.parent = this.transform;
+            this.screenInstance.transform.SetParent(this.transform);
             
             this.widgetManager = this.screenInstance.GetComponent<WidgetManager>();
 			

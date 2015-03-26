@@ -100,5 +100,18 @@ namespace UnityGameBase.Core.Extensions
                 list[n] = value;  
             }
         }
+        
+        public static GameObject FindGameObject(this GameObject target, string name)
+        {
+            GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
+            foreach(GameObject obj in allObjects)
+            {
+                if(obj.name == name)
+                {
+                    return obj;
+                }                
+            }
+            return null;
+        }
     }
 }
