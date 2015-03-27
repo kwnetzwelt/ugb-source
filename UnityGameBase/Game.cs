@@ -91,6 +91,7 @@ using UnityGameBase.Core.Globalization;
 using UnityGameBase.Core.Utils;
 using UnityGameBase.Core;
 using UnityGameBase.Core.ObjPool;
+using UnityGameBase.WebGL;
 
 namespace UnityGameBase
 {
@@ -130,6 +131,7 @@ namespace UnityGameBase
             get;
             private set;
         }
+              
 		
         // Game Components
         public GameOptions gameOptions;
@@ -143,6 +145,8 @@ namespace UnityGameBase
         public int version;
 		
         bool initialized = false;
+        
+        public static WebGLPlatformHelper webGLHelper;
 
         IEnumerator InitializeInternal()
         {
@@ -156,12 +160,18 @@ namespace UnityGameBase
 
             Initialize();
 
+            #if UNITY_WEBGL
+            webGLHelper = this.AddComponentIfNotExists<WebGLPlatformHelper>();          
+            #endif
+            
             gameOptions = this.AddComponentIfNotExists<GameOptions>();
             gameMusic = this.AddComponentIfNotExists<GameMusic>();
             gameLoca = this.AddComponentIfNotExists<GameLocalization>();
             gameLoca.Initialize();
             gameInput = this.AddComponentIfNotExists<GameInput>();
             sceneTransition = this.AddComponentIfNotExists<SceneTransition>();
+            
+           
             
             objectPool = new ObjectPool();
 
