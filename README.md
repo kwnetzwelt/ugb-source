@@ -1,3 +1,3 @@
 # UnityGameBase Source#
 
-Development: [![Build Status](https://travis-ci.org/malud/ugb-travis.svg?branch=master)](https://travis-ci.org/malud/ugb-travis)
+Contains the source files of the Unity Game Base for use as a package or submodule in any Unity project. 
