@@ -205,7 +205,7 @@ namespace UnityGameBase
 		
         public void QuitGame()
         {
-            Application.Quit();
+			GameObject.Destroy(this.gameObject);
         }
 		
 		
