@@ -1,5 +1,5 @@
 language: csharp
-solution: ./malud/unity.sln
+solution: unity.sln
 git:
   submodules: false
 env:
@@ -7,4 +7,4 @@ env:
     - MONO_VERSION="3.5.0"
 before_install:
     - "npm install unity-solution -g"
-    - "unitysolution ./malud/ugb-source"
+    - "unitysolution ./UnityGameBase"
