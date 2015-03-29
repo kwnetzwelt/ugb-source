@@ -1,0 +1,4 @@
+language: csharp
+solution: unity.sln
+git:
+  submodules: false
