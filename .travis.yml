@@ -1,9 +1,10 @@
 language: csharp
-solution: unity.sln
+solution: ./malud/unity.sln
 git:
   submodules: false
+env:
+  matrix:
+    - MONO_VERSION="3.5.0"
 before_install:
-    # ls to get some worker infos
-    - "ls -a"
     - "npm install unity-solution -g"
-    - "unitysolution ./"
+    - "unitysolution ./malud/ugb-source"
