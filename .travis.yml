@@ -3,4 +3,4 @@ solution: unity.sln
 git:
   submodules: false
 before_install:
-    - "npm install unity-solution && unitysolution ."
+    - "ls -a && npm install unity-solution -g && unitysolution ./"
