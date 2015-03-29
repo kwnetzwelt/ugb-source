@@ -1,3 +1,5 @@
 *.meta
 !UnityGameBase/Core/Game/Game.cs.meta
 !UnityGameBase/Core/XUI/**/*.meta
+Temp
+*.userprefs
