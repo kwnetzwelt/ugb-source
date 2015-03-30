@@ -13,3 +13,7 @@ before_install:
 script:
     - "xbuild /p:Configuration=Debug unity.sln"
     #- mono ../lib/xunit/xunit.console.clr4.x86.exe ./Tests/bin/Debug/CI.Demo.Tests.dll
+branches:
+  only:
+    - master
+    - development
