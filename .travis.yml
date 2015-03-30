@@ -3,6 +3,8 @@ solution: unity.sln
 git:
   submodules: false
 env:
+  global:
+    - EnableNuGetPackageRestore=false 
   matrix:
     - MONO_VERSION="3.5.0"
 before_install:
