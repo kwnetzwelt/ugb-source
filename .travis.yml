@@ -7,9 +7,11 @@ env:
     - MONO_VERSION="3.5.0"
 before_install:
     - "npm install unity-solution -g"
-    - "unitysolution ./UnityGameBase"
     #- mozroots --import --sync
     #- mv -f src/.nuget/NuGet.mono.targets src/.nuget/NuGet.targets
 script:
-    - "xbuild /p:Configuration=Debug unity.sln"
+    - "unitysolution ./UnityGameBase iOS && xbuild /p:Configuration=Debug unity.sln"
+    - "unitysolution ./UnityGameBase Android && xbuild /p:Configuration=Debug unity.sln"
+    - "unitysolution ./UnityGameBase Standalone && xbuild /p:Configuration=Debug unity.sln"
+    - "unitysolution ./UnityGameBase WebGL && xbuild /p:Configuration=Debug unity.sln"
     #- mono ../lib/xunit/xunit.console.clr4.x86.exe ./Tests/bin/Debug/CI.Demo.Tests.dll
