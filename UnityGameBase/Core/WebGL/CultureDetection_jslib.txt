@@ -17,6 +17,7 @@ var CultureDetectionPlugin = {
             }
             return language;
         }
+        
 
         // main
         var langResult = (IsPreferredSupported()) ? navigator.languages[0] : GetLanguage();
