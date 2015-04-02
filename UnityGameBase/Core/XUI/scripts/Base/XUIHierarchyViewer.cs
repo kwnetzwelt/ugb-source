@@ -32,6 +32,7 @@ namespace UnityGameBase.Core.XUI
                     hierarchy.Add(data.layerName, new List<WidgetData>(){data});
                 }				
             }	
+            
         }
     }	
 }
