@@ -71,7 +71,52 @@ namespace UnityGameBase.Core.XUI
                 }
             }				
         }
+        
+        public void RemoveWidget(WidgetData widgetData)
+        {
+            if(this.widgetContainer.Contains(widgetData))
+            {
+                this.widgetContainer.Remove(widgetData);
+            }
+        }
+        
+        public void RemoveWidget(string layerName, string widgetName)
+        {
+            for(int i=0; i<this.widgetContainer.Count; i++)
+            {
+                WidgetData widgetData = this.widgetContainer[i];
+                if(widgetData.layerName == layerName && widgetData.widgetName == widgetName)
+                {
+                    this.widgetContainer.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+        
+        public void AddWidget(WidgetData widgetData)
+        {
+            if(this.ExistLayerAndName(widgetData.layerName, widgetData.widgetName))
+            {       
+                Debug.LogError("Widget with name: " + widgetData.widgetName + " already exists in layer: " + widgetData.layerName);
+            }
+            else
+            {
+                this.widgetContainer.Add(widgetData);
+            }                
+        }
 		
+        public void AddWidget(string layerName, string widgetName, Transform widget, string type)
+        {
+            if(this.ExistLayerAndName(layerName, widgetName))
+            {       
+                Debug.LogError("Widget with name: " + widgetName + " already exists in layer: " + layerName);
+            }
+            else
+            {
+                this.widgetContainer.Add(new WidgetData(layerName, widgetName, widget, type));
+            }
+        }
+        
         public bool ExistLayerAndName(string _layer, string _name)
         {
             foreach(WidgetData widgetData in widgetContainer)
