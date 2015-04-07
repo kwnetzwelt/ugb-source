@@ -30,6 +30,25 @@ namespace UnityGameBase.Core.Utils
             return result;
         }
     
+        public static bool PlayerPrefsGetBool(string name, bool defaultValue = false)
+        {
+            int value = PlayerPrefs.GetInt(name, 2);
+            
+            switch(value)
+            {
+                case 1:
+                    return true;
+                case 2:
+                    return false;
+            }
+            
+            return defaultValue;
+        }
+    
+        public static void PlayerPrefsSetBool(string name, bool value)
+        {
+            PlayerPrefs.SetInt(name, value ? 1 : 0);
+        }
     
         public static void LogStackTrace(string text)
         {

@@ -33,7 +33,7 @@ namespace UnityGameBase.Core.Extensions
             return target.AddComponent<T>();
         }
 
-        public static T FindInParents<T>(GameObject go) where T : Component
+        public static T FindInParents<T>(this GameObject go) where T : Component
         {
             if(go == null)
             {

@@ -38,7 +38,7 @@ public class LocalizedTextInspector : Editor
                         
         if(myTarget.useLocaFiles)
         {
-            GUI.SetNextControlName("LocaKeys");
+            //GUI.SetNextControlName("LocaKeys");
             
             //  GUILayout.BeginHorizontal(EditorStyles.toolbar);
             //  GUILayout.FlexibleSpace();
