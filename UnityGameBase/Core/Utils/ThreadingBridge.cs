@@ -69,7 +69,7 @@ namespace UnityGameBase.Core.Utils
 			throw new NotSupportedException("Threading is not supported on this platform. ");
 #elif UNITY_METRO && !UNITY_EDITOR
 #pragma warning disable 4014
-			ThreadPool.RunAsync( (source) => { pAction(); });
+			ThreadPool.RunAsync( (source) => { action(); });
 #pragma warning restore
 #else
 			ThreadPool.QueueUserWorkItem( new WaitCallback((state) => {action();}) );
