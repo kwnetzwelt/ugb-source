@@ -55,7 +55,7 @@ namespace UnityGameBase.Core.XUI
             locaData = LocaData.LoadFromEditor(currentLanguage + ".xml");
             #endif
         }
-
+#if UNITY_EDITOR
         public static string[] GetAllAvailableLanguages()
         {
             string path = Application.dataPath + "/Resources/loca/";
@@ -89,7 +89,7 @@ namespace UnityGameBase.Core.XUI
             result = result.Replace(".xml", "");
             return result;
         }
-		
+#endif
         public static string GetText(string _key)
         {
             if (currentLanguage == "")
