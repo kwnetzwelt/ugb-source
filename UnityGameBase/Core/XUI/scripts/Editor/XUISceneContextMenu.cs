@@ -17,31 +17,31 @@ namespace UnityGameBase.Core.XUI
 		
 		static void OnScene(SceneView scene)
 		{
-			if (Event.current.type == EventType.MouseDown)
-			{
-				// right click
-				if (Event.current.button == 1)
-				{
-					Event.current.Use();
-					mousePosition = Event.current.mousePosition;
-					showMenu = true;
-				}
-				else if (Event.current.type == EventType.MouseUp)
-				{
-					showMenu = false;
-				}
+            //if (Event.current.type == EventType.MouseDown)
+            //{
+            //    // right click
+            //    if (Event.current.button == 1)
+            //    {
+            //        Event.current.Use();
+            //        mousePosition = Event.current.mousePosition;
+            //        showMenu = true;
+            //    }
+            //    else if (Event.current.type == EventType.MouseUp)
+            //    {
+            //        showMenu = false;
+            //    }
 				
-				if (Event.current.button == 0)
-				{
-					showMenu = false;
-				}
-			}
+            //    if (Event.current.button == 0)
+            //    {
+            //        showMenu = false;
+            //    }
+            //}
 			
-			//if (mouseWorldPos != Vector3.zero)
-			if (showMenu)
-			{
-				//	DrawMenu();
-			}
+            ////if (mouseWorldPos != Vector3.zero)
+            //if (showMenu)
+            //{
+            //    //	DrawMenu();
+            //}
 		}
 		
 		static void DrawMenu()
