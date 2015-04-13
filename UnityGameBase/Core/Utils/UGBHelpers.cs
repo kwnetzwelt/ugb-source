@@ -30,6 +30,25 @@ namespace UnityGameBase.Core.Utils
             return result;
         }
     
+        public static bool PlayerPrefsGetBool(string name, bool defaultValue = false)
+        {
+            int value = PlayerPrefs.GetInt(name, 2);
+            
+            switch(value)
+            {
+                case 1:
+                    return true;
+                case 2:
+                    return false;
+            }
+            
+            return defaultValue;
+        }
+    
+        public static void PlayerPrefsSetBool(string name, bool value)
+        {
+            PlayerPrefs.SetInt(name, value ? 1 : 0);
+        }
     
         public static void LogStackTrace(string text)
         {
@@ -167,7 +186,15 @@ namespace UnityGameBase.Core.Utils
                     // Replaced the type.GetCustromAttributes approach with this reflection-context-only one.
                     // The t.GetCA will try to create the custom attribute object which can lead to crashes e.g. in IL2CPP context.
                     // Anyhow the CustomAttribute isn't supported for IL2CPP.
-                    var data = CustomAttributeData.GetCustomAttributes(t);
+#if UNITY_METRO && !UNITY_EDITOR
+					var attr = t.GetTypeInfo().GetCustomAttribute(searchType);
+                    if(attr != null)
+					{
+						list.Add(t);
+					}
+#else
+					var data = CustomAttributeData.GetCustomAttributes(t);
+
                     foreach(var cad in data)
                     {
                         if(cad.Constructor.DeclaringType == searchType)
@@ -175,6 +202,7 @@ namespace UnityGameBase.Core.Utils
                             list.Add(t);
                         }
                     }
+#endif
                 }
             }
             return list;
@@ -199,7 +227,7 @@ namespace UnityGameBase.Core.Utils
         {
             Type[] types;
             #if UNITY_METRO && !UNITY_EDITOR
-			typeInfos = assembly.DefinedTypes; //IEnumerable<TypeInfo>
+			var typeInfos = assembly.DefinedTypes; //IEnumerable<TypeInfo>
 			List<Type> justTypes = new List<Type>();
 			foreach(var ti in typeInfos)
 			{
@@ -229,7 +257,8 @@ namespace UnityGameBase.Core.Utils
                 foreach(var t in types)
                 {
                     #if UNITY_METRO && !UNITY_EDITOR
-					if (t.ImplementedInterfaces.Contains(searchType))
+					var implementedInterfaces = new List<Type>( t.GetTypeInfo().ImplementedInterfaces );
+					if (implementedInterfaces.Contains(searchType))
 					{
 						list.Add(t);
 					}

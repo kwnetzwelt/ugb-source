@@ -15,7 +15,7 @@ namespace UnityGameBase.Core.XUI
             useLocaFiles = false;
         private object[] mParams;
 
-        private string[] locaKeys = null;
+        //private string[] locaKeys = null;
 
         public object[] Params
         {

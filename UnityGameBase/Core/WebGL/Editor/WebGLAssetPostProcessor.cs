@@ -7,6 +7,12 @@ using System;
 public class WebGLAssetPostProcessor : AssetPostprocessor
 {
     static string relativePath = "Editor/WebGLAssetPostProcessor.cs"; 
+    static string[] triggers = new string[3]
+    {
+        "Editor/WebGLAssetPostProcessor.cs",
+        "WebGL/CultureDetection_jslib.txt",
+        "WebGL/WebGLPlatformHelper.cs"
+    };
 
     static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
     {
@@ -18,9 +24,18 @@ public class WebGLAssetPostProcessor : AssetPostprocessor
     
     private static void CheckCultureDetection(string asset)
     {
+        bool startToCopy = false;
         
-        //reimport this script
-        if(asset.Contains(relativePath))
+        foreach(string trigger in triggers)
+        {
+            if(asset.Contains(trigger))
+            {
+                startToCopy = true;
+                break;
+            }
+        }
+        
+        if(startToCopy)
         {
             string targetPath = Application.dataPath + "/Plugins/WebGL/UgbCultureDetection.jslib";
             string sourcePath = asset.Replace(relativePath, "CultureDetection_jslib.txt");
