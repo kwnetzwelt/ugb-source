@@ -32,6 +32,8 @@ namespace UnityGameBase.Core.Animation.Tweener
 
         protected float GetDelta()
         {
+            if (IsTweening == false) return 1.0f;
+
             float t = (Time.time - this.startTime) / (this.endTime - this.startTime);
             t = Mathf.Clamp(t, 0, 1);
             if (curve != null)
