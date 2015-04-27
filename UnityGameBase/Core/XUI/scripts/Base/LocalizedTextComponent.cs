@@ -49,13 +49,6 @@ namespace UnityGameBase.Core.XUI
             {
                 this.text = Game.Instance.gameLoca.GetText(this.key);
             }
-
-
-            if(this.text == "")
-            {
-                this.text = "NAME HERE";
-            }
-
         }
 
         protected void HandleLocaChanged()
