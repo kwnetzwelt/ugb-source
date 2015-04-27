@@ -13,6 +13,9 @@ namespace UnityGameBase.Core.Animation.Tweener
 
         public AnimationCurve TweenAnimationCurve = null;
 
+        private Vector3 modificationPosition = Vector3.zero;
+        private Vector3 modificationScale = Vector3.zero;
+
         public void TweenTo(Vector3 position, Vector3 scale, Quaternion rotation, float duration, Transform currentTransform, bool localTransform)
         {
             this.localTransform = localTransform;
@@ -23,6 +26,14 @@ namespace UnityGameBase.Core.Animation.Tweener
             positionTweener.curve = TweenAnimationCurve;
             scaleTweener.curve = TweenAnimationCurve;
             rotationTweener.curve = TweenAnimationCurve;
+        }
+
+        public void TweenTo(Vector3 position, Vector3 scale, Quaternion rotation, float duration, Transform currentTransform, bool localTransform, Transform modificationTransform)
+        {
+            TweenTo(position, scale, rotation, duration, currentTransform, localTransform);
+
+            modificationPosition = modificationTransform.position;
+            modificationScale = modificationTransform.localScale;
         }
 
         public bool IsTweening
@@ -46,6 +57,17 @@ namespace UnityGameBase.Core.Animation.Tweener
                 transform.rotation = rotationTweener.GetValue();
             }
             transform.localScale = scaleTweener.GetValue();
+        }
+
+        public void SetValues(Transform transform, Transform modificationTransform)
+        {
+            Vector3 diffPos = modificationTransform.transform.position - modificationPosition;
+            Vector3 diffScale = modificationTransform.transform.localScale - modificationScale;
+
+            SetValues(transform);   
+
+            transform.position += diffPos;
+            transform.localScale += diffScale;
         }
     }
 }
