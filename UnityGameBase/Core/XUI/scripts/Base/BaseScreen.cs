@@ -49,12 +49,12 @@ namespace UnityGameBase.Core.XUI
 			
             this.transitionController.Show(() => 
             {
+                this.EnableInput(true);
+                
                 if(onDone != null)
                 {
                     onDone();
                 }
-					
-                this.EnableInput(true);
             });
         }
 		
@@ -63,13 +63,13 @@ namespace UnityGameBase.Core.XUI
         {
             this.EnableInput(false);
             this.transitionController.Hide(() => 
-            {
+            {                
+                this.root.gameObject.SetActive(false);
                 if(onDone != null)
                 {
                     onDone();
                 }
 				
-                this.root.gameObject.SetActive(false);
             });
         }
 
