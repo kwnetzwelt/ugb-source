@@ -7,7 +7,7 @@ namespace UnityGameBase.WebGL
 {
     public class WebGLPlatformHelper : MonoBehaviour
     {
-	
+#if !UNITY_METRO
         public System.Globalization.CultureInfo[] GetAllCultures()
         {
             string webglCulture = string.Empty;
@@ -38,5 +38,6 @@ namespace UnityGameBase.WebGL
         GameObject.Destroy(this);
     }
 	#endif
+#endif
     }
 }
