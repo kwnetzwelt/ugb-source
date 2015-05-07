@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 namespace UnityGameBase.Core.Utils
 {
-    public abstract class BaseState
+    public abstract class BaseState : IDisposable
     {   
         //the statemachine which owned the state
         public BaseStateMachine Statemachine{ get; set; }
@@ -25,7 +26,7 @@ namespace UnityGameBase.Core.Utils
         public abstract void Start(System.Action onDone = null);
         public abstract void End(System.Action onDone = null);    
         public abstract void Update();
-                
+        public abstract void Dispose();        
         //if desired you can overwrite it and do some transition conditions
         public virtual bool IsTransitionAllowed(BaseState target)
         {

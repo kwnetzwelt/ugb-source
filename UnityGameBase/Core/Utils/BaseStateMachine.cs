@@ -63,7 +63,7 @@ namespace UnityGameBase.Core.Utils
                 {
                     this.states[name].End();
                 }
-                
+                this.states[name].Dispose();
                 this.states.Remove(name);
                 return ResultCode.StateDeleted;
             }
