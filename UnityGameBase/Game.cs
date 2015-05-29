@@ -180,6 +180,14 @@ namespace UnityGameBase
             GameSetupReady();
         }
 		
+        void OnAwake()
+        {
+            if (testing && Instance != null)
+            {
+                DestroyImmediate(this.gameObject);
+            }
+        }
+
         void OnEnable()
         {
             if((testing && !Application.isEditor) || (Application.isEditor && testing && Instance != null))
