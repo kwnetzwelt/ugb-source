@@ -42,11 +42,11 @@ namespace UnityGameBase.Core.XUI
         public void CreateCollection()
         {		
 			
-            RectTransform[] transForms = this.gameObject.GetComponentsInChildren<RectTransform>();
+			Transform[] transForms = this.gameObject.GetComponentsInChildren<Transform>();
 			
             widgetContainer.Clear();
 			
-            foreach(RectTransform t in transForms)
+			foreach(Transform t in transForms)
             {
                 IWidget widget = (IWidget)t.GetComponent(typeof(IWidget));
 				
