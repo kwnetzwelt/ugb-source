@@ -148,9 +148,9 @@ namespace UnityGameBase.Core
 
 			showTouchFeedback = System.Convert.ToBoolean( PlayerPrefs.GetInt(TouchFeedbackOption,1));
 			UGB.Loca.SetLanguage(language);
-#if !UNITY_WEBGL
-			QualitySettings.SetQualityLevel(qualityLevel);
-#endif
+//#if !UNITY_WEBGL
+//			QualitySettings.SetQualityLevel(qualityLevel);
+//#endif
 			if(OnAnyOptionChanged != null)
 				OnAnyOptionChanged();
 		}
