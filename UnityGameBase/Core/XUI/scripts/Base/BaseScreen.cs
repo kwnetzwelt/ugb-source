@@ -63,7 +63,7 @@ namespace UnityGameBase.Core.XUI
         {
             this.EnableInput(false);
             this.transitionController.Hide(() => 
-            {
+            {                
                 this.root.gameObject.SetActive(false);
 
                 if(onDone != null)
