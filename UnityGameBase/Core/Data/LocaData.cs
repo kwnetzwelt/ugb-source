@@ -30,7 +30,7 @@ namespace UnityGameBase.Core.Data
 		
             if(xmlData.data.ContainsKey(pKey))
             {
-                return xmlData.data[pKey];
+                return xmlData.data[pKey] ?? "Null Value!";
             }
 
             return "KNF:" + pKey;
