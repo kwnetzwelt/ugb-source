@@ -194,6 +194,9 @@ namespace UnityGameBase.Core
 			{
 				nextScene.Load();
 			}
+
+			// TODO: This is a temporary fix 
+			yield return new WaitForSeconds (0.5f);
 			TryCall(SceneHasChanged);
 
 			// fade out
