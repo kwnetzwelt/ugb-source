@@ -89,7 +89,12 @@ namespace UnityGameBase.Core.Extensions
         
         public static void Shuffle<T>(this List<T> list)
         {
-            System.Random rng = new System.Random();  
+            // System.Random() initialisation is obviously based on a low
+            // resolution timestamp of the current time, which yields
+            // identical shuffles if called in close succession.
+            // Solution: Use milliseconds, which provide more variation.
+            System.Random rng = new System.Random(System.DateTime.Now.Millisecond);
+            
             int n = list.Count;  
             while(n > 1)
             {  
