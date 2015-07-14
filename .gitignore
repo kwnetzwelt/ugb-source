@@ -1,5 +1,7 @@
 *.meta
 !UnityGameBase/Core/Game/Game.cs.meta
 !UnityGameBase/Core/XUI/**/*.meta
+!UnityGameBase/Core/Utils/DestroyInTime.cs.meta
+!UnityGameBase/Core/Utils/FPSMeter.cs.meta
 Temp
 *.userprefs
