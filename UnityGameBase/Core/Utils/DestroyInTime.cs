@@ -4,13 +4,16 @@ using System.Collections;
 public class DestroyInTime : MonoBehaviour
 {
     public float time = 1;
-    void Start()
-    {
-        Invoke("DestroyMe", time);
-    }
+    
+	void Start()
+	{
+		StartCoroutine(DestroyAfterTime());
+	}
 	
-    void DestroyMe()
+	IEnumerator DestroyAfterTime()
     {
-        Destroy(this.gameObject);
+		yield return new WaitForSeconds(time);
+
+		Destroy(this.gameObject);
     }
 }
