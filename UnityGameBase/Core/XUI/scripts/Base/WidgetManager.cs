@@ -40,20 +40,19 @@ namespace UnityGameBase.Core.XUI
         /// Create a collection with all IWidget Gameobjects
         /// </summary>
         public void CreateCollection()
-        {		
-			
+        {			
 			Transform[] transForms = this.gameObject.GetComponentsInChildren<Transform>();
 			
             widgetContainer.Clear();
 			
 			foreach(Transform t in transForms)
             {
-                IWidget widget = (IWidget)t.GetComponent(typeof(IWidget));
-				
+				IWidget widget = t.GetComponent<IWidget>();
+                
                 if(widget != null)
                 {
-                    Component c = t.GetComponent(typeof(IWidget));
-                    
+					Component c = t.GetComponent<IWidget>() as Component;
+					
                     string typeName = c.GetType().ToString();
                 
                     WidgetData widgetData = new WidgetData(t.parent.name, t.name, t, typeName);
