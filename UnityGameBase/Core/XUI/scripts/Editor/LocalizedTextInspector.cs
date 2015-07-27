@@ -10,24 +10,31 @@ using UnityGameBase.Core.XUI;
 public class LocalizedTextInspector : Editor
 {
     int selectedIndex = 0;
-    int selectedLanguageIndex = 0;
+    public static int selectedLanguageIndex = 0;
     
     string[] matchingKeys = null;
     string searchKey = "";
     Vector2 scrollPos = Vector2.zero;
     Rect scrollviewRect;
     
+	LocalizedTextComponent myTarget;
+
+	void OnEnable()
+	{
+		myTarget = target as LocalizedTextComponent;
+		if (myTarget != null) {
+			searchKey = myTarget.Key;
+		}
+	}
+
     public override void OnInspectorGUI()
     {        	
         base.OnInspectorGUI();
 		
-        if(target == null)
+		if(myTarget == null)
         {
             return;
         }
-        
-            
-        LocalizedTextComponent myTarget = (LocalizedTextComponent)target;
 	
         EditorGUILayout.BeginHorizontal();
         myTarget.useLocaFiles = EditorGUILayout.Toggle("Use Loca", myTarget.useLocaFiles);
@@ -114,6 +121,8 @@ public class LocalizedTextInspector : Editor
                     {
                         searchKey = matchingKeys[selectedIndex];
                         GUI.FocusControl("");   
+						myTarget.Key = searchKey;
+						EditorUtility.SetDirty(myTarget);
                     }   
             selectedIndex = Mathf.Clamp(selectedIndex, 0, matchingKeys.Length);
             
