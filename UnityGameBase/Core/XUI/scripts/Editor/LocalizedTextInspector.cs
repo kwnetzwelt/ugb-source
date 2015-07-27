@@ -85,13 +85,24 @@ public class LocalizedTextInspector : Editor
                     if(index == selectedIndex)
                     {
                         GUI.color = Color.green;
-                        EditorGUILayout.LabelField(" ", val, GUILayout.Height(15));
-                        myTarget.Key = val;
+						if(GUILayout.Button(val,"label",GUILayout.Height(15)))
+						{
+                        	myTarget.Key = val;
+							searchKey = val;
+							GUI.FocusControl("");   
+
+						}
                     }
                     else
                     {
-                        
-                        EditorGUILayout.LabelField(" ", val, GUILayout.Height(15));
+						
+						if(GUILayout.Button(val, "label",GUILayout.Height(15)))
+						{
+							myTarget.Key = val;
+							searchKey = val;
+							GUI.FocusControl("");   
+
+						}
                     }
                     index++;
                 }
