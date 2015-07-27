@@ -21,6 +21,9 @@ public class LocalizedTextInspector : Editor
 
 	void OnEnable()
 	{
+		selectedLanguageIndex = EditorPrefs.GetInt ("LocalizedTextInspector.selectedLanguageIndex");
+		selectedLanguageIndex = Mathf.Clamp (selectedLanguageIndex, 0, LocalizationHelper.GetAllAvailableLanguages().Length);
+
 		myTarget = target as LocalizedTextComponent;
 		if (myTarget != null) {
 			searchKey = myTarget.Key;
@@ -158,6 +161,7 @@ public class LocalizedTextInspector : Editor
             LocalizationHelper.CurrentLanguage = LocalizationHelper.AllLanguagesNames[selectedLanguageIndex];          
             if(tempIndex != selectedLanguageIndex)
             {
+				EditorPrefs.SetInt("LocalizedTextInspector.selectedLanguageIndex", selectedLanguageIndex);
                 //throw event to all listener
                 LocalizedTextComponent[] all = GameObject.FindObjectsOfType(typeof(LocalizedTextComponent)) as LocalizedTextComponent[];
                 
