@@ -35,8 +35,11 @@ namespace UnityGameBase.Core.XUI
             get { return key; }
             set
             {
-                key = value;
-                ReCreate();
+				if(value != key)
+				{
+	                key = value;
+	                ReCreate();
+				}
             }
         }
 
