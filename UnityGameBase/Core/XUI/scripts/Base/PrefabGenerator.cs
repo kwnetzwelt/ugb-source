@@ -16,7 +16,7 @@ namespace UnityGameBase.Core.XUI
         public string
             folder = null;
 
-        public void CloneAndSave(string path, GameObject root)
+        public void CloneAndSave(string path, GameObject root, bool includeInactive = false)
         {
 #if UNITY_EDITOR
             //create a copy to keep the child prefab references
@@ -24,7 +24,7 @@ namespace UnityGameBase.Core.XUI
             copy.name = root.name;
 
             //TODO maybe another point to do this, its not clear why it happened here... (for others except me)
-            copy.GetComponent<WidgetManager>().CreateCollection();
+            copy.GetComponent<WidgetManager>().CreateCollection(includeInactive);
 			
             if(!File.Exists(path))
             {
