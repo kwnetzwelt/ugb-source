@@ -11,6 +11,7 @@ GameObject:
   - 223: {fileID: 22389150}
   - 114: {fileID: 11454678}
   - 114: {fileID: 11407476}
+  - 225: {fileID: 22588096}
   m_Layer: 5
   m_Name: XUI_Canvas
   m_TagString: Untagged
@@ -29,8 +30,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ignoreReversedGraphics: 1
-  blockingObjects: 0
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -89,6 +90,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: .25}
   m_SizeDelta: {x: 6.10349998e-05, y: -.5}
   m_Pivot: {x: .5, y: .5}
+--- !u!225 &22588096
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187330}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

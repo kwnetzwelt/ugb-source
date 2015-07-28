@@ -14,7 +14,19 @@ namespace UnityGameBase.Core.XUI
 		
 		private float currentTime = 0;
 		private System.Action doneCallBack;
-		
+
+		protected override void Awake()
+		{
+			base.Awake();
+
+			CanvasGroup canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
+			if (canvasGroup == null)
+			{
+				Debug.LogWarning("Screen " + gameObject.name + " has no CanvasGroup attached. Will be attached now, but you should add the CanvasGroup to your prefab.");
+				gameObject.AddComponent<CanvasGroup>();
+			}
+		}
+
 		public override void Show(System.Action onDone)
 		{
 			currentTime = 0;
@@ -59,28 +71,10 @@ namespace UnityGameBase.Core.XUI
 			this.SetAlpha(curAlpha);		
 		}
 		
-		
 		public void SetAlpha(float val)
 		{
-			//color all texts		
-			LocalizedTextComponent[] components = this.gameObject.GetComponentsInChildren<LocalizedTextComponent>();
-			foreach (LocalizedTextComponent cmp in components)
-			{
-				Color temp = cmp.color;
-				temp.a = val;
-				cmp.color = temp;
-			}
-			
-			//todo: maybe XUI image class if needed
-			//color all images			
-			UnityEngine.UI.Image[] images = this.gameObject.GetComponentsInChildren<UnityEngine.UI.Image>();
-			
-			foreach (UnityEngine.UI.Image cmp in images)
-			{			
-				Color temp = cmp.color;
-				temp.a = val;
-				cmp.color = temp;
-			}
+			CanvasGroup canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
+			canvasGroup.alpha = val;
 		}
 	}
 }

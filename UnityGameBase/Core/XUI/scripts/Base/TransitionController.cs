@@ -10,7 +10,7 @@ namespace UnityGameBase.Core.XUI
 	{
 		protected WidgetManager widgetCollection;
 		protected GameObject root;
-		public void Awake()
+		protected  virtual void Awake()
 		{
 			this.widgetCollection = this.GetComponent<WidgetManager>();
 		}
