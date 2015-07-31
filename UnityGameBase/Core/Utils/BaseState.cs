@@ -26,7 +26,10 @@ namespace UnityGameBase.Core.Utils
         public abstract void Start(System.Action onDone = null);
         public abstract void End(System.Action onDone = null);    
         public abstract void Update();
-        public abstract void Dispose();        
+        public virtual void Dispose()
+		{
+
+		}
         //if desired you can overwrite it and do some transition conditions
         public virtual bool IsTransitionAllowed(BaseState target)
         {
