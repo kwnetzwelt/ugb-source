@@ -43,6 +43,16 @@ namespace UnityGameBase.Core.XUI
             }
         }
 
+		public override string text {
+			get {
+				return base.text;
+			}
+			set {
+				base.text = value;
+				useLocaFiles = false;
+			}
+		}
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -50,7 +60,7 @@ namespace UnityGameBase.Core.XUI
             if(Game.Instance != null
                 && useLocaFiles)
             {
-                this.text = Game.Instance.gameLoca.GetText(this.key);
+				ReCreate();
             }
         }
 
