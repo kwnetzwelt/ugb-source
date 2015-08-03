@@ -27,6 +27,8 @@ namespace UnityGameBase.Core.Globalization
         public void SetLanguage(int pLanguage)
         {
             mCurrentLanguage = pLanguage;
+
+            // Initialize() will check currentLanguage before loading the keys
             Initialize();
         }
 
@@ -59,7 +61,18 @@ namespace UnityGameBase.Core.Globalization
 
         public void Initialize()
         {
-            mData = LocaData.Load(GetCurrentLanguageShort());
+            if (currentLanguage == Languages.Invalid)
+            {
+                // Apparently SetLanguage() has not been called,
+                // so use system language or PlayerPrefs.
+                mData = LocaData.Load(GetCurrentLanguageShort());
+            }
+            else
+            {
+                // SetLanguage() has been called, so we should
+                // use the intended language.
+                mData = LocaData.Load(currentLanguage);
+            }
         }
         
         public static string GetCurrentLanguageShort()
