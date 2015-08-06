@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using UnityGameBase.Core.Globalization;
 
 using System.Collections;
 
@@ -23,16 +24,31 @@ namespace UnityGameBase.Core.XUI
         void OnEnable()
         {
             //Reaload the locaFiles
-            LocalizationHelper.Refresh();
+			if(Application.isPlaying)
+			{
+				UGB.Loca.Initialize();
+			}
+			else
+			{
+				LocalizationHelper.Refresh();
+			}
         }
 		 
         void OnGUI()
         {
-            DrawLanguageSelection();			
+			if(Application.isPlaying)
+			{
+				DrawLanguageSelectionWhilePlaying();
+			}
+			else
+			{
+				DrawLanguageSelection();
+			}
+
         }		
 		
         /// <summary>
-        /// Switch the current language and send it to all LocalizedTextComponents in active scene
+        /// Switch the current language and send it to all LocalizedTextComponents in active scene when Application is not playing
         /// </summary>
         private void DrawLanguageSelection()
         {
@@ -67,5 +83,51 @@ namespace UnityGameBase.Core.XUI
                 }
             }
         }
+
+		/// <summary>
+		/// Switch the current language and send it to all LocalizedTextComponents in active scene when Application is playing
+		/// Only for debugging
+		/// </summary>
+		private void DrawLanguageSelectionWhilePlaying()
+		{
+			if(GUILayout.Button("Refresh Localization"))
+			{
+				UGB.Loca.Initialize();
+			}
+			
+			//switch language
+			if(Languages.count > 0)
+			{
+
+				string[] languages = new string[Languages.count];
+
+				for(int i = 0; i < Languages.count; i++)
+				{
+					Languages l = new Languages(i);
+					languages[i] = l;
+				}
+				
+				int tempIndex = selectedIndex;
+				selectedIndex = EditorGUILayout.Popup(selectedIndex, languages);
+				
+				UGB.Loca.SetLanguage(selectedIndex);			
+				if(tempIndex != selectedIndex)
+				{
+					//throw event to all listener
+					LocalizedTextComponent[] all = GameObject.FindObjectsOfType(typeof(LocalizedTextComponent)) as LocalizedTextComponent[];
+					
+					foreach(LocalizedTextComponent comp in all)
+					{
+						if(comp == null)
+						{
+							continue;
+						}
+						
+						comp.ReCreate();
+						EditorUtility.SetDirty(comp);
+					}
+				}
+			}
+		}
     }
 }
