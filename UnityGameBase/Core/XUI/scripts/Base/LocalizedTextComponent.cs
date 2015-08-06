@@ -81,7 +81,14 @@ namespace UnityGameBase.Core.XUI
 #if UNITY_EDITOR
             if(useLocaFiles)
             {
-                base.text = LocalizationHelper.GetText(this.key);                
+				if(Application.isPlaying)
+				{
+					base.text = UGB.Loca.GetText(this.key);
+				}
+				else
+				{
+					base.text = LocalizationHelper.GetText(this.key);       
+				}
             }
             
             //locaKeys = LocalizationHelper.GetKeys();
