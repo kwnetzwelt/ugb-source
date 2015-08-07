@@ -11,8 +11,7 @@ namespace UnityGameBase.Core.XUI
     public class LocalizedTextComponent : UnityEngine.UI.Text, IWidget
     {
         [SerializeField, HideInInspector]
-        public bool
-            useLocaFiles = false;
+        public bool useLocaFiles = false;
         private object[] mParams;
 
         //private string[] locaKeys = null;
@@ -30,24 +29,37 @@ namespace UnityGameBase.Core.XUI
         [SerializeField, HideInInspector]
         private string
             key = "Key Here";
-        public string Key
+        /// <summary>
+        /// Gets or sets the key.
+		/// Setting the key will enable the usage of loca files.
+        /// </summary>
+		public string Key
         {
             get { return key; }
             set
             {
-				if(value != key)
+				if(!useLocaFiles || value != key)
 				{
+					useLocaFiles = true;
 	                key = value;
 	                ReCreate();
 				}
             }
         }
 
-		public override string text {
-			get {
+		/// <summary>
+		/// Gets or sets the text.
+		/// Setting the text will disable the usage of loca files.
+		/// </summary>
+		/// <value>The text.</value>
+		public override string text 
+		{
+			get 
+			{
 				return base.text;
 			}
-			set {
+			set 
+			{
 				base.text = value;
 				useLocaFiles = false;
 			}
@@ -91,7 +103,6 @@ namespace UnityGameBase.Core.XUI
 				}
             }
             
-            //locaKeys = LocalizationHelper.GetKeys();
 #else
             if (useLocaFiles)
             {
