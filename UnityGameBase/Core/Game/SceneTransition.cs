@@ -25,7 +25,6 @@ namespace UnityGameBase.Core
 		NextScene nextScene;
 		float fadeStartTime = 0f;
 
-		bool transitionRunning = false;
 		bool animateInDone = false;
 		bool animateOutDone = false;
 
@@ -38,6 +37,11 @@ namespace UnityGameBase.Core
 			get;
 			private set;
 		}
+
+		/// <summary>
+		/// Indicates if we are running a scene transition.
+		/// </summary>
+		public bool IsInTransition { get; private set; }
 
 		/// <summary>
 		/// Used for Scene Transition Events. 
@@ -152,7 +156,7 @@ namespace UnityGameBase.Core
 				return true;
 			}
 			
-			if (transitionRunning)
+			if (IsInTransition)
 			{
 				Debug.LogError("A scene transition is already running!", this);
 				return true;
@@ -162,7 +166,7 @@ namespace UnityGameBase.Core
 
 		IEnumerator SceneChangeCoroutine()
 		{
-			transitionRunning = true;
+			IsInTransition = true;
 
 			if (loadingScreenController != null)
 			{
@@ -211,8 +215,9 @@ namespace UnityGameBase.Core
 				yield return 0;
 			}
 			
+			IsInTransition = false;
+
 			TryCall(SceneTransitionIsDone);
-			transitionRunning = false;
 		}
 
 		bool FadeIn()
