@@ -10,7 +10,7 @@ namespace UnityGameBase.Core.XUI
 	public class PrefabGeneratorInspector : UnityEditor.Editor
 	{
 		PrefabGenerator myTarget = null;
-		bool includeInactive = false;
+		bool includeInactive = true;
 
 		public override void OnInspectorGUI()
 		{
