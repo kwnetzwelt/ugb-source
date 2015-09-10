@@ -110,9 +110,9 @@ namespace UnityGameBase.Core.Globalization
             
             foreach (CultureInfo ci in GetCultures())
             {
-                if (ci.DisplayName == sysLang)
+                if (ci.DisplayName.Contains(sysLang))
                 {
-                    return ci.Name;
+                    return ci.TwoLetterISOLanguageName;
                 }
             }
             return "en";
