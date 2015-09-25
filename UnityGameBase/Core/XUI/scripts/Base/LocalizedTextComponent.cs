@@ -93,26 +93,31 @@ namespace UnityGameBase.Core.XUI
 
         public void ReCreate()
         {
-            //in editor show only the translated text 
-#if UNITY_EDITOR
             if(useLocaFiles)
             {
-				if(Application.isPlaying)
+				var localizedText = "";
+				var isEditor = false;
+#if UNITY_EDITOR
+				//in editor show only the translated text 
+				isEditor = true;
+#endif
+				if(isEditor && !Application.isPlaying)
 				{
-					base.text = UGB.Loca.GetText(this.key);
+					localizedText = LocalizationHelper.GetText(this.key);
 				}
 				else
 				{
-					base.text = LocalizationHelper.GetText(this.key);       
+					localizedText = UGB.Loca.GetText(this.key);
 				}
+
+				// Check for parameter
+				if(this.Params != null)
+				{
+					localizedText = this.FormatText(localizedText);
+				}
+
+				base.text = localizedText;
             }
-            
-#else
-            if (useLocaFiles)
-            {
-                base.text = UGB.Loca.GetText(this.key);
-            }
-#endif
         }
     }
 }
