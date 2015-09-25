@@ -82,9 +82,13 @@ namespace UnityGameBase.Core.XUI
             ReCreate();
         }
 
-        private string FormatText(string _key, params object[] _params)
-        {           
-            return System.String.Format(_key, _params);            
+		private string FormatText(string localizedText)
+		{   
+			if(this.Params != null && this.Params.Length > 0)
+			{
+				localizedText = System.String.Format(localizedText, this.Params);
+			}
+			return localizedText;
         }
 
         public void ReCreate()
