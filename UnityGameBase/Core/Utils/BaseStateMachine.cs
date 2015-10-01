@@ -104,7 +104,15 @@ namespace UnityGameBase.Core.Utils
         {
             return this.previousState;
         }
-                
+
+        /// <summary>
+        /// Returns the nextState state, or null.
+        /// </summary>
+        public BaseState GetNextState()
+        {
+            return this.nextState;
+        }
+
         /// <summary>
         /// Set the active state for updating and test before the transition conditions.
         /// </summary>
