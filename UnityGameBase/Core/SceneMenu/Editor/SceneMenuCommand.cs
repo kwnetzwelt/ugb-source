@@ -58,7 +58,7 @@ namespace UnityGameBase.Core.SceneMenu
 			EditorUtility.SetDirty(instance);
 			
 			prefab = null;
-#if UNITY_5_0
+#if UNITY_5
 			EditorUtility.UnloadUnusedAssetsImmediate();
 #else
 			EditorUtility.UnloadUnusedAssets();
