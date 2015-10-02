@@ -12,7 +12,7 @@ namespace UnityGameBase.Core.XUI
 	{
 		static Vector2 mousePosition = Vector2.zero;
 		
-		static bool showMenu = false;
+		//static bool showMenu = false;
 		
 		
 		static void OnScene(SceneView scene)

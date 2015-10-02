@@ -18,7 +18,11 @@ namespace UnityGameBase.Core.XUI
         {
             // Get existing open window or if none, make a new one:
             XUIEditor window = (XUIEditor)EditorWindow.GetWindow(typeof(XUIEditor));
+#if UNITY_5
+			window.titleContent = new GUIContent("XUI Editor");
+#else
             window.title = "XUI Editor";
+#endif
         }
 		
         void OnEnable()
