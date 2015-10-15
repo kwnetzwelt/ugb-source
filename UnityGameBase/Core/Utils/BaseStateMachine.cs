@@ -21,16 +21,21 @@ namespace UnityGameBase.Core.Utils
 
         public delegate void StateChangedDelegate(BaseState previous, BaseState next);
         
-		/// <summary>
+        /// <summary>
+        /// Occurs when a state change is triggered, right before the state switch.
+        /// </summary>
+        public event StateChangedDelegate StateChangeTriggered;
+        
+        /// <summary>
         /// Occurs when a state has changed.
         /// </summary>
         public event StateChangedDelegate StateChanged;
- 
-		/// <summary>
-		/// Occurs when a state change is triggered, right before the state switch.
-		/// </summary>
-        public event StateChangedDelegate StateChangeTriggered;
-		
+
+        /// <summary>
+        /// Occurs when a state change finished, meaning the transition to the state is finished.
+        /// </summary>
+        public event StateChangedDelegate StateChangeFinished;
+
         private Dictionary<string,BaseState> states = new Dictionary<string, BaseState>();
         private BaseState previousState = null;
         private BaseState activeState = null;
@@ -157,10 +162,10 @@ namespace UnityGameBase.Core.Utils
                 return ResultCode.StateDoesNotExist;
             }
             
-			if (StateChangeTriggered != null)
-			{
-				StateChangeTriggered(activeState, next);
-			}
+            if (StateChangeTriggered != null)
+            {
+                StateChangeTriggered(activeState, next);
+            }
 
             if (this.activeState != null)
             {
@@ -213,6 +218,11 @@ namespace UnityGameBase.Core.Utils
             if (this.transitionReadyCallBack != null)
             {
                 this.transitionReadyCallBack();
+            }
+
+            if (StateChangeFinished != null)
+            {
+                StateChangeFinished(previousState, activeState);
             }
         }      
     }
