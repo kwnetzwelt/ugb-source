@@ -18,24 +18,24 @@ namespace UnityGameBase.Core.Data
         private LocaData()
         {
         }
-		
+
         XmlLocaData xmlData;
-		
+
         public string GetText(string pKey)
         {
-            if(pKey == null)
+            if (pKey == null)
             {
                 return "Empty Key!";
             }
 		
-            if(xmlData.data.ContainsKey(pKey))
+            if (xmlData.data.ContainsKey(pKey))
             {
                 return xmlData.data[pKey] ?? "Null Value!";
             }
 
             return "KNF:" + pKey;
         }
-				
+
         public string[] GetKeys()
         {
             string[] keys = new string[xmlData.data.Keys.Count];
@@ -43,32 +43,32 @@ namespace UnityGameBase.Core.Data
             return keys;
         }
 		
-	#if UNITY_EDITOR
+        #if UNITY_EDITOR
         public void AddText(string pKey, string pText)
         {
             xmlData.data[pKey] = pText;
         }
-	#endif
+        #endif
 		
         public static LocaData Load()
         {
-            if(Application.isPlaying)
+            if (Application.isPlaying)
             {
                 return Load(Game.Instance.gameLoca.currentLanguage.ToString());
             }
             return null;
         }
 		
-		#if UNITY_EDITOR
+        #if UNITY_EDITOR
         public static LocaData LoadFromEditor(string pLanguageShort)
         {
             UnityEditor.AssetDatabase.Refresh();
             LocaData lData = new LocaData();
-            string path = Application.dataPath + "/Resources/loca/loca_" + pLanguageShort;
+            string path = Application.dataPath + "/Resources/loca/loca_" + pLanguageShort + ".xml";
             try
             {
                 FileInfo file = new FileInfo(path);
-                if(!file.Exists)
+                if (!file.Exists)
                 {
                     Debug.LogWarning("Localization: File not found: " + file.FullName);
                     return lData;
@@ -91,7 +91,7 @@ namespace UnityGameBase.Core.Data
                 lData.xmlData.PostRead();
 				
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.LogWarning("Error loading loca file for requested language. " + e.Message);
                 lData.xmlData = new XmlLocaData();
@@ -113,7 +113,7 @@ namespace UnityGameBase.Core.Data
             {
                 // iOS related crash with connected Xcode (EXC_BAD_ACCESS) - check for file 'exists'
                 TextAsset ta = Resources.Load<TextAsset>(path);
-                if(ta == null)
+                if (ta == null)
                 {
                     throw new FileNotFoundException("File not found: " + path);
                 }
@@ -128,19 +128,19 @@ namespace UnityGameBase.Core.Data
                 lData.xmlData.PostRead();
 				
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.LogWarning("Error loading loca file for requested language. " + e.Message);
 				
             }
-			
+            Resources.UnloadUnusedAssets();
             return lData;
         }
 
-	#if UNITY_EDITOR
+        #if UNITY_EDITOR
         public void Save()
         {
-            if(Application.isPlaying)
+            if (Application.isPlaying)
             {
                 Debug.LogError("Not available at runtime!");
                 return;
@@ -150,7 +150,7 @@ namespace UnityGameBase.Core.Data
             string path = "Assets/Resources/loca/"; 
 
             DirectoryInfo di = new DirectoryInfo(path);
-            if(!di.Exists)
+            if (!di.Exists)
             {
                 di.Create();
             }
@@ -161,13 +161,18 @@ namespace UnityGameBase.Core.Data
 			
             XmlSerializer serializer = new XmlSerializer(typeof(XmlLocaData));
 			
-            TextWriter writer = new StreamWriter(path);
-            serializer.Serialize(writer, xmlData);
-			
-            writer.Flush();
-            writer.Close();
-            
+            try
+            {
+                TextWriter writer = new StreamWriter(path);
+                serializer.Serialize(writer, xmlData);
+                writer.Flush();
+                writer.Close();
+            }
+            catch (IOException e)
+            {
+                Debug.LogException(e);
+            }
         }
-	#endif
+        #endif
     }
 }
