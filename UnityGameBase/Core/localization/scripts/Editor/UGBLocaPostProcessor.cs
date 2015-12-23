@@ -52,8 +52,6 @@ namespace UnityGameBase.Core.Localization
                     // Save Loca file
                     ld.Save();
                 }
-                
-                AssetDatabase.Refresh();
             }
         }
 
