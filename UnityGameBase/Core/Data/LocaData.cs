@@ -1,11 +1,8 @@
-using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
 using System.IO;
 using System;
 using System.Text;
-using UnityGameBase.Core.Utils;
-using UnityGameBase.Core.Globalization;
 using System.Xml;
 
 namespace UnityGameBase.Core.Data
@@ -18,7 +15,7 @@ namespace UnityGameBase.Core.Data
     {
         static string editorPath = Application.dataPath + "/Resources/loca/loca_{0}.xml";
         static string resourcesPath = "loca/loca_{0}";
-        XmlLocaData xmlData;
+		XmlLocaData xmlData;
 
         private LocaData()
         {

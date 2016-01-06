@@ -29,8 +29,10 @@ namespace UnityGameBase.Core.XUI
         {
             get
             {
-                if (currentLanguage == null || currentLanguage == "")
-                    return "No Language Available!";
+				if (string.IsNullOrEmpty (currentLanguage))
+				{
+					return "No Language Available!";
+				}
 					
                 return currentLanguage;
             }
@@ -41,7 +43,6 @@ namespace UnityGameBase.Core.XUI
                     currentLanguage = value;				
                     Refresh();
                 }
-				
             }
         }
 			
@@ -52,7 +53,7 @@ namespace UnityGameBase.Core.XUI
             if (currentLanguage == null || currentLanguage == "")
                 currentLanguage = "de";
 			
-            locaData = LocaData.LoadFromEditor(currentLanguage + ".xml");
+            locaData = LocaData.LoadFromEditor(currentLanguage);
             #endif
         }
 #if UNITY_EDITOR
