@@ -41,21 +41,21 @@ namespace UnityGameBase.Core
 		{
 			if (name != string.Empty)
 			{
-				Application.LoadLevel(name);
+                SceneManager.LoadScene(name,LoadSceneMode.Single);
 			} else
 			{
-				Application.LoadLevel(id);
+                SceneManager.LoadScene(id,LoadSceneMode.Single);
 			}
 		}
 
 		virtual public AsyncOperation LoadAsync()
 		{
 			if (name != string.Empty)
-			{
-				return Application.LoadLevelAsync(name);
-			} else
-			{
-				return Application.LoadLevelAsync(id);
+            {
+                return SceneManager.LoadSceneAsync(name,LoadSceneMode.Single);
+            } else
+            {
+                return SceneManager.LoadSceneAsync(id,LoadSceneMode.Single);
 			}
 		}
 

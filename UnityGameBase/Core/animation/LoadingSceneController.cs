@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 namespace UnityGameBase.Core.Animation
 {
@@ -24,7 +25,7 @@ namespace UnityGameBase.Core.Animation
         public void Initialize(Action doneCallback)
         {
             initialized = false;
-            Application.LoadLevelAdditive(sceneName);
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
             StartCoroutine(WaitForScene(doneCallback));
         }
 
