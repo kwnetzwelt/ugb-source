@@ -1,6 +1,9 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using UnityEditor.SceneManagement;
+
+
 namespace UnityGameBase.Core.SceneMenu.Commands
 {
 	public class PlayDefaultSceneCommand : SceneMenuCommand
@@ -40,9 +43,8 @@ namespace UnityGameBase.Core.SceneMenu.Commands
 	        {
 	            path = EditorPrefs.GetString(kDefaultScenePathKey);
 	        }
-
-	        EditorApplication.SaveScene();
-	        EditorApplication.OpenScene(path);
+            EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+            EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
 	        EditorApplication.isPlaying = true;
 	    }
 	}

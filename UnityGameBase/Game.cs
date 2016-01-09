@@ -12,6 +12,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 /*! \page base_lib_intro Introduction
 
@@ -227,7 +228,7 @@ namespace UnityGameBase
             UnityEngine.Object[] allGameObjects = FindObjectsOfType(typeof(GameObject)); 
             foreach(GameObject go in allGameObjects)
                 GameObject.Destroy(go);
-            Application.LoadLevel(1);
+            SceneManager.LoadScene(1);
         }
 
         /// <summary>

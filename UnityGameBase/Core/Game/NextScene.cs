@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UnityGameBase.Core
 {
@@ -11,7 +12,12 @@ namespace UnityGameBase.Core
 		{
 			get
 			{
-				return (name != string.Empty) ? Application.loadedLevelName == name : Application.loadedLevel == id;
+                if(name != string.Empty)
+                { 
+                    return SceneManager.GetActiveScene().name == name;
+                }else{
+                    return SceneManager.GetActiveScene().buildIndex == id;
+                }
 			}
 		}
 

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 namespace UnityGameBase.Core.SceneMenu.Commands
 {
@@ -42,8 +43,8 @@ namespace UnityGameBase.Core.SceneMenu.Commands
 	            path = EditorPrefs.GetString(kGameScenePathKey);
 	        }
 
-	        EditorApplication.SaveCurrentSceneIfUserWantsTo();
-	        EditorApplication.OpenScene(path);
+	        EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+            EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
 	    }
 
 

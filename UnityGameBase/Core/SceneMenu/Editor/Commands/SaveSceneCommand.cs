@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
+
+
 namespace UnityGameBase.Core.SceneMenu.Commands
 {
 	public class SaveSceneCommand : SceneMenuCommand
@@ -13,7 +16,7 @@ namespace UnityGameBase.Core.SceneMenu.Commands
 		}
 		public override void Execute ()
 		{
-			EditorApplication.SaveScene();
+            EditorSceneManager.SaveOpenScenes();
 		}
 	}
 

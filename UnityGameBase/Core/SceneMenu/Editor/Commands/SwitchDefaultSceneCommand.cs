@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 namespace UnityGameBase.Core.SceneMenu.Commands
 {
@@ -43,8 +44,8 @@ namespace UnityGameBase.Core.SceneMenu.Commands
 	            path = EditorPrefs.GetString(kDefaultScenePathKey);
 	        }
 
-	        EditorApplication.SaveCurrentSceneIfUserWantsTo();
-	        EditorApplication.OpenScene(path);
+	        EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+            EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
 	    }
 
 	    [MenuItem("UGB/Go To/Reset/Default Scene Path", false, 15)]

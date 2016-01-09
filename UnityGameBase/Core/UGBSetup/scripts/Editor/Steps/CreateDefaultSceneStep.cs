@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEditor;
 using System.IO;
 using UnityGameBase.Core;
+using UnityEditor.SceneManagement;
 
 namespace UnityGameBase.Core.Setup
 {
@@ -34,31 +35,15 @@ namespace UnityGameBase.Core.Setup
                 yield return 0;
             }
             
-            EditorApplication.NewScene();
+            var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
 
-           
-            ClearScene();
-           
             GameObject go = new GameObject();
             go.name = kGameRoot;
            
             System.Type type = UGBSetupPostProcessor.GetGameInitializerType();
             go.AddComponent(type);
            
-            EditorApplication.SaveScene(kScene);
-        }
-
-        void ClearScene()
-        {
-            var gos = GameObject.FindObjectsOfType<GameObject>();
-            foreach(var go in gos)
-            {
-                if(go != null)
-                {
-                    GameObject.DestroyImmediate(go);
-                }
-            }
-
+            EditorSceneManager.SaveScene(scene, kScene);
         }
 
     }
