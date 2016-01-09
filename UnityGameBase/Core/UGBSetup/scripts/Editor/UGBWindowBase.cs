@@ -26,9 +26,9 @@ namespace UnityGameBase.Core.Setup
 			}
 		}
 
-		protected GUIStyle mTitleStyle;
-		protected GUIStyle mTextStyle;
-		protected GUIStyle mBulletPointStyle;
+        protected GUIStyle mTitleStyle = new GUIStyle();
+        protected GUIStyle mTextStyle = new GUIStyle();
+        protected GUIStyle mBulletPointStyle = new GUIStyle();
 
 		void CreateStyles()
 		{
@@ -40,11 +40,10 @@ namespace UnityGameBase.Core.Setup
 				mTextStyle.wordWrap = true;
 				mBulletPointStyle = EditorStyles.foldout;
 
-			}catch (Exception e)
-			{
-				Debug.LogException(e);
-				Debug.LogError("could not get editor styles. ");
-			}
+            }catch {
+            }
+            // we don't care about errors here. Some Unity Versions throw exceptions here at some stage, but this will be resolved anyway. 
+
 		}
 
 		protected virtual void OnEnable ()
