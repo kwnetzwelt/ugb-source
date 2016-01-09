@@ -58,6 +58,13 @@ namespace UnityGameBase.Core.Setup
             AssetDatabase.ImportAsset(LogicClassFile());
 
 
+
+            while (EditorApplication.isCompiling || EditorApplication.isUpdating)
+            {
+                yield return 0;
+            }
+
+            Debug.Log("compiler finished!");
 		}
 
 		System.Type GetLogicClassType()

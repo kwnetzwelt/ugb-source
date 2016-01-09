@@ -14,6 +14,7 @@ namespace UnityGameBase.Core.Setup
         bool mForce = false;
         bool mRunning = false;
         UGBSetup mSetup = new UGBSetup();
+        [SerializeField]
         IEnumerator<string> mEnumerator;
 
         [MenuItem("UGB/Setup/Wizard")]
@@ -23,6 +24,11 @@ namespace UnityGameBase.Core.Setup
             window.position = new Rect(window.position.x + 50, window.position.y + 50, 320, 300);
             window.minSize = new Vector2(320, 300);
             window.maxSize = new Vector2(320, 300);
+        }
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            EditorUtility.ClearProgressBar();
         }
 
         protected override void OnGUI()
@@ -58,7 +64,7 @@ namespace UnityGameBase.Core.Setup
 
             if(GUILayout.Button("Run Setup"))
             {
-                DoSetup();
+                StartSetup();
             }
 
 
@@ -72,9 +78,19 @@ namespace UnityGameBase.Core.Setup
 
             if(mRunning)
             {
+                if (mEnumerator == null)
+                {
+                    mEnumerator = ResumeSetup();
+                    if (mEnumerator == null)
+                    {
+                        mRunning = false;
+                        Debug.Log("aborting run. ");
+                        return;
+                    }
+                }
                 if(mEnumerator.MoveNext())
                 {
-                    EditorUtility.DisplayProgressBar("UGB Setup Wizard", mEnumerator.Current, mSetup.progress);
+                    EditorUtility.DisplayProgressBar("UGB Setup Wizard", mEnumerator.Current, mSetup.Progress);
                 }
                 else
                 {
@@ -92,10 +108,22 @@ namespace UnityGameBase.Core.Setup
 
 		#region actually do the setup
 
-        void DoSetup()
+        IEnumerator<string> ResumeSetup()
+        {
+            if (mSetup != null)
+            {
+                return mSetup.Resume();
+            }
+
+            return null;
+
+        }
+
+        void StartSetup()
         {
             mRunning = true;
-            mSetup.force = mForce;
+            mSetup.Force = mForce;
+            mSetup.Reset();
             mEnumerator = mSetup.Run();
             
         }

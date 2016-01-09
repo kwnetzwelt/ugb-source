@@ -2,15 +2,24 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using System;
 
 namespace UnityGameBase.Core.Setup
 {
+    [Serializable]
     public class UGBSetup
     {
-        public bool force
+        [SerializeField]
+        int currentStepIndex;
+
+        [SerializeField]
+        bool force;
+
+
+        public bool Force
         {
-            get;
-            set;
+            get { return force; }
+            set { force = value; }
         }
 
         List<UGBSetupStep> mSteps = new List<UGBSetupStep>();
@@ -19,13 +28,22 @@ namespace UnityGameBase.Core.Setup
             mSteps.Add(new CreateFoldersStep());
             mSteps.Add(new CreateDefaultSceneStep());
             mSteps.Add(new CreateGameLogicClass());
+            mSteps.Add(new AttachGameLogic());
             //mSteps.Add( new OpenLogicClassInMD() );
         }
 
-        public float progress
+        [SerializeField]
+        float progress;
+
+        public float Progress
         {
-            get;
-            private set;
+            get {
+                return progress;
+            }
+
+            private set {
+                progress = value;
+            }
         }
 
         public IEnumerable<string> Steps()
@@ -36,15 +54,27 @@ namespace UnityGameBase.Core.Setup
             }
         }
 
+        public void Reset()
+        {
+            currentStepIndex = 0;
+            Progress = 0;
+        }
+
+        public IEnumerator<string> Resume()
+        {
+            currentStepIndex++;
+            return Run();
+        }
+
         public IEnumerator<string> Run()
         {
-            progress = 0;
             float frag = 1 / (float)mSteps.Count;
-            foreach(var step in mSteps)
+            for (; currentStepIndex < mSteps.Count; currentStepIndex++)
             {
-                step.force = force;
+                var step = mSteps[currentStepIndex];
+                step.force = Force;
                 yield return step.GetName();
-                progress += frag;
+                Progress += frag;
                 var ien = step.Run();
 
                 while(ien.MoveNext())
