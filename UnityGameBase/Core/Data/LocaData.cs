@@ -15,7 +15,7 @@ namespace UnityGameBase.Core.Data
     {
         static string editorPath = Application.dataPath + "/Resources/loca/loca_{0}.xml";
         static string resourcesPath = "loca/loca_{0}";
-		XmlLocaData xmlData;
+        XmlLocaData xmlData;
 
         private LocaData()
         {
@@ -57,7 +57,6 @@ namespace UnityGameBase.Core.Data
             LocaData lData = new LocaData();
             lData.xmlData = new XmlLocaData();
             lData.xmlData.language = languageShort;
-            Debug.LogWarning("Std Load");
             string path = string.Format(resourcesPath, languageShort);
             try
             {
