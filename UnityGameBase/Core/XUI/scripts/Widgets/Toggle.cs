@@ -19,16 +19,31 @@ namespace UnityGameBase.Core.XUI
 		/// </summary>
 		public static event System.Action<Toggle, int, bool> ToggleClicked;
 
+		/// <summary>
+		/// Temporarily disables the static event.
+		/// </summary>
+		bool tempDisableEvent = false;
+
 		protected override void Awake()
 		{
 			base.Awake();
-
 			onValueChanged.AddListener(OnToggleClicked);
 		}
-		
+
+		/// <summary>
+		/// Use this method to enable/disable the toggle without sending a static event (to avoid
+		/// sounds being fired etc. when setting the toggle code-wise).
+		/// </summary>
+		public void SetToggleIsOn (bool on)
+		{
+			tempDisableEvent = true;
+			this.isOn = on;
+			tempDisableEvent = false;
+		}
+
 		void OnToggleClicked (bool toggled)
 		{
-			if (enableStaticEvent && ToggleClicked != null)
+			if (!tempDisableEvent && enabled && enableStaticEvent && ToggleClicked != null)
 			{
 				ToggleClicked(this, eventId, toggled);
 			}

@@ -27,7 +27,7 @@ namespace UnityGameBase.Core.XUI
 		
 		void OnButtonClicked ()
 		{
-			if (enableStaticEvent && ButtonClicked != null)
+			if (enabled && enableStaticEvent && ButtonClicked != null)
 			{
 				ButtonClicked(this, eventId);
 			}
