@@ -34,7 +34,7 @@ using System.Collections.Generic;
 using UnityGameBase.Core;
 using UnityGameBase.Core.Extensions;
 
-public class " + name + @" : GameComponent
+public class " + name + @" : GameComponent<T>
 {
     public void Start ()
     {
