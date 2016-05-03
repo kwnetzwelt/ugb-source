@@ -9,7 +9,7 @@ namespace UnityGameBase.Core.XUI
 		public float FadeTime {	set; get; }
 		
 		float targetAlpha = 0f;
-		System.Action doneCallBack;
+        bool isRunning = false;
 
 		CanvasGroup cg = null;
 		CanvasGroup CanvasGroup 
@@ -26,24 +26,32 @@ namespace UnityGameBase.Core.XUI
 
 		public override void Show(System.Action onDone)
 		{
+            if(isRunning)
+            {
+                Debug.LogError("AlphaFadeController::Show: AlphaFade is still Running!! ");
+            }
+            isRunning = true;
 			CanvasGroup.alpha = 0f;
 			targetAlpha = 1f;
-			doneCallBack = onDone;
 
 			StopAllCoroutines();
-			StartCoroutine(Fade());
+            StartCoroutine(Fade(onDone));
 		}
 		
 		public override void Hide(System.Action onDone)
 		{
+            if(isRunning)
+            {
+                Debug.LogError("AlphaFadeController::Hide: AlphaFade is still Running!! ");
+            }
+            isRunning = true;
 			targetAlpha = 0f;
-			doneCallBack = onDone;
 		
 			StopAllCoroutines();
-			StartCoroutine(Fade());
+			StartCoroutine(Fade(onDone));
 		}
 
-		IEnumerator Fade ()
+        IEnumerator Fade (System.Action onDone)
 		{
 			yield return new WaitForEndOfFrame();
 
@@ -58,10 +66,9 @@ namespace UnityGameBase.Core.XUI
 			}
 
 			CanvasGroup.alpha = targetAlpha;
-			if (doneCallBack != null)
+            if (onDone != null)
 			{
-				doneCallBack();
-				doneCallBack = null;
+                onDone();
 			}
 		}
 		
