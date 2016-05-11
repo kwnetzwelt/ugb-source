@@ -9,7 +9,6 @@ namespace UnityGameBase.Core.XUI
 		public float FadeTime {	set; get; }
 		
 		float targetAlpha = 0f;
-        bool isRunning = false;
 
 		CanvasGroup cg = null;
 		CanvasGroup CanvasGroup 
@@ -26,11 +25,6 @@ namespace UnityGameBase.Core.XUI
 
 		public override void Show(System.Action onDone)
 		{
-            if(isRunning)
-            {
-                Debug.LogError("AlphaFadeController::Show: AlphaFade is still Running!! ");
-            }
-            isRunning = true;
 			CanvasGroup.alpha = 0f;
 			targetAlpha = 1f;
 
@@ -40,11 +34,6 @@ namespace UnityGameBase.Core.XUI
 		
 		public override void Hide(System.Action onDone)
 		{
-            if(isRunning)
-            {
-                Debug.LogError("AlphaFadeController::Hide: AlphaFade is still Running!! ");
-            }
-            isRunning = true;
 			targetAlpha = 0f;
 		
 			StopAllCoroutines();
