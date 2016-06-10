@@ -1,80 +1,69 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityGameBase.Core.Extensions;
 
 namespace UnityGameBase.Core.XUI
 {
 	public class AlphaFadeController : TransitionController
 	{
-		private float fadeTime;
-		public float FadeTime
-		{
-			set{ fadeTime = value;}
-			get{ return fadeTime;}
-		}
+		public float FadeTime {	set; get; }
 		
-		private float currentTime = 0;
-		private System.Action doneCallBack;
+		float targetAlpha = 0f;
 
-		protected override void Awake()
+		CanvasGroup cg = null;
+		CanvasGroup CanvasGroup 
 		{
-			base.Awake();
-
-			CanvasGroup canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
-			if (canvasGroup == null)
+			get 
 			{
-				Debug.LogWarning("Screen " + gameObject.name + " has no CanvasGroup attached. Will be attached now, but you should add the CanvasGroup to your prefab.");
-				gameObject.AddComponent<CanvasGroup>();
+				if (cg == null)
+				{
+					cg = this.AddComponentIfNotExists<CanvasGroup>();
+				}
+				return cg;
 			}
 		}
 
 		public override void Show(System.Action onDone)
 		{
-			currentTime = 0;
-			doneCallBack = onDone;
-			InvokeRepeating("FadeIn", 0f, 0.05f);
+			CanvasGroup.alpha = 0f;
+			targetAlpha = 1f;
+
+			StopAllCoroutines();
+            StartCoroutine(Fade(onDone));
 		}
 		
 		public override void Hide(System.Action onDone)
 		{
-			currentTime = 0;
-			doneCallBack = onDone;
-			InvokeRepeating("FadeOut", 0f, 0.05f);
-		}
+			targetAlpha = 0f;
 		
-		private void FadeIn()
-		{
-			currentTime += 0.05f;
-			float curAlpha = currentTime / fadeTime;
-			
-			if (curAlpha >= 1)
-			{
-				curAlpha = 1;
-				this.SetAlpha(1);
-				this.CancelInvoke("FadeIn");
-				doneCallBack();
-			}				
-			this.SetAlpha(curAlpha);		
+			StopAllCoroutines();
+			StartCoroutine(Fade(onDone));
 		}
-			
-		private void FadeOut()
+
+        IEnumerator Fade (System.Action onDone)
 		{
-			currentTime += 0.05f;
-			float curAlpha = 1 - (currentTime / fadeTime);
-			
-			if (curAlpha <= 0)
+			yield return new WaitForEndOfFrame();
+
+			if (FadeTime > 0f)
 			{
-				curAlpha = 0;
-				this.SetAlpha(0);
-				this.CancelInvoke("FadeOut");
-				doneCallBack();
-			}				
-			this.SetAlpha(curAlpha);		
+				var speed = 1f / FadeTime;
+				while (!Mathf.Approximately(CanvasGroup.alpha, targetAlpha))
+				{
+					CanvasGroup.alpha = Mathf.MoveTowards(CanvasGroup.alpha, targetAlpha, speed * Time.deltaTime);
+					yield return new WaitForEndOfFrame();
+				}
+			}
+
+			CanvasGroup.alpha = targetAlpha;
+            if (onDone != null)
+			{
+                onDone();
+			}
 		}
 		
 		public void SetAlpha(float val)
 		{
-			CanvasGroup canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
-			canvasGroup.alpha = val;
+			CanvasGroup.alpha = val;
 		}
 	}
 }
