@@ -102,7 +102,7 @@ namespace UnityGameBase.Core.Globalization
         /// <returns>
         /// The system language short.
         /// </returns>
-        static string GetSystemLanguageShort()
+        public static string GetSystemLanguageShort()
         {
             UnityEngine.SystemLanguage lang = Application.systemLanguage;
             
