@@ -16,6 +16,11 @@ namespace UnityGameBase.Core.Globalization
     /// </summary>
     public class GameLocalization : MonoBehaviour
     {
+        /// <summary>
+        /// The Label of files, which are considered localization sources. 
+        /// </summary>
+        public static readonly string UGBLocaSourceFilter = "l:UGB_Loca";
+
         LocaData mData;
         public Languages mCurrentLanguage = Languages.Invalid;
 

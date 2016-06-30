@@ -2,22 +2,39 @@ using UnityEngine;
 using System.Collections;
 using UnityEditor;
 using UnityGameBase.Core.Data;
+using System.Collections.Generic;
 
 namespace UnityGameBase.Core.Localization
 {
     public class UGBLocaPostProcessor : AssetPostprocessor
     {
+
         static void OnPostprocessAllAssets(
             string[] pImportedAssets,
             string[] pDeletedAssets,
             string[] pMovedAssets,
             string[] pMovedFromAssetsPaths)
         {
+            List<string> locaAssets = new List<string>(AssetDatabase.FindAssets(UnityGameBase.Core.Globalization.GameLocalization.UGBLocaSourceFilter));
+            // no files containing loca found. 
+            if (locaAssets.Count == 0)
+                return;
+
+            // assets are only the guids. So we need to parse the path to compare them. 
+
+            List<string> locaSources = new List<string>();
+            foreach (var assetGuid in locaAssets)
+            {
+                locaSources.Add(AssetDatabase.GUIDToAssetPath(assetGuid));
+            }
+                    
+
+
             foreach (string imported in pImportedAssets)
             {
-                if (!imported.Contains("loca"))
+                if (!locaSources.Contains(imported))
                     continue;
-
+                
                 UGBLocaParser parser = null;
                 if (imported.EndsWith(".xml"))
                 {

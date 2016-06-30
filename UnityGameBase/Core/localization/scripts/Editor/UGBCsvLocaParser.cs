@@ -35,27 +35,34 @@ namespace UnityGameBase.Core.Localization
 
 		public void Parse(string pFilePath)
 		{
-			Clear();
+        	Clear();
 			using (CsvReader csvReader = new CsvReader(new StreamReader(pFilePath), true))
 			{
-				var firstContentCell = ParseHeaderRow(csvReader.GetFieldHeaders(), pFilePath);
-				while(csvReader.ReadNextRecord()) 
-				{
-					if (csvReader[0].StartsWith("//") || string.IsNullOrEmpty(csvReader[firstContentCell]))
-					{
-						continue;
-					}
+                try
+                {
+                    var firstContentCell = ParseHeaderRow(csvReader.GetFieldHeaders(), pFilePath);
+    				while(csvReader.ReadNextRecord()) 
+    				{
+    					if (csvReader[0].StartsWith("//") || string.IsNullOrEmpty(csvReader[firstContentCell]))
+    					{
+    						continue;
+    					}
 
-					var locaEntry = new CLocaEntry(mLangCount);
-					locaEntry.mKey = csvReader[firstContentCell];
-					locaEntry.mDescription = csvReader[firstContentCell + 1];
-					for(int i = firstContentCell + 2, j = 0; i < csvReader.FieldCount; i++, j++)
-					{
-						locaEntry.mTranslations[j] = csvReader[i];
-					}
-					mLocaEntries.Add(locaEntry);
-				}
-			}
+    					var locaEntry = new CLocaEntry(mLangCount);
+    					locaEntry.mKey = csvReader[firstContentCell];
+    					locaEntry.mDescription = csvReader[firstContentCell + 1];
+    					for(int i = firstContentCell + 2, j = 0; i < csvReader.FieldCount; i++, j++)
+    					{
+    						locaEntry.mTranslations[j] = csvReader[i];
+    					}
+    					mLocaEntries.Add(locaEntry);
+    				}
+                }catch(Exception e)
+                {
+                    UnityEngine.Debug.LogException(e);
+                    csvReader.Dispose();
+                }
+            }
 		}
 		
 		int ParseHeaderRow(string[] header, string pFilePath)

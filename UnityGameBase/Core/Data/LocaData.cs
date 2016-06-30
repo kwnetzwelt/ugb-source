@@ -15,8 +15,23 @@ namespace UnityGameBase.Core.Data
     {
         static string editorPath = Application.dataPath + "/Resources/loca/loca_{0}.xml";
         static string resourcesPath = "loca/loca_{0}";
-        XmlLocaData xmlData;
+        XmlLocaData xmlData = new XmlLocaData();
 
+        /// <summary>
+        /// Factory Method to create a new instance of LocaData
+        /// </summary>
+        /// <param name="languageShort">Language short.</param>
+        public static LocaData Create(string languageShort)
+        {
+            var lData = new LocaData();
+            lData.xmlData = new XmlLocaData();
+            lData.xmlData.language = languageShort;
+            return lData;
+        }
+
+        /// <summary>
+        /// Do not use directly! Use Factory Method instead
+        /// </summary>
         private LocaData()
         {
         }
@@ -54,9 +69,7 @@ namespace UnityGameBase.Core.Data
 
         public static LocaData Load(string languageShort)
         {
-            LocaData lData = new LocaData();
-            lData.xmlData = new XmlLocaData();
-            lData.xmlData.language = languageShort;
+            LocaData lData = LocaData.Create(languageShort);
             string path = string.Format(resourcesPath, languageShort);
             try
             {
@@ -96,7 +109,7 @@ namespace UnityGameBase.Core.Data
 
         public static LocaData LoadFromEditor(string languageShort)
         {
-            LocaData lData = new LocaData();
+            LocaData lData = LocaData.Create(languageShort);
             string path = string.Format(editorPath, languageShort);
 
             try
@@ -168,6 +181,8 @@ namespace UnityGameBase.Core.Data
             {
                 Debug.LogException(e);
             }
+
+            UnityEditor.AssetDatabase.Refresh();
         }
         #endif
         #endregion

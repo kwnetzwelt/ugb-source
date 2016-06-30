@@ -57,6 +57,16 @@ namespace UnityGameBase.Core.XUI
             #endif
         }
 #if UNITY_EDITOR
+        /// <summary>
+        /// Determines if the project has loca files. If there are files tagged with "UGB_Loca" it will return true. 
+        /// </summary>
+        /// <returns><c>true</c> if has loca files in project; otherwise, <c>false</c>.</returns>
+        public static bool CheckLocaFilesInProject()
+        {
+            var assets = UnityEditor.AssetDatabase.FindAssets(UnityGameBase.Core.Globalization.GameLocalization.UGBLocaSourceFilter);
+            return assets.Length > 0;
+        }
+
         public static string[] GetAllAvailableLanguages()
         {
             string path = Application.dataPath + "/Resources/loca/";

@@ -19,10 +19,12 @@ public class LocalizedTextInspector : Editor
     
 	LocalizedTextComponent myTarget;
     string[] availableLanguages = null;
+    bool hasLocaFiles = false;
+
 	void OnEnable()
 	{
 		selectedLanguageIndex = EditorPrefs.GetInt ("LocalizedTextInspector.selectedLanguageIndex");
-
+        hasLocaFiles = LocalizationHelper.CheckLocaFilesInProject();
         availableLanguages = LocalizationHelper.GetAllAvailableLanguages();
         selectedLanguageIndex = Mathf.Clamp (selectedLanguageIndex, 0, availableLanguages.Length);
 
@@ -39,6 +41,10 @@ public class LocalizedTextInspector : Editor
 		if(myTarget == null)
         {
             return;
+        }
+        if (!hasLocaFiles)
+        {
+            EditorGUILayout.HelpBox("Please create a compatible loca file matching the filter \"" + UnityGameBase.Core.Globalization.GameLocalization.UGBLocaSourceFilter + "\" to enable localization. ", MessageType.Warning);
         }
         if (availableLanguages.Length == 0)
         {
