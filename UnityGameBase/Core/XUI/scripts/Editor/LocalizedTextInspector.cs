@@ -18,11 +18,13 @@ public class LocalizedTextInspector : Editor
     Rect scrollviewRect;
     
 	LocalizedTextComponent myTarget;
-
+    string[] availableLanguages = null;
 	void OnEnable()
 	{
 		selectedLanguageIndex = EditorPrefs.GetInt ("LocalizedTextInspector.selectedLanguageIndex");
-		selectedLanguageIndex = Mathf.Clamp (selectedLanguageIndex, 0, LocalizationHelper.GetAllAvailableLanguages().Length);
+
+        availableLanguages = LocalizationHelper.GetAllAvailableLanguages();
+        selectedLanguageIndex = Mathf.Clamp (selectedLanguageIndex, 0, availableLanguages.Length);
 
 		myTarget = target as LocalizedTextComponent;
 		if (myTarget != null) {
@@ -38,13 +40,17 @@ public class LocalizedTextInspector : Editor
         {
             return;
         }
-	
+        if (availableLanguages.Length == 0)
+        {
+            EditorGUILayout.HelpBox("No localization files available at \"/Resources/loca\".", MessageType.Warning);
+            GUI.enabled = false;
+        }
         EditorGUILayout.BeginHorizontal();
         myTarget.useLocaFiles = EditorGUILayout.Toggle("Use Loca", myTarget.useLocaFiles);
         DrawLanguageSelection();
         
         EditorGUILayout.EndHorizontal();		
-        
+        GUI.enabled = true;
                         
         if(myTarget.useLocaFiles)
         {

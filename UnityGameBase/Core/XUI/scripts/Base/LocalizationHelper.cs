@@ -66,8 +66,8 @@ namespace UnityGameBase.Core.XUI
                 result = Directory.GetFiles(path, "*.xml");//.Select(name => GetFileShortName(path)).ToArray();
             } catch
             {
-                Debug.Log("No LocaFiles available");
-                return null;
+                Debug.LogWarning("No LocaFiles available");
+                return result;
             }
 		
             return AbstractFileNames(result);
