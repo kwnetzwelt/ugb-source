@@ -65,7 +65,9 @@ namespace UnityGameBase.Core.Utils
             {
                 return RuntimePlatform.WP8Player == Application.platform ||
                     RuntimePlatform.Android == Application.platform ||
+					#if UNITY_5_5_OR_NEWER
                     RuntimePlatform.BlackBerryPlayer == Application.platform ||
+					#endif
                     RuntimePlatform.IPhonePlayer == Application.platform;
             }
         }
