@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.IO;
-using LumenWorks.Framework.IO.Csv;
 
 namespace UnityGameBase.Core.Localization
 {
@@ -33,34 +32,59 @@ namespace UnityGameBase.Core.Localization
 			return mLocaEntries;
 		}
 
+
+		IEnumerator<float> CSVWalker(string filename, System.Text.Encoding encoding)
+		{
+			List<List<string>> dataGrid = Mono.Csv.CsvFileReader.ReadAll(filename, System.Text.Encoding.UTF8, ';');
+			var firstContentCell = ParseHeaderRow(dataGrid[0].ToArray(),filename);
+			int progress = 0;
+			foreach(var line in dataGrid)
+			{
+				
+				if (line[0].StartsWith("//") || string.IsNullOrEmpty(line[firstContentCell]))
+				{
+					// this is a commented out line, we do nothing here
+				}else
+				{
+					var locaEntry = new CLocaEntry(mLangCount);
+					locaEntry.mKey = line[firstContentCell];
+					locaEntry.mDescription = line[firstContentCell + 1];
+					for(int i = firstContentCell + 2, j = 0; j<mLangCount; i++, j++)
+					{
+						locaEntry.mTranslations[j] = line[i];
+					}
+					mLocaEntries.Add(locaEntry);
+					progress++;
+				}
+				yield return progress / (float)dataGrid.Count;
+			}
+		}
+
 		public void Parse(string pFilePath)
 		{
         	Clear();
-			using (CsvReader csvReader = new CsvReader(new StreamReader(pFilePath), true))
+			
+			
+			//using (CsvReader csvReader = new CsvReader(new StreamReader(pFilePath), true))
 			{
                 try
                 {
-                    var firstContentCell = ParseHeaderRow(csvReader.GetFieldHeaders(), pFilePath);
-    				while(csvReader.ReadNextRecord()) 
-    				{
-    					if (csvReader[0].StartsWith("//") || string.IsNullOrEmpty(csvReader[firstContentCell]))
-    					{
-    						continue;
-    					}
-
-    					var locaEntry = new CLocaEntry(mLangCount);
-    					locaEntry.mKey = csvReader[firstContentCell];
-    					locaEntry.mDescription = csvReader[firstContentCell + 1];
-    					for(int i = firstContentCell + 2, j = 0; i < csvReader.FieldCount; i++, j++)
-    					{
-    						locaEntry.mTranslations[j] = csvReader[i];
-    					}
-    					mLocaEntries.Add(locaEntry);
-    				}
+					var walker = CSVWalker(pFilePath, System.Text.Encoding.UTF8);
+					while(walker.MoveNext())
+					{
+						var canceled = UnityEditor.EditorUtility.DisplayCancelableProgressBar("Importing Loca from " + pFilePath, walker.Current.ToString("p1"), walker.Current);
+						if(canceled)
+						{
+							UnityEngine.Debug.Log("Canceled");
+							break;
+						}
+						//UnityEngine.Debug.Log("Adding key " + walker.Current);
+					}
+					UnityEditor.EditorUtility.ClearProgressBar();
+					
                 }catch(Exception e)
                 {
                     UnityEngine.Debug.LogException(e);
-                    csvReader.Dispose();
                 }
             }
 		}
@@ -78,11 +102,13 @@ namespace UnityGameBase.Core.Localization
 			}
 			if(firstContentCell == -1) 
 			{
+				UnityEngine.Debug.LogError(header.Length);
 				throw new DataMisalignedException(string.Format("CSV at {0} is not a valid Loca file.", pFilePath));
 			}
 			for(int i = firstContentCell + 2; i < header.Length; i++)
 			{
-				mLanguages.Add(header[i]);
+				if(!string.IsNullOrEmpty(header[i]))
+					mLanguages.Add(header[i]);
 			}
 			mLangCount = mLanguages.Count;
 

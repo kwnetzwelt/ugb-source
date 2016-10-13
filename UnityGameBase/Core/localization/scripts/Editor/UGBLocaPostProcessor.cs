@@ -53,6 +53,8 @@ namespace UnityGameBase.Core.Localization
 
                 // now that loca is parsed, generating loca files. 
                 var languages = parser.GetLanguages();
+                float progress = 0;
+                float max = languages.Count * parser.GetEntries().Count;
 
                 for (int i = 0; i < languages.Count; i++)
                 {
@@ -64,11 +66,14 @@ namespace UnityGameBase.Core.Localization
                     {
                         if (i < e.mTranslations.Length)
                             ld.AddText(e.mKey, e.mTranslations[i]);
+                        progress++;
+                        
                     }
-                    
+                    EditorUtility.DisplayProgressBar("Syncing Loca " + imported, (progress / max).ToString("p1"), progress / max);
                     // Save Loca file
                     ld.Save();
                 }
+                EditorUtility.ClearProgressBar();
             }
         }
 
