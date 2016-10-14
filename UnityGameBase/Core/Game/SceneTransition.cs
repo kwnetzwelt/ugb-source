@@ -13,7 +13,7 @@ namespace UnityGameBase.Core
 		/// The Texture to fade to. This texture will be displayed fullscreen using the Unity3D IMGUI System. 
 		/// For advanced loading screen behaviour you can use SceneTransition::mLoadingScreenController. 
 		/// </summary>
-		public Texture2D fadeTexture = new Texture2D(1, 1);
+		public Texture2D fadeTexture;
 
 		/// <summary>
 		/// The duration of the fade animation.
@@ -27,6 +27,8 @@ namespace UnityGameBase.Core
 
 		bool animateInDone = false;
 		bool animateOutDone = false;
+
+
 
 		/// <summary>
 		/// The Alpha of all other gui element. Will be interpolated to 0, when a transition takes place and back to 1, when the transition is done. 
@@ -125,6 +127,14 @@ namespace UnityGameBase.Core
 			animateOutDone = true;
 		}
 
+        void Awake()
+        {
+            if (fadeTexture == null)
+            {
+                fadeTexture = Utils.UIHelpers.BlackTexture;
+
+            }
+        }
 		
 		void Update()
 		{
