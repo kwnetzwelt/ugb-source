@@ -13,7 +13,8 @@ namespace UnityGameBase.Core.Data
     /// </summary>
     public class LocaData
     {
-        static string editorPath = Application.dataPath + "/Resources/loca/loca_{0}.xml";
+        public static string targetFolder = Application.dataPath + "/Resources/loca"; 
+        static string editorPath = targetFolder + "/loca_{0}.xml";
         static string resourcesPath = "loca/loca_{0}";
         XmlLocaData xmlData = new XmlLocaData();
 
