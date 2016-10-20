@@ -34,6 +34,19 @@ namespace UnityGameBase.Core.Savegame
         System.Threading.Thread currentThread;
         #endif
 
+        #if UNITY_WEBGL
+        SaveGameSerializationResult SaveInLocalStorage(string path, string data)
+        {
+            return SaveGameSerializationResult.ok;
+        }
+
+        private SaveGameSerializationResult LoadFromLocalStorage(string path, ref string data)
+        {
+            data = "";
+            return SaveGameSerializationResult.ok;
+        }
+
+        #endif
         public virtual void Save(int index, System.Object saveData, System.Action<SaveGameSerializationResult> onDone)
         {
             if(State != SaveGameIOState.ready)
@@ -85,8 +98,21 @@ namespace UnityGameBase.Core.Savegame
             var path = GetSaveGamePath(index);
             
             #if UNITY_WEBGL
-            var result = LoadFromLocalStorage(path, data);
-            onDone(result);
+            
+            var result = LoadFromLocalStorage(path, ref data);
+            T parsedData = null;
+
+            try
+            {
+                parsedData = UnityEngine.JsonUtility.FromJson<T>(data);
+            }catch(Exception e)
+            {
+                Debug.LogException(e);
+                result = SaveGameSerializationResult.failedSerializing;
+            }
+            
+            onDone(result, parsedData);
+
             #else
 
             currentIOWorker = new IOWorker();
@@ -95,7 +121,14 @@ namespace UnityGameBase.Core.Savegame
             T loadedObject = null;
             currentIOWorker.onDone = (result) => {
                 State = SaveGameIOState.ready;
-                loadedObject = currentIOWorker.Parse<T>();
+                try
+                {
+                    loadedObject = currentIOWorker.Parse<T>();
+                }catch(Exception e)
+                {
+                    UnityEngine.Debug.LogException(e);
+                    result = SaveGameSerializationResult.failedSerializing;
+                }
                 currentIOWorker = null;
                 currentThread = null;
                 onDone(result, loadedObject);
@@ -105,12 +138,16 @@ namespace UnityGameBase.Core.Savegame
 
             #endif
         }
+
+
         void OnDisable()
         {
+            #if !UNITY_WEBGL
             if(currentThread != null && currentThread.IsAlive)
             {
                 currentThread.Abort();
             }
+            #endif
         }
         internal class IOWorker
         {
@@ -134,6 +171,7 @@ namespace UnityGameBase.Core.Savegame
                     }
                 }catch(Exception e)
                 {
+                    Debug.LogException(e);
                     result = SaveGameSerializationResult.ioError;
                 }
 
@@ -158,6 +196,7 @@ namespace UnityGameBase.Core.Savegame
 
                 }catch(Exception e)
                 {
+                    Debug.LogException(e);
                     result = SaveGameSerializationResult.ioError;
                 }
 
