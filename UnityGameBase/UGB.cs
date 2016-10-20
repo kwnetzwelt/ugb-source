@@ -4,6 +4,7 @@ using UnityGameBase.Core.Audio;
 using UnityGameBase.Core.Globalization;
 using UnityGameBase.Core.Input;
 using UnityGameBase.Core.ObjPool;
+using UnityGameBase.Core.Savegame;
 using UnityGameBase.Core.PlatformInterface;
 
 namespace UnityGameBase
@@ -47,6 +48,14 @@ namespace UnityGameBase
             get
             {
                 return PlatformInterface.Instance;
+            }
+        }
+
+        public static GameSaveGame SaveGame
+        {
+            get
+            {
+                return GetGame().saveGame;
             }
         }
 

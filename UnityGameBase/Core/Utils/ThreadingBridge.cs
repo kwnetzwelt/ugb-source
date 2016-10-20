@@ -19,10 +19,29 @@ namespace UnityGameBase.Core.Utils
 		public static void Initialize ()
 		{
 
-			GameObject go = new GameObject("_ThreadingBridge");
-			go.AddComponent<ThreadingBridge>();
-			DontDestroyOnLoad(go);
+			threadingBridge = new GameObject("_ThreadingBridge");
+			threadingBridge.AddComponent<ThreadingBridge>();
+			
+			if(Application.isPlaying)
+			{
+				DontDestroyOnLoad(threadingBridge);
+			}
 
+		}
+
+		private static GameObject threadingBridge;
+		public static void Destroy()
+		{
+			if(threadingBridge != null)
+			{
+				if(Application.isPlaying)
+				{
+					GameObject.Destroy(threadingBridge);
+				}else
+				{
+					GameObject.DestroyImmediate(threadingBridge);
+				}
+			}
 		}
 
 		static Queue<System.Action> todo = new Queue<System.Action>();

@@ -90,6 +90,7 @@ using UnityGameBase.Core.Input;
 using UnityGameBase.Core.Audio;
 using UnityGameBase.Core.Globalization;
 using UnityGameBase.Core.Utils;
+using UnityGameBase.Core.Savegame;
 using UnityGameBase.Core;
 using UnityGameBase.Core.ObjPool;
 using UnityGameBase.WebGL;
@@ -141,6 +142,7 @@ namespace UnityGameBase
         public GameInput gameInput;
         public SceneTransition sceneTransition;
         
+        public GameSaveGame saveGame;
         public ObjectPool objectPool;
 
         public int version;
@@ -153,8 +155,11 @@ namespace UnityGameBase
         {
             initialized = true;
             Instance = this;
-            DontDestroyOnLoad(this);
-
+            
+            if(Application.isPlaying)
+            {
+                DontDestroyOnLoad(this);
+            }
             ThreadingBridge.Initialize();
 
             // for webgl we cannot use custom attributes to find classes, so we rely on a delegate to create the logic instance for us. 
@@ -170,6 +175,7 @@ namespace UnityGameBase
             gameLoca = this.AddComponentIfNotExists<GameLocalization>();
             gameLoca.Initialize();
             gameInput = this.AddComponentIfNotExists<GameInput>();
+            saveGame = this.AddComponentIfNotExists<GameSaveGame>();
             sceneTransition = this.AddComponentIfNotExists<SceneTransition>();
             
            
@@ -187,6 +193,10 @@ namespace UnityGameBase
             {
                 DestroyImmediate(this.gameObject);
             }
+        }
+        void OnDisable()
+        {
+            ThreadingBridge.Destroy();
         }
 
         void OnEnable()
