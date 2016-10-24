@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityGameBase.Core.Extensions;
 
 namespace UnityGameBase.Core.XUI
 {
@@ -11,40 +12,47 @@ namespace UnityGameBase.Core.XUI
 		{
 			switch (this.transitionType)
 			{
-				case ScreenTransition.TransitionType.AlphaFading:
-					{
-						AlphaFadeController controller = obj.AddComponent<AlphaFadeController>();
-						controller.FadeTime = alphaTransitionTime;
-						return (TransitionController)controller;					
-					}
-				case ScreenTransition.TransitionType.Animator:
-					{
-						AnimatedTransitionController controller = obj.AddComponent<AnimatedTransitionController>();
-						return (TransitionController)controller;		
-					}
-				case ScreenTransition.TransitionType.ColorPlane:
-					{}
-					break;
+			case ScreenTransition.TransitionType.AlphaFading:
+				{
+					AlphaFadeController controller = obj.AddComponent<AlphaFadeController>();
+					controller.FadeTime = alphaTransitionTime;
+					return (TransitionController)controller;					
+				}
+			case ScreenTransition.TransitionType.Animator:
+				{
+					AnimatedTransitionController controller = obj.AddComponent<AnimatedTransitionController>();
+					return (TransitionController)controller;		
+				}
+			case ScreenTransition.TransitionType.ColorPlane:
+				{}
+				break;
+			case ScreenTransition.TransitionType.Custom:
+				{
+					var controller = obj.GetComponentInChildren<TransitionController>();
+					return (TransitionController)controller;		
+				}
+				break;
 			}
-			
+
 			return null;
 		}
-	
-	
+
+
 		public enum TransitionType
 		{
 			AlphaFading,
 			Animator,
 			ColorPlane,
+			Custom,
 		}
-		
+
 		[SerializeField]
 		public TransitionType
-			transitionType = TransitionType.AlphaFading;
+		transitionType = TransitionType.AlphaFading;
 
 		[SerializeField]
 		public float
-			alphaTransitionTime = 1;
-		
+		alphaTransitionTime = 1;
+
 	}
 }
