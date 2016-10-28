@@ -35,7 +35,7 @@ namespace UnityGameBase.Core.Localization
 
 		IEnumerator<float> CSVWalker(string filename, System.Text.Encoding encoding)
 		{
-			List<List<string>> dataGrid = Mono.Csv.CsvFileReader.ReadAll(filename, System.Text.Encoding.UTF8, ';');
+			List<List<string>> dataGrid = Mono.Csv.CsvFileReader.ReadAll(filename, System.Text.Encoding.UTF8, ',');
 			var firstContentCell = ParseHeaderRow(dataGrid[0].ToArray(),filename);
 			int progress = 0;
 			foreach(var line in dataGrid)
