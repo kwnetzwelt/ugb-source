@@ -49,7 +49,8 @@ namespace UnityGameBase.Core.XUI
 				var speed = 1f / FadeTime;
 				while (!Mathf.Approximately(CanvasGroup.alpha, targetAlpha))
 				{
-					CanvasGroup.alpha = Mathf.MoveTowards(CanvasGroup.alpha, targetAlpha, speed * Time.deltaTime);
+                    var delta = Mathf.Clamp(Time.deltaTime, 0f, .05f);
+                    CanvasGroup.alpha = Mathf.MoveTowards(CanvasGroup.alpha, targetAlpha, speed * delta);
 					yield return new WaitForEndOfFrame();
 				}
 			}
