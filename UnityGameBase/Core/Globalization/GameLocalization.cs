@@ -19,8 +19,8 @@ namespace UnityGameBase.Core.Globalization
         /// <summary>
         /// The Label of files, which are considered localization sources. 
         /// </summary>
-        public static readonly string UGBLocaSourceFilter = "l:UGB_Loca";
-
+        public static readonly string UGBLocaSourceFilter = "l:" + UGBLocaLabel;
+        public static readonly string UGBLocaLabel = "UGB_Loca";
         LocaData mData;
         public Languages mCurrentLanguage = Languages.Invalid;
 
@@ -88,15 +88,17 @@ namespace UnityGameBase.Core.Globalization
             // checking for language setting in playerprefs
             defLanguageShort = PlayerPrefs.GetInt(GameOptions.LanguageOption, defLanguageShort);
 
-            // enumerating all langauges to find a match with the language set in the system
-            foreach (int lang in Languages.Enumerate())
+            if (defLanguageShort != Languages.Invalid)
             {
-                if ((Languages)lang == defLanguageShort)
+                // enumerating all langauges to find a match with the language set in the system
+                foreach (int lang in Languages.Enumerate())
                 {
-                    return defLanguageShort;
+                    if ((Languages)lang == defLanguageShort)
+                    {
+                        return defLanguageShort;
+                    }
                 }
             }
-            
             // if none found return first language
             return Languages.First;
         }

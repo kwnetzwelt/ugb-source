@@ -45,6 +45,10 @@ namespace UnityGameBase.Core.Localization
                 {
                     parser = new UGBCsvLocaParser();
                     parser.Parse(imported);
+                }else if(imported.EndsWith(".json"))
+                {
+                    parser = new UGBJSONLocaParser();
+                    parser.Parse(imported);
                 }
                 else
                 {
