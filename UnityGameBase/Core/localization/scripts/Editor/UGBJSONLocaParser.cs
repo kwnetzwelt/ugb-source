@@ -48,7 +48,7 @@ namespace UnityGameBase.Core.Localization
             LocaJSON lj = new LocaJSON();
             lj.languages.Add("en");
             lj.keys.Add(new LocaJSON.TranslationJSON("btn_quit", "Quit") { description = "A Button to quit the game" });
-            var content = EditorJsonUtility.ToJson(lj, true);
+            var content = JsonUtility.ToJson(lj, true);
             File.WriteAllText(path, content);
             AssetDatabase.Refresh();
 
@@ -113,8 +113,7 @@ namespace UnityGameBase.Core.Localization
             try
             {
                 var content = File.ReadAllText(pFilePath);
-                var lj = new LocaJSON();
-                EditorJsonUtility.FromJsonOverwrite(content, lj);
+                var lj = JsonUtility.FromJson<LocaJSON>(content);
 
                 var walker = JSONWalker(lj);
 				while(walker.MoveNext())
