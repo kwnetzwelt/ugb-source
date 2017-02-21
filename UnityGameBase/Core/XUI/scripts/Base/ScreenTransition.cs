@@ -31,7 +31,6 @@ namespace UnityGameBase.Core.XUI
 					var controller = obj.GetComponentInChildren<TransitionController>();
 					return (TransitionController)controller;		
 				}
-				break;
 			}
 
 			return null;

@@ -68,7 +68,7 @@ namespace UnityGameBase.Core.Utils
                     RuntimePlatform.WP8Player == Application.platform ||
                     #endif
                     RuntimePlatform.Android == Application.platform ||
-					#if !UNITY_5_5_OR_NEWER
+					#if !UNITY_5_4_OR_NEWER
                     RuntimePlatform.BlackBerryPlayer == Application.platform ||
 					#endif
                     RuntimePlatform.IPhonePlayer == Application.platform;
