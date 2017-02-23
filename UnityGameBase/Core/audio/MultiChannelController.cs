@@ -137,9 +137,9 @@ namespace UnityGameBase.Core.audio
 
 		public void Update()
 		{
-			foreach(var channel in channels)
+			for(var i = 0; i < channels.Count; ++i)
 			{
-				channel.Update();
+                channels[i].Update();
 			}
 		}
 
