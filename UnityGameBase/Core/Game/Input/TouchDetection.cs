@@ -73,10 +73,9 @@ namespace UnityGameBase.Core.Input
 		protected virtual void Update()
 		{
 			bool anyTouchBegan = false;
-		    var touches = UnityEngine.Input.touches;
-            for (var i = 0; i < touches.Length; ++i)
+            for (var i = 0; i < UnityEngine.Input.touchCount; ++i)
             {
-                var t = touches[i];
+                var t = UnityEngine.Input.GetTouch(i);
 				if (t.phase == TouchPhase.Began)
 					anyTouchBegan = true;
 				UpdateTouch(t);

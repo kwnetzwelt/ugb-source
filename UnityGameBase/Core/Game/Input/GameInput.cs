@@ -167,28 +167,30 @@ namespace UnityGameBase.Core.Input
 		
 		void UpdateKeyMappings()
 		{
-			foreach(KeyMapping km in keyMappings)
-			{
-				if(km.keyMode != KeyMapping.EKeyMode.None)
-				{
-					
-					if((km.keyMode == KeyMapping.EKeyMode.Down || km.keyMode == KeyMapping.EKeyMode.Any) && UnityEngine.Input.GetKeyDown(km.keyCode))
-					{
-						if(KeyDown != null)
-						{
-							KeyDown(km.name);
-						}
-					}
-					
-					if((km.keyMode == KeyMapping.EKeyMode.Up || km.keyMode == KeyMapping.EKeyMode.Any)  && UnityEngine.Input.GetKeyUp(km.keyCode))
-					{
-						if(KeyUp != null)
-						{
-							KeyUp(km.name);
-						}
-					}
-				}
-			}
+		    for (int i = 0; i < keyMappings.Count; i++)
+		    {
+		        KeyMapping km = keyMappings[i];
+		        if (km.keyMode != KeyMapping.EKeyMode.None)
+		        {
+		            if ((km.keyMode == KeyMapping.EKeyMode.Down || km.keyMode == KeyMapping.EKeyMode.Any) &&
+		                UnityEngine.Input.GetKeyDown(km.keyCode))
+		            {
+		                if (KeyDown != null)
+		                {
+		                    KeyDown(km.name);
+		                }
+		            }
+
+		            if ((km.keyMode == KeyMapping.EKeyMode.Up || km.keyMode == KeyMapping.EKeyMode.Any) &&
+		                UnityEngine.Input.GetKeyUp(km.keyCode))
+		            {
+		                if (KeyUp != null)
+		                {
+		                    KeyUp(km.name);
+		                }
+		            }
+		        }
+		    }
 		}
 	}
 }
