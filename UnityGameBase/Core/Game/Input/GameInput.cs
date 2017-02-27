@@ -99,8 +99,9 @@ namespace UnityGameBase.Core.Input
 			if(KeyUp == null)
 				return;
 			
-			foreach(KeyMapping km in keyMappings)
+			for (var i = 0; i < keyMappings.Count; ++i)
 			{
+			    var km = keyMappings[i];
 				if(km.touchId == touchInfo.id)
 				{
 					KeyUp(km.name);

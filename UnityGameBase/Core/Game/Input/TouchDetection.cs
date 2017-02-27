@@ -73,8 +73,10 @@ namespace UnityGameBase.Core.Input
 		protected virtual void Update()
 		{
 			bool anyTouchBegan = false;
-			foreach (Touch t in UnityEngine.Input.touches)
-			{
+		    var touches = UnityEngine.Input.touches;
+            for (var i = 0; i < touches.Length; ++i)
+            {
+                var t = touches[i];
 				if (t.phase == TouchPhase.Began)
 					anyTouchBegan = true;
 				UpdateTouch(t);
@@ -190,8 +192,9 @@ namespace UnityGameBase.Core.Input
 		}
 		protected TouchInformation GetTouch(int id)
 		{
-			foreach (TouchInformation ti in touches)
-			{
+            for (var i = 0; i < touches.Count; ++i)
+            {
+                var ti = touches[i];
 				if (ti.id == id)
 					return ti;
 			}
@@ -199,8 +202,9 @@ namespace UnityGameBase.Core.Input
 		}
 		protected TouchInformation GetTouch(Touch touch)
 		{
-			foreach (TouchInformation ti in touches)
-			{
+            for (var i = 0; i < touches.Count; ++i)
+            {
+                var ti = touches[i];
 				if (ti.Handles(touch))
 					return ti;
 			}
