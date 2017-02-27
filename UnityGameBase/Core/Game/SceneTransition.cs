@@ -189,9 +189,10 @@ namespace UnityGameBase.Core
 				yield return 0;
 			}
 
+            var cachedYield = new WaitForEndOfFrame();
 			while (!nextScene.IsPrepared)
 			{
-				yield return new WaitForEndOfFrame();
+				yield return cachedYield;
 			}
 
 			// load scene
