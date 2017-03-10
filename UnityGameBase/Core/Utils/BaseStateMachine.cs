@@ -119,6 +119,15 @@ namespace UnityGameBase.Core.Utils
         }
 
         /// <summary>
+        /// Hard reset for the Statemachine
+        /// </summary>
+        public void ResetState()
+        {
+            this.isInTransition = false;
+            this.activeState = null;
+        }
+
+        /// <summary>
         /// Set the active state for updating and test before the transition conditions.
         /// </summary>
         public virtual ResultCode SetActiveState(string name, System.Action onDone = null)
