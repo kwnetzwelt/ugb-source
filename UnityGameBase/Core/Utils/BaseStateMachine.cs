@@ -119,6 +119,14 @@ namespace UnityGameBase.Core.Utils
         }
 
         /// <summary>
+        /// Return is a transition is currently running
+        /// </summary>
+        public bool IsInTransition()
+        {
+            return isInTransition;
+        }
+
+        /// <summary>
         /// Hard reset for the Statemachine
         /// </summary>
         public void ResetState()
