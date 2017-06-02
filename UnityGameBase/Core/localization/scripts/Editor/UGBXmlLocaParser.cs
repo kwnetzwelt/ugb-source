@@ -59,10 +59,12 @@ namespace UnityGameBase.Core.Localization
 		public void Parse(string pFilePath)
 		{
 			Clear();
-			
-			mXmlReader = XmlReader.Create(pFilePath);
-				
-			while(mXmlReader.Read())
+
+            var settings = new XmlReaderSettings();
+            settings.CloseInput = true;
+            mXmlReader = XmlReader.Create(pFilePath, settings);
+
+            while (mXmlReader.Read())
 			{
 				switch(mXmlReader.NodeType)
 				{
