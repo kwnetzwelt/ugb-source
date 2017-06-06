@@ -15,6 +15,11 @@ namespace UnityGameBase.Core.Localization
             string[] pMovedAssets,
             string[] pMovedFromAssetsPaths)
         {
+            // don't do this - Jenkins has IOExceptions on creating the XML's.
+            // why should we even do that as a postprocess? Unity has already generated XML's. Bam!
+            // now to something completely different:
+            return;
+
             List<string> locaAssets = new List<string>(AssetDatabase.FindAssets(UnityGameBase.Core.Globalization.GameLocalization.UGBLocaSourceFilter));
             // no files containing loca found. 
             if (locaAssets.Count == 0)
