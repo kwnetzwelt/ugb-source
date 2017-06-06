@@ -172,7 +172,7 @@ namespace UnityGameBase.Core.Data
                 settings.OmitXmlDeclaration = true;
                 settings.Indent = true;
                 settings.NewLineOnAttributes = true;
-                using (XmlWriter writer = XmlWriter.Create(File.CreateText(path), settings))
+                using (XmlWriter writer = XmlWriter.Create(path, settings))
                 {
                     serializer.Serialize(writer, xmlData);
                     writer.Close();
