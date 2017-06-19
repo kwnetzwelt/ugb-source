@@ -1,5 +1,3 @@
-using UnityEngine;
-using System.Collections;
 using UnityEditor;
 using UnityGameBase.Core.Data;
 using System.Collections.Generic;
@@ -16,28 +14,30 @@ namespace UnityGameBase.Core.Localization
             string[] pMovedAssets,
             string[] pMovedFromAssetsPaths)
         {
-            // don't do this if not triggered by Editor - Jenkins has IOExceptions on creating the XML's.
-            // why should we even do that as a postprocess? Unity has already generated XML's. Bam!
+            // only do this if triggered from outside - Jenkins has IOExceptions on creating the XML's.
             // now to something completely different:
-            if (!ProcessLoca)
+            if (ProcessLoca)
             {
-                return;
+                CreateLoca(pImportedAssets);
             }
 
+            ProcessLoca = false;
+        }
+
+        public static void CreateLoca(params string[] pImportedAssets)
+        {
             List<string> locaAssets = new List<string>(AssetDatabase.FindAssets(UnityGameBase.Core.Globalization.GameLocalization.UGBLocaSourceFilter));
+            
             // no files containing loca found. 
             if (locaAssets.Count == 0)
                 return;
 
             // assets are only the guids. So we need to parse the path to compare them. 
-
             List<string> locaSources = new List<string>();
             foreach (var assetGuid in locaAssets)
             {
                 locaSources.Add(AssetDatabase.GUIDToAssetPath(assetGuid));
             }
-                    
-
 
             foreach (string imported in pImportedAssets)
             {
@@ -54,7 +54,8 @@ namespace UnityGameBase.Core.Localization
                 {
                     parser = new UGBCsvLocaParser();
                     parser.Parse(imported);
-                }else if(imported.EndsWith(".json"))
+                }
+                else if(imported.EndsWith(".json"))
                 {
                     parser = new UGBJSONLocaParser();
                     parser.Parse(imported);
@@ -88,8 +89,6 @@ namespace UnityGameBase.Core.Localization
                 }
                 EditorUtility.ClearProgressBar();
             }
-
-            ProcessLoca = false;
         }
     }
 }
