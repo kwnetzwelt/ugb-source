@@ -6,22 +6,13 @@ namespace UnityGameBase.Core.Localization
 {
     public class UGBLocaPostProcessor : AssetPostprocessor
     {
-        public static bool ProcessLoca { get; set; }
-
         static void OnPostprocessAllAssets(
             string[] pImportedAssets,
             string[] pDeletedAssets,
             string[] pMovedAssets,
             string[] pMovedFromAssetsPaths)
         {
-            // only do this if triggered from outside - Jenkins has IOExceptions on creating the XML's.
-            // now to something completely different:
-            if (ProcessLoca)
-            {
-                CreateLoca(pImportedAssets);
-            }
-
-            ProcessLoca = false;
+            CreateLoca(pImportedAssets);
         }
 
         public static void CreateLoca(params string[] pImportedAssets)
