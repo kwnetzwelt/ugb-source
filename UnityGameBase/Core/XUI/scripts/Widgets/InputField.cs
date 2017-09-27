@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 namespace UnityGameBase.Core.XUI
 {
 	public class InputField : UnityEngine.UI.InputField, IWidget
 	{
+        public static bool IsTouchedByUser { get; private set; }
+
 		/// <summary>
 		/// Event. Fires when touch keyboard input for this input field is finished (e.g. by "Done" or "Cancel" button).
 		/// String: message
@@ -21,5 +24,26 @@ namespace UnityGameBase.Core.XUI
 			}
 		}
 		#endregion
+
+        public override void OnSelect(BaseEventData eventData)
+        {
+            base.OnSelect(eventData);
+
+            IsTouchedByUser = true;
+        }
+
+        public override void OnSubmit(BaseEventData eventData)
+        {
+            base.OnSubmit(eventData);
+
+            IsTouchedByUser = false;
+        }
+
+        public override void OnDeselect(BaseEventData eventData)
+        {
+            base.OnDeselect(eventData);
+
+            IsTouchedByUser = false;
+        }
 	}
 }
