@@ -132,6 +132,10 @@ namespace UnityGameBase.Core.Utils
         public void ResetState()
         {
             this.isInTransition = false;
+            if (this.activeState != null)
+            {
+                this.activeState.End();
+            }
             this.activeState = null;
         }
 
