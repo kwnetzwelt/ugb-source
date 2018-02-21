@@ -51,7 +51,8 @@ namespace UnityGameBase.Core
                 OnEnable();
             }
             mSceneView = sceneView;
-            if(Event.current != null && Event.current.type == EventType.keyDown)
+
+            if(Event.current != null && Event.current.type == EventType.KeyDown)
             {
                 foreach(var kv in shortCuts)
                 {

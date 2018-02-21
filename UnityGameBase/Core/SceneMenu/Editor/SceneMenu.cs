@@ -70,7 +70,7 @@ namespace UnityGameBase.Core.SceneMenu
 		public void OnSceneGUI(SceneView sceneView)	
 		{
 			
-			if(Event.current != null && Event.current.type == EventType.keyDown)
+			if(Event.current != null && Event.current.type == EventType.KeyDown)
 			{
 				OnKeyDown(Event.current.keyCode);
 			}

@@ -133,7 +133,7 @@ public class LocalizedTextInspector : Editor
         Event e = Event.current;
         
        
-        if(e.type == EventType.keyDown)
+        if(e.type == EventType.KeyDown)
         {
             if(e.keyCode == KeyCode.DownArrow)
             {               
