@@ -51,26 +51,31 @@ namespace UnityGameBase.Core
 		public delegate void SceneTransitionDelegate(NextScene scene);
 
 		/// <summary>
-		/// Will be emitted, when the application is loading the requested scene. 
+		/// Will be emitted when the application is loading the requested scene. 
 		/// </summary>
 		public event SceneTransitionDelegate SceneIsLoading;
 
 		/// <summary>
-		/// Will be emitted, when the requested scene was loaded successfully. 
+		/// Will be emitted when the requested scene was loaded successfully. 
 		/// </summary>
 		public event SceneTransitionDelegate SceneHasChanged;
 
 		/// <summary>
-		/// Will be emitted, when the scene was loaded successfully and the transition is done. 
+		/// Will be emitted when the scene was loaded successfully and the transition is done. 
 		/// </summary>
 		public event SceneTransitionDelegate SceneTransitionIsDone;
 
+        /// <summary>
+        /// Will be emitted when a scene change was triggered via LoadScene(). 
+        /// </summary>
+        public event SceneTransitionDelegate SceneTransitionTriggered;
 
-		/// <summary>
-		/// A custom controller for loading screen behaviour. 
-		/// If you leave this member to null, the SceneTransition::mFadeTexture is used. 
-		/// </summary>
-		public Animation.ILoadingScreenController loadingScreenController;
+
+        /// <summary>
+        /// A custom controller for loading screen behaviour. 
+        /// If you leave this member to null, the SceneTransition::mFadeTexture is used. 
+        /// </summary>
+        public Animation.ILoadingScreenController loadingScreenController;
 
 		/// <summary>
 		/// Loads the scene with the given Index
@@ -95,7 +100,8 @@ namespace UnityGameBase.Core
 			if (loadingScreenController != null && !loadingScreenController.IsInitialized)
 			{
 				loadingScreenController.Initialize(() => {
-					
+
+                    TryCall(SceneTransitionTriggered);
 					LoadScene(scene, force);
 					
 				});
@@ -106,8 +112,10 @@ namespace UnityGameBase.Core
 			{
 				return;
 			}
-			
-			Debug.Log("Requested " + scene.ToString(), this);
+
+            TryCall(SceneTransitionTriggered);
+
+            Debug.Log("Requested " + scene.ToString(), this);
 
 			nextScene = scene;
 			
