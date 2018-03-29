@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.EventSystems;
 
 namespace UnityGameBase.Core.XUI
 {
@@ -12,6 +12,15 @@ namespace UnityGameBase.Core.XUI
         [Tooltip("This id value can be used to differentiate between button types (e.g. for click sounds).\nIt is used for a static custom button click event (ButtonClicked).")]
         [SerializeField]
         int eventId = 0;
+
+        [Header("Additional GameObjects to show/hide")]
+        [Tooltip("Optional.")]
+        [SerializeField]
+        GameObject[] enableWhenToggledOn;
+
+        [Tooltip("Optional.")]
+        [SerializeField]
+        GameObject[] enableWhenToggledOff;
 
         /// <summary>
         /// Occurs when button clicked. This static event can be used to get any button click, e.g. for playing button sounds.
@@ -28,6 +37,8 @@ namespace UnityGameBase.Core.XUI
         {
             base.Awake();
             onValueChanged.AddListener(OnToggleClicked);
+
+            EnableAdditionalObjects();
         }
 
         /// <summary>
@@ -52,6 +63,8 @@ namespace UnityGameBase.Core.XUI
             {
                 this.onValueChanged = onValueChangedTemp;
             }
+
+            EnableAdditionalObjects();
         }
 
         void OnToggleClicked(bool toggled)
@@ -59,6 +72,19 @@ namespace UnityGameBase.Core.XUI
             if(!tempDisableEvent && enabled && enableStaticEvent && ToggleClicked != null)
             {
                 ToggleClicked(this,eventId,toggled);
+            }
+        }
+
+        void EnableAdditionalObjects()
+        {
+            foreach (var go in enableWhenToggledOff)
+            {
+                go.SetActive(!isOn);
+            }
+
+            foreach (var go in enableWhenToggledOn)
+            {
+                go.SetActive(isOn);
             }
         }
     }
