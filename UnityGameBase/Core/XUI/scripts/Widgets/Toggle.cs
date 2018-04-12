@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace UnityGameBase.Core.XUI
@@ -22,6 +23,9 @@ namespace UnityGameBase.Core.XUI
         [SerializeField]
         GameObject[] enableWhenToggledOff;
 
+        [SerializeField]
+        bool setOffOnAwake = false;
+
         /// <summary>
         /// Occurs when button clicked. This static event can be used to get any button click, e.g. for playing button sounds.
         /// Returns Toggle instance, eventId:int and toggleOn/off
@@ -39,6 +43,11 @@ namespace UnityGameBase.Core.XUI
             onValueChanged.AddListener(OnToggleClicked);
 
             EnableAdditionalObjects();
+        
+            if (setOffOnAwake)
+            {
+                SetToggleIsOn(false, false);
+            }
         }
 
         /// <summary>
@@ -73,6 +82,8 @@ namespace UnityGameBase.Core.XUI
             {
                 ToggleClicked(this,eventId,toggled);
             }
+
+            EnableAdditionalObjects();
         }
 
         void EnableAdditionalObjects()
