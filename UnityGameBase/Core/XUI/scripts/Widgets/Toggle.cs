@@ -40,13 +40,17 @@ namespace UnityGameBase.Core.XUI
         protected override void Awake()
         {
             base.Awake();
-            onValueChanged.AddListener(OnToggleClicked);
 
-            EnableAdditionalObjects();
-        
-            if (setOffOnAwake)
+            if (Application.isPlaying)
             {
-                SetToggleIsOn(false, false);
+                onValueChanged.AddListener(OnToggleClicked);
+
+                EnableAdditionalObjects();
+        
+                if (setOffOnAwake)
+                {
+                    SetToggleIsOn(false, false);
+                }
             }
         }
 
