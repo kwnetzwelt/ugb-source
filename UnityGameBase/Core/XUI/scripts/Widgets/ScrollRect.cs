@@ -1,11 +1,36 @@
 ﻿using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace UnityGameBase.Core.XUI
 {
+    [CustomEditor(typeof(ScrollRect))]
+    public class ScrollRectInspector : Editor
+    {
+        ScrollRect myTarget;
+
+        void OnEnable()
+        {
+            myTarget = target as ScrollRect;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
+        }
+    }
+
     public class ScrollRect : UnityEngine.UI.ScrollRect
     {
+        [SerializeField]
+        bool enableUserInteraction = true;
+        public bool EnableUserInteraction
+        {
+            get { return enableUserInteraction; }
+            set { enableUserInteraction = value; }
+        }
+
         public bool IsScrolling { get; private set; }
 
         WaitForEndOfFrame waitForEndOfFrame;
@@ -20,24 +45,41 @@ namespace UnityGameBase.Core.XUI
 
         public override void OnScroll(PointerEventData data)
         {
-            base.OnScroll(data);
+            if (enableUserInteraction)
+            {
+                base.OnScroll(data);
                   
-            IsScrolling = true;
-            ResetOnMovementFinish();
+                IsScrolling = true;
+                ResetOnMovementFinish();
+            }
         }
 
         public override void OnBeginDrag(PointerEventData eventData)
         {
-            base.OnBeginDrag(eventData);
+            if (enableUserInteraction)
+            {
+                base.OnBeginDrag(eventData);
 
-            IsScrolling = true;
-            StopAllCoroutines();
+                IsScrolling = true;
+                StopAllCoroutines();
+            }
+        }
+
+        public override void OnDrag(PointerEventData eventData)
+        {
+            if (enableUserInteraction)
+            {
+                base.OnDrag(eventData);
+            }
         }
 
         public override void OnEndDrag(PointerEventData eventData)
         {
-            base.OnEndDrag(eventData);
-            ResetOnMovementFinish();
+            if (enableUserInteraction)
+            {
+                base.OnEndDrag(eventData);
+                ResetOnMovementFinish();
+            }
         }
 
         void ResetOnMovementFinish()
