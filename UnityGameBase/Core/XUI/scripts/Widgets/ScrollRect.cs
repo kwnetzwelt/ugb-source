@@ -1,26 +1,9 @@
 ﻿using System.Collections;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace UnityGameBase.Core.XUI
 {
-    [CustomEditor(typeof(ScrollRect))]
-    public class ScrollRectInspector : Editor
-    {
-        ScrollRect myTarget;
-
-        void OnEnable()
-        {
-            myTarget = target as ScrollRect;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            DrawDefaultInspector();
-        }
-    }
-
     public class ScrollRect : UnityEngine.UI.ScrollRect
     {
         [SerializeField]
