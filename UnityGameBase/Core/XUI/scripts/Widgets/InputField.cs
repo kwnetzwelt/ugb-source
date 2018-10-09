@@ -25,7 +25,7 @@ namespace UnityGameBase.Core.XUI
 
         void Update()
 		{
-            var changed = (m_Keyboard != null && m_Keyboard.done) || lastString != text;
+            var changed = (m_Keyboard != null && m_Keyboard.done) || ((m_Keyboard == null || !m_Keyboard.active) && lastString != text);
             if (TouchKeyboardInputFinishedEvent != null && changed)
 			{
 				TouchKeyboardInputFinishedEvent.Invoke(m_Keyboard.text, !m_Keyboard.wasCanceled || lastString != text);
