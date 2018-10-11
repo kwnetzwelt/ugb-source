@@ -15,23 +15,13 @@ namespace UnityGameBase.Core.XUI
 		/// </summary>
 		public event System.Action<string, bool> TouchKeyboardInputFinishedEvent;
 
-        string lastString;
-
-        #region MONO
-        protected override void Start()
-        {
-            lastString = text;
-        }
-
-        void Update()
+		#region MONO
+		void Update()
 		{
-            var changed = (m_Keyboard != null && m_Keyboard.done) || lastString != text;
-            if (TouchKeyboardInputFinishedEvent != null && changed)
+			if(TouchKeyboardInputFinishedEvent != null && m_Keyboard != null && m_Keyboard.done)
 			{
-				TouchKeyboardInputFinishedEvent.Invoke(m_Keyboard.text, !m_Keyboard.wasCanceled || lastString != text);
+				TouchKeyboardInputFinishedEvent.Invoke(m_Keyboard.text, !m_Keyboard.wasCanceled);
 			}
-
-            lastString = text;
 		}
 		#endregion
 
