@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace UnityGameBase.Core.XUI
@@ -35,9 +34,23 @@ namespace UnityGameBase.Core.XUI
 			if (this.screens.ContainsKey(name))
 			{
 				return this.screens [name] as T;
-			}	
+			}
 				
 			return null;
-		}		
-	}
+		}
+
+        public void RemoveAllHiddenScreens(List<string> screenNameToRemove)
+        {
+            foreach (var name in screenNameToRemove)
+            {
+                BaseScreen screenObject = null;
+                if (screens.TryGetValue(name, out screenObject))
+                {
+                    screenObject.Cleanup();
+                }
+            }
+
+            Resources.UnloadUnusedAssets();
+        }
+    }
 }

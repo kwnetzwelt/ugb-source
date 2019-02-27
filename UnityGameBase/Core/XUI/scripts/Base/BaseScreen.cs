@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace UnityGameBase.Core.XUI
 {
@@ -12,8 +10,8 @@ namespace UnityGameBase.Core.XUI
         public string screenName = "Default"; 		
         public GameObject screenPrefab = null;
 				
-        protected GameObject screenInstance = null;
-        protected Transform root;
+        public GameObject screenInstance = null;
+        public Transform root;
         protected WidgetManager widgetManager;
         protected TransitionController transitionController;
 									
@@ -121,11 +119,18 @@ namespace UnityGameBase.Core.XUI
             //add this screen to screenManager
             ScreenManager.Instance.AddScreen(this);
         }
-		
+
         public void EnableInput(bool enable)
         {
             //disable the raycast on the root object
             this.screenInstance.GetComponent<UnityEngine.UI.GraphicRaycaster>().enabled = enable;
+        }
+
+        public virtual void Cleanup()
+        {
+            UnityEngine.Object.Destroy(screenInstance);
+            screenInstance = null;
+            root = null;
         }
 
     }
