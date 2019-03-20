@@ -9,6 +9,9 @@ namespace UnityGameBase.Core.XUI
     {
         public string screenName = "Default"; 		
         public GameObject screenPrefab = null;
+		public string prefabLoadString = "";
+		public string assetBundleIdentifier = "";
+		public bool LoadedViaAssetBundle = false;
 				
         public GameObject screenInstance = null;
         public Transform root;
@@ -81,9 +84,31 @@ namespace UnityGameBase.Core.XUI
         {
             if(this.screenPrefab == null)
             {
-                Debug.LogError(this.name + " missing the prefab reference!");
-                return;
+				// try to load screen prefab
+				if (!LoadedViaAssetBundle) 
+				{
+					string resourcePath = System.IO.Path.Combine (Application.persistentDataPath, prefabLoadString);
+					screenPrefab = Resources.Load<GameObject>(prefabLoadString);
+				} 
+				else 
+				{
+					string assetBundlePath = System.IO.Path.Combine(Application.streamingAssetsPath, prefabLoadString);
+					AssetBundle bundle = AssetBundle.LoadFromFile(assetBundlePath);
+
+					if (bundle == null) {
+						Debug.Log("Failed to load AssetBundle!");
+						return;
+					}
+
+					screenPrefab = bundle.LoadAsset<GameObject>(assetBundleIdentifier);
+				}
             }
+
+			if (this.screenPrefab == null) 
+			{
+				Debug.LogError(this.name + " missing the prefab reference!");
+				return;
+			}
 			
             if(this.screenInstance == null)
             {
