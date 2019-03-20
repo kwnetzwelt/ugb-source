@@ -87,16 +87,21 @@ namespace UnityGameBase.Core.XUI
 				// try to load screen prefab
 				if (!LoadedViaAssetBundle) 
 				{
-					string resourcePath = System.IO.Path.Combine (Application.persistentDataPath, prefabLoadString);
 					screenPrefab = Resources.Load<GameObject>(prefabLoadString);
+					if (screenPrefab == null) 
+					{
+						Debug.LogError("Failed to load Screen from resources!");
+						return;
+					}
 				} 
 				else 
 				{
 					string assetBundlePath = System.IO.Path.Combine(Application.streamingAssetsPath, prefabLoadString);
 					AssetBundle bundle = AssetBundle.LoadFromFile(assetBundlePath);
 
-					if (bundle == null) {
-						Debug.Log("Failed to load AssetBundle!");
+					if (bundle == null) 
+					{
+						Debug.LogError("Failed to load AssetBundle!");
 						return;
 					}
 
@@ -154,6 +159,7 @@ namespace UnityGameBase.Core.XUI
         public virtual void Cleanup()
         {
             UnityEngine.Object.Destroy(screenInstance);
+			screenPrefab = null;
             screenInstance = null;
             root = null;
         }
