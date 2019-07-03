@@ -6,7 +6,8 @@ namespace UnityGameBase.Core.XUI
 {
 	public class InputField : UnityEngine.UI.InputField, IWidget
 	{
-        public static bool IsTouchedByUser { get; private set; }
+        static InputField isTouchedByUser = null;
+        public static bool IsTouchedByUser { get { return isTouchedByUser != null; } }
 
 		/// <summary>
 		/// Event. Fires when touch keyboard input for this input field is finished (e.g. by "Done" or "Cancel" button).
@@ -15,35 +16,45 @@ namespace UnityGameBase.Core.XUI
 		/// </summary>
 		public event System.Action<string, bool> TouchKeyboardInputFinishedEvent;
 
-		#region MONO
-		void Update()
+        #region MONO
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            if (isTouchedByUser == this)
+                isTouchedByUser = null;
+        }
+
+        void Update()
 		{
-			if(TouchKeyboardInputFinishedEvent != null && m_Keyboard != null && m_Keyboard.done)
-			{
-				TouchKeyboardInputFinishedEvent.Invoke(m_Keyboard.text, !m_Keyboard.wasCanceled);
-			}
+			if(TouchKeyboardInputFinishedEvent != null && m_Keyboard != null && m_Keyboard.status == TouchScreenKeyboard.Status.Done)
+				TouchKeyboardInputFinishedEvent.Invoke(m_Keyboard.text, m_Keyboard.status != TouchScreenKeyboard.Status.Canceled);
 		}
+
 		#endregion
 
         public override void OnSelect(BaseEventData eventData)
         {
             base.OnSelect(eventData);
 
-            IsTouchedByUser = true;
+            isTouchedByUser = this;
         }
 
         public override void OnSubmit(BaseEventData eventData)
         {
             base.OnSubmit(eventData);
 
-            IsTouchedByUser = false;
+            if (isTouchedByUser == this)
+                isTouchedByUser = null;
         }
 
         public override void OnDeselect(BaseEventData eventData)
         {
             base.OnDeselect(eventData);
 
-            IsTouchedByUser = false;
+            if (isTouchedByUser == this)
+                isTouchedByUser = null;
         }
-	}
+    }
 }
