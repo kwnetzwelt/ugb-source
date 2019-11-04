@@ -16,13 +16,13 @@ namespace UnityGameBase.Core
 		const string QualityOption = "OptQuality";
 		public const string LanguageOption = "OptLanguage";
 		const string TouchFeedbackOption = "OptTouchFeedback";
-		
-		private bool optionsDialogVisible = false;
 
-		
+        protected bool updatePlayerPrefs = true;
+
+        private bool optionsDialogVisible = false;
 		
 		bool musicOption;
-		bool moundOption;
+		bool soundOption;
 		int qualityLevel;
 		int language;
 		bool showTouchFeedback;
@@ -30,7 +30,6 @@ namespace UnityGameBase.Core
 		public delegate void OnOptionChange();
 		public event OnOptionChange OnAnyOptionChanged;
 		public event OnOptionChange OnOptionDialogToggled;
-
 
 		public bool IsOptionsDialogVisible
 		{
@@ -104,7 +103,7 @@ namespace UnityGameBase.Core
 		
 		public bool IsSoundOn
 		{
-			get { return moundOption;}
+			get { return soundOption;}
 			set {
 				
 				PlayerPrefs.SetInt(SoundOption,(value)? 1 : 0);
@@ -138,9 +137,13 @@ namespace UnityGameBase.Core
 		{
 			UpdateValues();
 		}
+
 		protected virtual void UpdateValues()
 		{
-			moundOption = System.Convert.ToBoolean( PlayerPrefs.GetInt(SoundOption,1) );
+            if (!updatePlayerPrefs)
+                return;
+
+            soundOption = System.Convert.ToBoolean( PlayerPrefs.GetInt(SoundOption,1) );
 			musicOption = System.Convert.ToBoolean( PlayerPrefs.GetInt(MusicOption,1) );
 			qualityLevel = PlayerPrefs.GetInt(QualityOption,0);
 
@@ -155,13 +158,14 @@ namespace UnityGameBase.Core
 				OnAnyOptionChanged();
 		}
 
-		
-		
+        public virtual void SaveValues()
+        {
+            updatePlayerPrefs = false;
 
-		
-		
+            PlayerPrefs.SetInt(LanguageOption, (int)language);
+            PlayerPrefs.Save();
 
-		
-	}
-
+            updatePlayerPrefs = true;
+        }
+    }
 }
