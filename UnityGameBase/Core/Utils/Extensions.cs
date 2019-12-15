@@ -93,7 +93,7 @@ namespace UnityGameBase.Core.Extensions
             // resolution timestamp of the current time, which yields
             // identical shuffles if called in close succession.
             // Solution: Use milliseconds, which provide more variation.
-            System.Random rng = new System.Random(System.DateTime.Now.Millisecond);
+            System.Random rng = new System.Random(System.DateTime.Now.Ticks);
             
             int n = list.Count;  
             while(n > 1)
